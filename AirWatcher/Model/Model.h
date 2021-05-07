@@ -3,46 +3,50 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <cmath>
+#include "Entity/User.h"
+#include "Entity/IndividualUser.h"
+#include "Entity/GovernmentAgency.h"
+#include "Entity/Provider.h"
+#include "Entity/Cleaner.h"
+#include "Entity/Sensor.h"
+
+
 
 class Model {
 
 public:
 
-	User SearchUser(int id);
+	GovernmentAgency SearchGovernmentAgency(int id);
 	/* Mode d'emploi:
-		Permet de chercher un objet de la classe User spécifié par son Id et de la renvoyer en sortie de la méthode.
+		Permet de chercher un objet de la classe GovernmentAgency spécifié par son Id et de la renvoyer en sortie de la méthode.
 		Pour les objets de type « user », si l’objet ne se trouve pas dans les listes,
 		alors la méthode va interroger la base de données pour récupérer ses informations qu’elle sauvegardera dans un objet métier en cas de besoin jusqu’à la fin de l’utilisation de l’application.
 	   Contrat:
 		Aucun*/
 
-	GovernmentAgency SearchGovernmentAgency(int id);
-	/* Mode d'emploi:
-		Même usage que pour la méthode SearchUser mais pour un objet de type GovernmentAgency
-	   Contrat:
-		Aucun*/
-
 	IndividualUser SearchIndividual(int id);
 	/* Mode d'emploi:
-		Même usage que pour la méthode SearchUser mais pour un objet de type IndividualUser
+		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type IndividualUser
 	   Contrat:
 		Aucun*/
 
 	Provider SearchProvider(int id);
 	/* Mode d'emploi:
-		Même usage que pour la méthode SearchUser mais pour un objet de type Provider
+		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type Provider
 	   Contrat:
 		Aucun*/
 
 	Cleaner SearchCleaner(int id);
 	/* Mode d'emploi:
-		Même usage que pour la méthode SearchUser mais pour un objet de type Cleaner
+		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type Cleaner
 	   Contrat:
 		Aucun*/
 
 	Sensor SearchSensor(int id);
 	/* Mode d'emploi:
-		Même usage que pour la méthode SearchUser mais pour un objet de type Sensor
+		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type Sensor
 	   Contrat:
 		Aucun*/
 
@@ -88,13 +92,13 @@ public:
 	   Contrat:
 		Aucun*/
 
-	List<Sensor> GetSensorsOrderByDistance(float latitude, float longitude);
+	vector<pair<Sensor,int>> GetSensorsOrderByDistance(float latitude, float longitude);
 	/* Mode d'emploi:
 		La méthode GetSensorsOrderByDistance permet de récupérer la liste des capteurs triés selon leur distance croissante aux coordonnées en paramètre.
 	   Contrat:
 		Aucun*/
 
-	List<Sensor> GetPrivateSensorsOrderByDistance(float latitude, float longitude);
+	vector<pair<Sensor,int>> GetPrivateSensorsOrderByDistance(float latitude, float longitude);
 	/* Mode d'emploi:
 		La méthode GetPrivateSensorsOrderByDistance permet de récupérer la liste des capteurs privés triés selon leur distance croissante aux coordonnées en paramètre.
 	   Contrat:
@@ -106,7 +110,7 @@ public:
 	   Contrat:
 		Aucun*/
 
-	boolean SaveDataOnDatabase();
+	bool SaveDataOnDatabase();
 	/* Mode d'emploi:
 		La méthode SaveDataOnDatabase permet de sauvegarder la dernière version des données qui ont été chargées dans la base de données locales et de mettre à jour les profils utilisateurs qui auraient été modifiés pendant l’exécution de l’application.
 	   Contrat:
@@ -160,7 +164,7 @@ private:
 	std::vector<Sensor> maintenanceSensors;
 	std::vector<Sensor> privateSensors;
 	std::vector<Sensor> maliciousSensors;
-	std::vector<Provider> providers
+	std::vector<Provider> providers;
 
 };
-
+#endif

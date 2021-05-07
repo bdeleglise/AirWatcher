@@ -18,7 +18,7 @@ struct Config
 {
 
 
-    path DIRECTORYPATH;
+    string DIRECTORYPATH;
     string SENSORFILE;
     string MEASUREMENTSFILE;
     string ATTRIBUTESFILE;
@@ -28,13 +28,13 @@ struct Config
 
     Config()
     {
-        DIRECTORYPATH = std::filesystem::current_path();
-        string SENSORFILE = "sensors.csv";
-        string MEASUREMENTSFILE = "measurements.csv";
-        string ATTRIBUTESFILE = "attributes.csv";
-        string PROVIDERSFILE = "providers.csv";
-        string CLEANERSFILE = "cleaners.csv";
-        string USERSFILE = "user.csv";
+        DIRECTORYPATH = filesystem::current_path().string();
+        SENSORFILE = "sensors.csv";
+        MEASUREMENTSFILE = "measurements.csv";
+        ATTRIBUTESFILE = "attributes.csv";
+        PROVIDERSFILE = "providers.csv";
+        CLEANERSFILE = "cleaners.csv";
+        USERSFILE = "user.csv";
     }
 };
 #endif

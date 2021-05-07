@@ -15,6 +15,7 @@
 #include <vector>
 #include "User.h"
 #include "Sensor.h"
+using namespace std;
 
 class Sensor;
 //------------------------------------------------------------- Constantes 

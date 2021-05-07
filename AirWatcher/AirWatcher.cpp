@@ -5,7 +5,6 @@
 using namespace std;
 #include "Model/Entity/GovernmentAgency.h"
 #include "Model/Entity/Cleaner.h"
-#include <ctime>
 #include "Model/Entity/Attribute.h"
 #include "Model/Entity/Measurement.h"
 #include "Model/Entity/Provider.h"

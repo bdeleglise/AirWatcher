@@ -33,9 +33,6 @@
     <ClCompile Include="Model\Entity\Cleaner.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Entity\Provider.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Model\Entity\Sensor.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -48,10 +45,10 @@
     <ClCompile Include="Model\Entity\IndividualUser.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Entity\Model.cpp">
+    <ClCompile Include="Model\Model.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Model.cpp">
+    <ClCompile Include="Model\Entity\Provider.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
