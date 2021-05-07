@@ -143,15 +143,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AirWatcher.cpp" />
-    <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\Entity\IndividualUser.cpp" />
     <ClCompile Include="Model\Entity\Measurement.cpp" />
     <ClCompile Include="Model\Entity\Attribute.cpp" />
     <ClCompile Include="Model\Entity\Cleaner.cpp" />
     <ClCompile Include="Model\Entity\GovernmentAgency.cpp" />
+    <ClCompile Include="Model\Entity\Model.cpp" />
     <ClCompile Include="Model\Entity\User.cpp" />
     <ClCompile Include="Model\Entity\Provider.cpp" />
     <ClCompile Include="Model\Entity\Sensor.cpp" />
+    <ClCompile Include="Model\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Util\Date.h" />

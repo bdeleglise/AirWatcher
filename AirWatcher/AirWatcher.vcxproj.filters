@@ -48,6 +48,9 @@
     <ClCompile Include="Model\Entity\IndividualUser.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Model\Entity\Model.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
     <ClCompile Include="Model\Model.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
