@@ -135,19 +135,19 @@ public:
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileGovernmentAgency(GovernmentAgency& NewProfile);
+	void UpdateProfileGovernmentAgency(GovernmentAgency& NewProfile); //Pas besoin de l'implémenter
 	/* Mode d'emploi:
 		La méthode UpdateProfileGovernmentAgency permet de mettre à jour les informations du profil passé en paramètre.
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileProvider(Provider& NewProfile);
+	void UpdateProfileProvider(Provider& NewProfile);     //Pas besoin de l'implémenter
 	/* Mode d'emploi:
 		La méthode UpdateProfileProvider permet de mettre à jour les informations du profil passé en paramètre.
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileIndividualUser(IndividualUser& NewProfile);
+	void UpdateProfileIndividualUser(IndividualUser& NewProfile);    //Pas besoin de l'implémenter
 	/* Mode d'emploi:
 		La méthode UpdateProfileIndividualUser permet de mettre à jour les informations du profil passé en paramètre.
 	   Contrat:

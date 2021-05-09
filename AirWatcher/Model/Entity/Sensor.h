@@ -51,9 +51,9 @@ public:
 
     void SetState(bool newstate);
 
-    IndividualUser* GetUser();
+    int GetUserID();
 
-    void SetUser(IndividualUser* privateUser);
+    void SetUser(int privateUser);
 
     map<Date, vector<Measurement>>* GetMeasurements();
 
@@ -65,7 +65,7 @@ public:
     Sensor(const Sensor& unSensor);
     Sensor();
     Sensor(int id, double latitude, double longitude);
-    Sensor(int id, double latitude, double longitude, IndividualUser* privateUser);
+    Sensor(int id, double latitude, double longitude, int privateUser);
     virtual ~Sensor();
     // Mode d'emploi :
     //
@@ -89,7 +89,7 @@ private:
     double latitude;
     double longitude;
     bool state;
-    IndividualUser* user;  //Ya moyen il faille mettre un ptr
+    int user;
     map<Date, vector<Measurement>> measurements;
     //---------------------------------------------------------- Classes amies
 

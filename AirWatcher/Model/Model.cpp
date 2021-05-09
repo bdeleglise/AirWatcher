@@ -149,7 +149,7 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
-	vector<pair<Sensor, double>> SensorsOrderedByDistance;
+	static vector<pair<Sensor, double>> SensorsOrderedByDistance;
 	double distance;
 	vector<Sensor>::iterator iter;
 	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
@@ -163,7 +163,7 @@ vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude){
-	vector<pair<Sensor, double>> privateSensorsOrderedByDistance;
+	static vector<pair<Sensor, double>> privateSensorsOrderedByDistance;
 	double distance;
 	vector<Sensor>::iterator iter;
 	for (iter = privateSensors.begin(); iter != privateSensors.end(); iter++) {
@@ -189,6 +189,8 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 
 /////////////////
 // TODO : finir 
+// Bien faire attention dans les updates les capteurs stockés dans les listes et ceux des individuals sont pas la même mais 
+// des copies l'un de l'autre donc prévoir de mettre à jour pour les deux endroits 
 //int Model::UpdateSensorState(int idSensor) {
 //
 //	Sensor* privateSensorsArray;

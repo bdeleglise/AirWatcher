@@ -51,17 +51,14 @@ bool Sensor::GetState()
 void Sensor::SetState(bool newstate)
 {
     state = newstate;
-    if (user != nullptr) {
-        user->SetReliable(state);
-    }
 }
 
-IndividualUser* Sensor::GetUser()
+int Sensor::GetUserID()
 {
     return user;
 }
 
-void Sensor::SetUser(IndividualUser* privateUser)
+void Sensor::SetUser(int privateUser)
 {
     user = privateUser;
 }
@@ -92,6 +89,7 @@ Sensor& Sensor::operator=(const Sensor& unSensor)
         latitude = unSensor.latitude;
         longitude = unSensor.longitude;
         user = unSensor.user;
+        measurements = unSensor.measurements;
     }
     return *this;
 }
@@ -103,14 +101,15 @@ Sensor::Sensor(const Sensor& unSensor)
     latitude=unSensor.latitude;
     longitude=unSensor.longitude;
     user=unSensor.user;
+    measurements = unSensor.measurements;
 }
 
 Sensor::Sensor(int id, double latitude, double longitude)
-    : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(nullptr)
+    : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(0)
 {
 }
 
-Sensor::Sensor(int id, double latitude, double longitude, IndividualUser* privateUser)
+Sensor::Sensor(int id, double latitude, double longitude, int privateUser)
     : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(privateUser)
 {
 

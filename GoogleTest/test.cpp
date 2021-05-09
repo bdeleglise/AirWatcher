@@ -270,6 +270,25 @@ TEST(TestSensor, AddMeasurementsSensor) {
 	EXPECT_EQ((*s.GetMeasurements())[date].size(), 2);
 }
 
+TEST(TestSensor, CopySensor) {
+	Attribute att("O3", "µg/m3", "concentration d'ozone");
+	Date date;
+	date.day = 12;
+	date.hour = 1;
+	date.min = 5;
+	date.month = 05;
+	date.sec = 01;
+	date.year = 2019;
+	Measurement mesure(date, 44.5, att);
+	Measurement mesure2(date, 55.5, att);
+	Sensor s(1, 24.5, -76);
+	s.AddMeasurement(mesure);
+	s.AddMeasurement(mesure2);
+	Sensor s2(s);
+	EXPECT_EQ(s2.GetMeasurements()->size(), 1);
+	EXPECT_EQ((*s2.GetMeasurements())[date].size(), 2);
+}
+
 TEST(TestIndividual, InitIndividual) {
 	IndividualUser user(1);
 	EXPECT_EQ(user.GetID(), 1);
@@ -286,16 +305,34 @@ TEST(TestIndividual, AddPointIndividual) {
 TEST(TestIndividual, AddSensor) {
 	IndividualUser user(1);
 	Sensor s(1, 24.5, -76);
-	user.AddSensor(&s);
+	user.AddSensor(s);
 	EXPECT_EQ(user.GetSensors()->size(), 1);
-	EXPECT_EQ(s.GetUser()->GetID(), 1);
+	EXPECT_EQ(s.GetUserID(), 1);
+	EXPECT_EQ((*user.GetSensors())[0].GetUserID(), 1);
+}
+
+TEST(TestIndividual, AccesData) {
+	IndividualUser user(IndividualUser(1));
+	Attribute att("O3", "µg/m3", "concentration d'ozone");
+	Date date;
+	date.day = 12;
+	date.hour = 1;
+	date.min = 5;
+	date.month = 05;
+	date.sec = 01;
+	date.year = 2019;
+	Measurement mesure(date, 44.5, att);
+	Sensor s(1, 24.5, -76);
+	s.AddMeasurement(mesure);
+	user.AddSensor(s);
+	EXPECT_EQ((*user.GetSensors())[0].GetMeasurements()->size(), 1);
 }
 
 TEST(TestIndividual, SetUnReliable) {
-	IndividualUser* user = new IndividualUser(1);
+	IndividualUser user(IndividualUser(1));
 	Sensor s(1, 24.5, -76);
-	user->AddSensor(&s);
-	user->SetReliable(false);
-	EXPECT_EQ(s.GetState(), false);
-	EXPECT_EQ(user->GetReliable(), false);
+	user.AddSensor(s);
+	user.SetReliable(false);
+	EXPECT_EQ((*user.GetSensors())[0].GetState(), false);
+	EXPECT_EQ(user.GetReliable(), false);
 }

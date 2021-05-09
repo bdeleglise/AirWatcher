@@ -48,9 +48,9 @@ public:
 
     void SetReliable(bool state);
 
-    vector<Sensor*>* GetSensors();
+    vector<Sensor>* GetSensors();
 
-    void AddSensor(Sensor* unSensor);
+    void AddSensor(Sensor &unSensor);
 
     void AddSensor(int id, float latitude, float longitude);
 
@@ -76,7 +76,7 @@ public:
     // Contrat :
     //
     
-    IndividualUser(int id, Sensor* unSensor);
+    IndividualUser(int id, Sensor& unSensor);
     // Mode d'emploi :
     //
     // Contrat :
@@ -110,7 +110,7 @@ private:
     int individualUserID;
     int totalPoints;
     bool reliable;
-    vector<Sensor*> sensors;
+    vector<Sensor> sensors;
 
     //---------------------------------------------------------- Classes amies
 

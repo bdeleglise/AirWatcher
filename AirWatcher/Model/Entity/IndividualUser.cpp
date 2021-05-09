@@ -50,37 +50,35 @@ bool IndividualUser::GetReliable()
 void IndividualUser::SetReliable(bool state)
 {
     reliable = state;
-    for (vector<Sensor*>::iterator i = sensors.begin(); i != sensors.end(); ++i) {
-        (*i)->SetState(state);
+    for (vector<Sensor>::iterator i = sensors.begin(); i != sensors.end(); ++i) {
+        i->SetState(state);
     }
 }
 
-vector<Sensor*>* IndividualUser::GetSensors()
+vector<Sensor>* IndividualUser::GetSensors()
 {
     return &sensors;
 }
 
-void IndividualUser::AddSensor(Sensor* unSensor)
+void IndividualUser::AddSensor(Sensor &unSensor)
 {
-    Sensor* sensor = new Sensor(*unSensor);
-    sensor->SetUser(this);
-    sensors.push_back(sensor);
+    unSensor.SetUser(individualUserID);
+    Sensor sensor(unSensor);
+    sensors.push_back(unSensor);
 }
 
 void IndividualUser::AddSensor(int id, float latitude, float longitude)
 {
-    Sensor* sensor = new Sensor(id, latitude, longitude, this);
+    Sensor sensor(id, latitude, longitude, individualUserID);
     sensors.push_back(sensor);
 }
 
 void IndividualUser::SetSensors(vector<Sensor>& listeSensors)
 {
-    for (vector<Sensor*>::iterator i = sensors.begin(); i != sensors.end(); ++i) {
-        delete  *i;
-    }
+    sensors.clear();
     for (vector<Sensor>::iterator i = listeSensors.begin(); i != listeSensors.end(); ++i) {
-        i->SetUser(this);
-        Sensor* sensor = new Sensor(*i);
+        i->SetUser(individualUserID);
+        Sensor sensor(*i);
         sensors.push_back(sensor);
     }
 }
@@ -120,10 +118,10 @@ IndividualUser::IndividualUser(int id)
 #endif
 } //----- Fin de GovernmentAgency
 
-IndividualUser::IndividualUser(int id, Sensor* unSensor)
+IndividualUser::IndividualUser(int id, Sensor& unSensor)
     : individualUserID(id), totalPoints(0), reliable(true), sensors()
 {
-    Sensor* sensor = new Sensor(*unSensor);
+    Sensor sensor(unSensor);
     sensors.push_back(sensor);
 }
 
@@ -137,9 +135,6 @@ IndividualUser::~IndividualUser()
 #ifdef MAP
     cout << "Appel au destructeur de <IndividuaUser>" << endl;
 #endif
-    for (vector<Sensor*>::iterator i = sensors.begin(); i != sensors.end(); ++i) {
-        delete *i;
-    }
 } //----- Fin de ~IndividuaUser
 
 
