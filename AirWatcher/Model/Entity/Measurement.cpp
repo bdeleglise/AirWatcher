@@ -28,7 +28,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-float Measurement::GetValue()
+double Measurement::GetValue()
 {
     return value;
 }
@@ -47,7 +47,14 @@ Attribute Measurement::GetAttribute()
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Measurement::Measurement(Date time, float val, Attribute& unAttribute)
+Measurement::Measurement(const Measurement& unMeasurement) 
+{
+    timestamp = unMeasurement.timestamp;
+    value = unMeasurement.value;
+    attribute = unMeasurement.attribute;
+}
+
+Measurement::Measurement(Date time, double val, Attribute& unAttribute)
     : timestamp(time), value(val), attribute(unAttribute)
 {
 #ifdef MAP

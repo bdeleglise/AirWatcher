@@ -64,7 +64,11 @@ struct Date
 
     bool operator<(const Date& aDate) const
     {
-        if (year < aDate.year)
+        __int64 dateCurrent = year * 10000000000 + month * 100000000 +day * 1000000 + hour * 10000 + min * 100 + sec;
+        __int64 dateAComparer = aDate.year * 10000000000 + aDate.month * 100000000 + aDate.day * 1000000 + aDate.hour * 10000 + aDate.min * 100 + aDate.sec;
+
+        return dateCurrent < dateAComparer;
+        /*if (year < aDate.year)
         {
             return true;
         }
@@ -126,7 +130,7 @@ struct Date
         else
         {
             return false;
-        }
+        }*/
     }
 
 

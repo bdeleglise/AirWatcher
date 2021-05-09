@@ -55,9 +55,9 @@ void IndividualUser::SetReliable(bool state)
     }
 }
 
-vector<Sensor*> IndividualUser::GetSensors()
+vector<Sensor*>* IndividualUser::GetSensors()
 {
-    return sensors;
+    return &sensors;
 }
 
 void IndividualUser::AddSensor(Sensor* unSensor)

@@ -33,9 +33,9 @@ int Provider::GetID()
     return providerID;
 }
 
-vector<Cleaner> Provider::GetCleaners()
+vector<Cleaner>* Provider::GetCleaners()
 {
-    return cleaners;
+    return &cleaners;
 }
 
 void Provider::AddCleaner(Cleaner& unCleaner)

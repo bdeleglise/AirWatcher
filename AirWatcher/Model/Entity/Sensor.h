@@ -10,8 +10,13 @@
 #define SENSOR_H
 
 //--------------------------------------------------- Interfaces utilisées
+#pragma once
 #include <string>
 #include "IndividualUser.h"
+#include <map>
+#include <vector>
+#include "../../Util/Date.h"
+#include "Measurement.h"
 
 //------------------------------------------------------------- Constantes 
 
@@ -38,9 +43,9 @@ public:
     // Contrat :
     //
 
-    float GetLatitude();
+    double GetLatitude();
 
-    float GetLongitude();
+    double GetLongitude();
 
     bool GetState();
 
@@ -50,15 +55,17 @@ public:
 
     void SetUser(IndividualUser* privateUser);
 
-    //TODO: GetMeasurements et AddMeadurements
+    map<Date, vector<Measurement>>* GetMeasurements();
+
+    void AddMeasurement(Measurement& measure);
 
 //------------------------------------------------- Surcharge d'opérateurs
     Sensor& operator =(const Sensor& unSensor);
 //-------------------------------------------- Constructeurs - destructeur
     Sensor(const Sensor& unSensor);
     Sensor();
-    Sensor(int id, float latitude, float longitude);
-    Sensor(int id, float latitude, float longitude, IndividualUser* privateUser);
+    Sensor(int id, double latitude, double longitude);
+    Sensor(int id, double latitude, double longitude, IndividualUser* privateUser);
     virtual ~Sensor();
     // Mode d'emploi :
     //
@@ -79,11 +86,11 @@ protected:
 private:
     //------------------------------------------------------- Attributs privés
     int sensorID;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
     bool state;
     IndividualUser* user;  //Ya moyen il faille mettre un ptr
-    // TODO: définir un conteneur pour les mesures  -> measurements
+    map<Date, vector<Measurement>> measurements;
     //---------------------------------------------------------- Classes amies
 
     //-------------------------------------------------------- Classes privées

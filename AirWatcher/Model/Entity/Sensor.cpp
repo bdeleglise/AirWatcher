@@ -33,12 +33,12 @@ int Sensor::GetID() {
     return sensorID;
 }
 
-float Sensor::GetLatitude()
+double Sensor::GetLatitude()
 {
     return latitude;
 }
 
-float Sensor::GetLongitude()
+double Sensor::GetLongitude()
 {
     return longitude;
 }
@@ -66,7 +66,16 @@ void Sensor::SetUser(IndividualUser* privateUser)
     user = privateUser;
 }
 
-//TODO: Get et ADD measurements
+map<Date, vector<Measurement>>* Sensor::GetMeasurements()
+{
+    return &measurements;
+}
+
+void Sensor::AddMeasurement(Measurement& measure)
+{
+    measurements[measure.GetTime()].push_back(measure);
+}
+
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -96,12 +105,12 @@ Sensor::Sensor(const Sensor& unSensor)
     user=unSensor.user;
 }
 
-Sensor::Sensor(int id, float latitude, float longitude)
+Sensor::Sensor(int id, double latitude, double longitude)
     : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(nullptr)
 {
 }
 
-Sensor::Sensor(int id, float latitude, float longitude, IndividualUser* privateUser)
+Sensor::Sensor(int id, double latitude, double longitude, IndividualUser* privateUser)
     : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(privateUser)
 {
 

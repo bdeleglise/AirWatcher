@@ -38,7 +38,7 @@ public:
     // Contrat :
     //
     
-    vector<Cleaner> GetCleaners();
+    vector<Cleaner>* GetCleaners();
 
     void AddCleaner(Cleaner& unCleaner);
 

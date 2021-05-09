@@ -48,7 +48,7 @@ public:
 
     void SetReliable(bool state);
 
-    vector<Sensor*> GetSensors();
+    vector<Sensor*>* GetSensors();
 
     void AddSensor(Sensor* unSensor);
 

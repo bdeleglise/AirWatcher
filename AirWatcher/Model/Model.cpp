@@ -9,13 +9,13 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GovernmentAgency Model::SearchGovernmentAgency(int id) {
+GovernmentAgency* Model::SearchGovernmentAgency(int id) {
 	vector<GovernmentAgency>::iterator iter;
-	GovernmentAgency toFind;
+	GovernmentAgency* toFind=nullptr;
 
 	for (iter = governmentAgencies.begin(); iter != governmentAgencies.end(); iter++) {
 		if (iter->GetID() == id) {
-			toFind = *iter;
+			toFind = &(*iter);
 		}
 	}
 
@@ -24,13 +24,13 @@ GovernmentAgency Model::SearchGovernmentAgency(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-IndividualUser Model::SearchIndividual(int id) {
+IndividualUser* Model::SearchIndividual(int id) {
 	vector<IndividualUser>::iterator iter;
-	IndividualUser toFind;
+	IndividualUser* toFind=nullptr;
 
 	for (iter = individuals.begin(); iter != individuals.end(); iter++) {
 		if (iter->GetID() == id) {
-			toFind = *iter;
+			toFind = &(*iter);
 		}
 	}
 
@@ -39,13 +39,13 @@ IndividualUser Model::SearchIndividual(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Provider Model::SearchProvider(int id) {
+Provider* Model::SearchProvider(int id) {
 	vector<Provider>::iterator iter;
-	Provider toFind;
+	Provider* toFind=nullptr;
 
 	for (iter = providers.begin(); iter != providers.end(); iter++) {
 		if (iter->GetID() == id) {
-			toFind = *iter;
+			toFind = &(*iter);
 		}
 	}
 
@@ -55,13 +55,13 @@ Provider Model::SearchProvider(int id) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Cleaner Model::SearchCleaner(int id) {
+Cleaner* Model::SearchCleaner(int id) {
 	vector<Cleaner>::iterator iter;
-	Cleaner toFind;
+	Cleaner* toFind=nullptr;
 
 	for (iter = cleaners.begin(); iter != cleaners.end(); iter++) {
 		if (iter->GetID() == id) {
-			toFind = *iter;
+			toFind = &(*iter);
 		}
 	}
 
@@ -70,13 +70,27 @@ Cleaner Model::SearchCleaner(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Sensor Model::SearchSensor(int id) {
+Sensor* Model::SearchSensor(int id) {
 	vector<Sensor>::iterator iter;
-	Sensor toFind;
+	Sensor* toFind=nullptr;
 
 	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
 		if (iter->GetID() == id) {
-			toFind = *iter;
+			toFind = &(*iter);
+		}
+	}
+	if (toFind == nullptr) {
+		for (iter = maliciousSensors.begin(); iter != maliciousSensors.end(); iter++) {
+			if (iter->GetID() == id) {
+				toFind = &(*iter);
+			}
+		}
+	}
+	if (toFind == nullptr) {
+		for (iter = maintenanceSensors.begin(); iter != maintenanceSensors.end(); iter++) {
+			if (iter->GetID() == id) {
+				toFind = &(*iter);
+			}
 		}
 	}
 
@@ -85,96 +99,79 @@ Sensor Model::SearchSensor(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Sensor* Model::GetSensors() {
-	Sensor* sensorsArray;
-	sensorsArray = &sensors[0];
-	return sensorsArray;
+vector<Sensor>* Model::GetSensors() {
+	return &sensors;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Sensor* Model::GetPrivateSensors() {
-	Sensor* sensorsArray;
-	sensorsArray = &privateSensors[0];
-	return sensorsArray;
+vector<Sensor>* Model::GetPrivateSensors() {
+	return &privateSensors;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-IndividualUser* Model::GetIndividuals() {
-	IndividualUser* individualUserArray;
-	individualUserArray = &individuals[0];
-	return(individualUserArray);
+vector<IndividualUser>* Model::GetIndividuals() {
+	return &individuals;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Sensor* Model::GetMaintenanceSensors() {
-	Sensor* maintenanceSensorArray;
-	maintenanceSensorArray = &maintenanceSensors[0];
-	return(maintenanceSensorArray);
+vector<Sensor>* Model::GetMaintenanceSensors() {
+	return &maintenanceSensors;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Provider* Model::GetProviders() {
-	Provider* providerArray;
-	providerArray = &providers[0];
-	return(providerArray);
+vector<Provider>* Model::GetProviders() {
+	return &providers;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Cleaner* Model::GetCleaners() {
-	Cleaner* cleanerArray;
-	cleanerArray = &cleaners[0];
-	return(cleanerArray);
+vector<Cleaner>* Model::GetCleaners() {
+	return &cleaners;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Sensor* Model::GetMaliciousIndividualSensors() {
-	Sensor* maliciousIndividualSensorsArray;
-	maliciousIndividualSensorsArray = &maliciousSensors[0];
-	return(maliciousIndividualSensorsArray);
+vector<Sensor>* Model::GetMaliciousIndividualSensors() {
+	return &maliciousSensors;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	bool sortByValue( const pair<Sensor,int> &a, const pair<Sensor,int> &b){
+	bool sortByValue( const pair<Sensor, double> &a, const pair<Sensor, double> &b){
       return (a.second < b.second);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vector<pair<Sensor,int>> Model::GetSensorsOrderByDistance(float latitude, float longitude) {
-	Sensor* sensorArray = GetSensors();
-	vector<pair<Sensor,int>> SensorsOrderedByDistance;
-	float distance;
-	int tabLength = sizeof(sensorArray) / sizeof(sensorArray[0]);
-	for(int i=0;i<tabLength;i++){
-		distance = sqrt(pow(sensorArray[i].GetLatitude()-latitude,2)+pow(sensorArray[i].GetLongitude()-longitude,2));
-		SensorsOrderedByDistance.push_back(make_pair(sensorArray[i], distance));
+vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
+	vector<pair<Sensor, double>> SensorsOrderedByDistance;
+	double distance;
+	vector<Sensor>::iterator iter;
+	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
+		distance = sqrt(pow(iter->GetLatitude()-latitude,2)+pow(iter->GetLongitude()-longitude,2));
+		SensorsOrderedByDistance.push_back(make_pair(*iter, distance));
 	}
 	sort(SensorsOrderedByDistance.begin(), SensorsOrderedByDistance.end(),sortByValue);
-	return(SensorsOrderedByDistance);
+	return &SensorsOrderedByDistance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vector<pair<Sensor,int>> Model::GetPrivateSensorsOrderByDistance(float latitude, float longitude){
-	Sensor* privateSensorArray = GetPrivateSensors();
-	vector<pair<Sensor,int>> privateSensorsOrderedByDistance;
-	float distance;
-	int tabLength = sizeof(privateSensorArray) / sizeof(privateSensorArray[0]);
-
-	for(int i=0;i<tabLength;i++){
-		distance = sqrt(pow(privateSensorArray[i].GetLatitude()-latitude,2)+pow(privateSensorArray[i].GetLongitude()-longitude,2));
-		privateSensorsOrderedByDistance.push_back(make_pair(privateSensorArray[i], distance));
+vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude){
+	vector<pair<Sensor, double>> privateSensorsOrderedByDistance;
+	double distance;
+	vector<Sensor>::iterator iter;
+	for (iter = privateSensors.begin(); iter != privateSensors.end(); iter++) {
+		distance = sqrt(pow(iter->GetLatitude()-latitude,2)+pow(iter->GetLongitude()-longitude,2));
+		privateSensorsOrderedByDistance.push_back(make_pair(*iter, distance));
 	}
 	sort(privateSensorsOrderedByDistance.begin(),privateSensorsOrderedByDistance.end(),sortByValue);
-	return(privateSensorsOrderedByDistance);
+	return &privateSensorsOrderedByDistance;
 }
 
 
@@ -191,21 +188,21 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 
 
 /////////////////
-
-int Model::UpdateSensorState(int idSensor) {
-
-	Sensor* privateSensorsArray;
-	privateSensorsArray = GetPrivateSensors();
-	int tabLength = sizeof(privateSensorArray) / sizeof(privateSensorArray[0]);
-
-	for (int i=0; i<tabLength; i++){
-		
-	}
-
-	vector<Sensor>::iterator iter;
-	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
-		if (iter->GetID() == id) {
-			
-		}
-	}
-}
+// TODO : finir 
+//int Model::UpdateSensorState(int idSensor) {
+//
+//	Sensor* privateSensorsArray;
+//	privateSensorsArray = GetPrivateSensors();
+//	int tabLength = sizeof(privateSensorArray) / sizeof(privateSensorArray[0]);
+//
+//	for (int i=0; i<tabLength; i++){
+//		
+//	}
+//
+//	vector<Sensor>::iterator iter;
+//	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
+//		if (iter->GetID() == id) {
+//			
+//		}
+//	}
+//}

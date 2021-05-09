@@ -42,24 +42,7 @@ int main()
     cout << att.GetID() << " " << att.GetDescription() << " " << att.GetUnit() << endl;
 
 
-    Measurement mesure(date1, 44.5, att);
-    res = mesure.GetTime();
-     cout << mesure.GetValue() << " " <<res.hour << mesure.GetAttribute().GetDescription() << endl;
-
-
-    Provider pro(02);
-    pro.AddCleaner(c);
-
-    vector<Cleaner> testCleanerPro = pro.GetCleaners();
-    for (vector < Cleaner >::iterator iv = testCleanerPro.begin(); iv != testCleanerPro.end(); ++iv)
-    {
-        cout << pro.GetID() << " " << iv->GetLatitude() << endl;
-    }
-
-    Sensor s(10, 25.6, -24);
-    cout << s.GetID() << " " << s.GetLatitude() << " " << s.GetLongitude() << " " << s.GetState() << endl;
-
-    IndividualUser privateuser();
+    
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

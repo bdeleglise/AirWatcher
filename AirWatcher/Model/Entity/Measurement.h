@@ -31,7 +31,7 @@ class Measurement {
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    float GetValue();
+    double GetValue();
     // Mode d'emploi :
     //
     // Contrat :
@@ -50,7 +50,7 @@ public:
 
     Measurement(const Measurement& unMeasurement);
 
-    Measurement(Date time, float val, Attribute& unAttribute);
+    Measurement(Date time, double val, Attribute& unAttribute);
 
     virtual ~Measurement();
     // Mode d'emploi :
@@ -72,7 +72,7 @@ protected:
 private:
     //------------------------------------------------------- Attributs privés
     Date timestamp;
-    float value;
+    double value;
     Attribute attribute;
     //---------------------------------------------------------- Classes amies
 

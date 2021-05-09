@@ -39,12 +39,12 @@ int Cleaner::GetProviderID()
     return providerID;
 }
 
-float Cleaner::GetLatitude() 
+double Cleaner::GetLatitude()
 {
     return latitude;
 }
 
-float Cleaner::GetLongitude() 
+double Cleaner::GetLongitude()
 {
     return longitude;
 }
@@ -87,7 +87,7 @@ Cleaner::Cleaner(const Cleaner& unCleaner)
     stop = unCleaner.stop;
 }
 
-Cleaner::Cleaner(int id, int provider, float latitude, float longitude, Date start, Date stop)
+Cleaner::Cleaner(int id, int provider, double latitude, double longitude, Date start, Date stop)
     : cleanerID(id), providerID(provider), latitude(latitude), longitude(longitude), start(start), stop(stop)
 // Algorithme :
 //

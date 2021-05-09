@@ -6,12 +6,12 @@
 *************************************************************************/
 
 //---------- Interface de la classe <Attribute> (fichier Attribute.h) -----
-#pragma once
 #if ! defined ( ATTRIBUTE_H )
 #define ATTRIBUTE_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+using namespace std;
 
 //------------------------------------------------------------- Constantes 
 
@@ -22,7 +22,6 @@
 //
 //
 //------------------------------------------------------------------------ 
-
 class Attribute
 {
 

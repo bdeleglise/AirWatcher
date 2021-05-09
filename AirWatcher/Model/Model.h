@@ -11,6 +11,7 @@
 #include "Entity/Provider.h"
 #include "Entity/Cleaner.h"
 #include "Entity/Sensor.h"
+using namespace std;
 
 
 
@@ -18,7 +19,7 @@ class Model {
 
 public:
 
-	GovernmentAgency SearchGovernmentAgency(int id);
+	GovernmentAgency* SearchGovernmentAgency(int id);
 	/* Mode d'emploi:
 		Permet de chercher un objet de la classe GovernmentAgency spécifié par son Id et de la renvoyer en sortie de la méthode.
 		Pour les objets de type « user », si l’objet ne se trouve pas dans les listes,
@@ -26,79 +27,79 @@ public:
 	   Contrat:
 		Aucun*/
 
-	IndividualUser SearchIndividual(int id);
+	IndividualUser* SearchIndividual(int id);
 	/* Mode d'emploi:
 		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type IndividualUser
 	   Contrat:
 		Aucun*/
 
-	Provider SearchProvider(int id);
+	Provider* SearchProvider(int id);
 	/* Mode d'emploi:
 		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type Provider
 	   Contrat:
 		Aucun*/
 
-	Cleaner SearchCleaner(int id);
+	Cleaner* SearchCleaner(int id);
 	/* Mode d'emploi:
 		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type Cleaner
 	   Contrat:
 		Aucun*/
 
-	Sensor SearchSensor(int id);
+	Sensor* SearchSensor(int id);
 	/* Mode d'emploi:
 		Même usage que pour la méthode SearchGovernmentAgency mais pour un objet de type Sensor
 	   Contrat:
 		Aucun*/
 
-	Sensor* GetSensors();
+	vector<Sensor>* GetSensors();
 	/* Mode d'emploi:
 		La méthode GetSensors permet de retourner la liste des sensors pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	Sensor* GetPrivateSensors();
+	vector<Sensor>* GetPrivateSensors();
 	/* Mode d'emploi:
 		La méthode GetPrivateSensors permet de retourner la liste des private sensors pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	IndividualUser* GetIndividuals();
+	vector<IndividualUser>* GetIndividuals();
 	/* Mode d'emploi:
 		La méthode GetIndividuals permet de retourner la liste des IndividualUSers pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	Sensor* GetMaintenanceSensors();
+	vector<Sensor>* GetMaintenanceSensors();
 	/* Mode d'emploi:
 		La méthode GetMaintenanceSensors permet de retourner la liste des sensors en maintenance pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	Provider* GetProviders();
+	vector<Provider>* GetProviders();
 	/* Mode d'emploi:
 		La méthode GetProvider permet de retourner la liste des providers pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	Cleaner* GetCleaners();
+	vector<Cleaner>* GetCleaners();
 	/* Mode d'emploi:
 		La méthode GetCleaners permet de retourner la liste des cleaners pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	Sensor* GetMaliciousIndividualSensors();
+	vector<Sensor>* GetMaliciousIndividualSensors();
 	/* Mode d'emploi:
 		La méthode GetMaliciousIndividualSensors permet de retourner la liste des sensors appartenant à des Individuals frauduleux pour permettre leur affichage côté interface
 	   Contrat:
 		Aucun*/
 
-	vector<pair<Sensor,int>> GetSensorsOrderByDistance(float latitude, float longitude);
+	vector<pair<Sensor,double>>* GetSensorsOrderByDistance(double latitude, double longitude);
 	/* Mode d'emploi:
 		La méthode GetSensorsOrderByDistance permet de récupérer la liste des capteurs triés selon leur distance croissante aux coordonnées en paramètre.
 	   Contrat:
 		Aucun*/
 
-	vector<pair<Sensor,int>> GetPrivateSensorsOrderByDistance(float latitude, float longitude);
+	vector<pair<Sensor,double>>* GetPrivateSensorsOrderByDistance(double latitude, double longitude);
 	/* Mode d'emploi:
 		La méthode GetPrivateSensorsOrderByDistance permet de récupérer la liste des capteurs privés triés selon leur distance croissante aux coordonnées en paramètre.
 	   Contrat:
@@ -134,19 +135,19 @@ public:
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileGovernmentAgency(GovernmentAgency NewProfile);
+	void UpdateProfileGovernmentAgency(GovernmentAgency& NewProfile);
 	/* Mode d'emploi:
 		La méthode UpdateProfileGovernmentAgency permet de mettre à jour les informations du profil passé en paramètre.
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileProvider(Provider NewProfile);
+	void UpdateProfileProvider(Provider& NewProfile);
 	/* Mode d'emploi:
 		La méthode UpdateProfileProvider permet de mettre à jour les informations du profil passé en paramètre.
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileIndividualUser(IndividualUser NewProfile);
+	void UpdateProfileIndividualUser(IndividualUser& NewProfile);
 	/* Mode d'emploi:
 		La méthode UpdateProfileIndividualUser permet de mettre à jour les informations du profil passé en paramètre.
 	   Contrat:
@@ -157,14 +158,14 @@ public:
 
 
 private:
-	std::vector<GovernmentAgency> governmentAgencies;
-	std::vector<Cleaner> cleaners;
-	std::vector<IndividualUser> individuals;
-	std::vector<Sensor> sensors;
-	std::vector<Sensor> maintenanceSensors;
-	std::vector<Sensor> privateSensors;
-	std::vector<Sensor> maliciousSensors;
-	std::vector<Provider> providers;
+	vector<GovernmentAgency> governmentAgencies;
+	vector<Cleaner> cleaners;
+	vector<IndividualUser> individuals;
+	vector<Sensor> sensors;
+	vector<Sensor> maintenanceSensors;
+	vector<Sensor> privateSensors;
+	vector<Sensor> maliciousSensors;
+	vector<Provider> providers;
 
 };
 #endif

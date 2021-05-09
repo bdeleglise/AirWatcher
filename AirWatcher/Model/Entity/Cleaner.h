@@ -41,9 +41,9 @@ public:
     
     int GetProviderID() ;
 
-    float GetLatitude() ;
+    double GetLatitude() ;
 
-    float GetLongitude() ;
+    double GetLongitude() ;
 
     Date GetStart() ;
 
@@ -65,7 +65,7 @@ public:
     // Contrat :
     //
 
-    Cleaner(int id, int provider, float latitude, float longitude, Date start, Date stop);
+    Cleaner(int id, int provider, double latitude, double longitude, Date start, Date stop);
     // Mode d'emploi :
     //
     // Contrat :
@@ -99,8 +99,8 @@ private:
     //------------------------------------------------------- Attributs privés
     int cleanerID;
     int providerID;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
     Date start;
     Date stop;
 

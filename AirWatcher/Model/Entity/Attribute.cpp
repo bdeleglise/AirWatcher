@@ -66,6 +66,11 @@ Attribute::Attribute(const Attribute& unAttribute)
 
 }
 
+Attribute::Attribute()
+    : attributeID(), unit(), description()
+{
+}
+
 Attribute::Attribute(string id, string unit, string desc)
     : attributeID(id), unit(unit), description(desc)
 // Algorithme :
