@@ -115,6 +115,11 @@ Sensor::Sensor(int id, double latitude, double longitude, int privateUser)
 
 }
 
+Sensor::Sensor()
+    :sensorID(-1)
+{
+}
+
 Sensor::~Sensor()
 // Algorithme :
 //

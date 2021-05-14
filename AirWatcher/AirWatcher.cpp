@@ -10,13 +10,16 @@ using namespace std;
 #include "Model/Entity/Provider.h"
 #include "Model/Entity/IndividualUser.h"
 #include "Model/Entity/Sensor.h"
+#include "Model/Model.h"
 #include "Util/ReaderConfig.h"
 int main()
 {
-    std::cout << "Hello World!\n";
+    cout << "Hello World!\n";
     
 
-
+    Model model;
+    int res = model.LoadData();
+    cout << res << endl;
     
 }
 

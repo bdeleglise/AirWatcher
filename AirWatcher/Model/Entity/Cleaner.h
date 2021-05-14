@@ -40,6 +40,8 @@ public:
     
     int GetProviderID() ;
 
+    void SetProviderID(int proID);
+
     double GetLatitude() ;
 
     double GetLongitude() ;

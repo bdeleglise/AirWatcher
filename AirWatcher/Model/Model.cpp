@@ -1,6 +1,6 @@
 ﻿#include "Model.h"
 #include <fstream>
-
+#include <string>
 
 
 // M�thodes publiques 
@@ -178,7 +178,205 @@ vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double lat
 
 int Model::LoadData()
 {
-	
+	//lecture des attributs --------------------------------------------------------
+	ifstream file;
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
+	map<string, Attribute> bufferAttributes;
+
+	if (!file) {
+		return 1;   //le fichier n'existe pas
+	}
+
+	string buffer;
+	getline(file, buffer);  //Ligne de description
+
+	while (!file.eof()) {
+		getline(file, buffer, ';'); //lecture au format csv
+		string attributeID = buffer;
+		getline(file, buffer, ';');
+		string unit = buffer;
+		getline(file, buffer, ';');
+		string description = buffer;
+		file.ignore(); //ignorer le \n
+
+		bufferAttributes[attributeID] = Attribute(attributeID, unit, description);
+	}
+	file.close();
+
+	//lecture des mesures --------------------------------------------------------------------------
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
+	map<int, vector<Measurement>> bufferMeasurement;
+
+	if (!file) {
+		return 1;
+	}
+
+	while (!file.eof()) {
+		getline(file, buffer, ';'); //lecture au format csv
+		tm* tmp = new tm();
+		tmp->tm_year = stoi(buffer.substr(0, 4))-1900;
+		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+		tmp->tm_mday = stoi(buffer.substr(8, 2));
+		tmp->tm_hour = stoi(buffer.substr(11, 2));
+		tmp->tm_min = stoi(buffer.substr(14, 2));
+		tmp->tm_sec = stoi(buffer.substr(17, 2));
+		time_t timestamp = mktime(tmp);
+		delete tmp;
+		getline(file, buffer, ';');
+		int sensorID = stoi(buffer.substr(6));
+		getline(file, buffer, ';');
+		Attribute attribute = bufferAttributes[buffer];
+		getline(file, buffer, ';');
+		double value = stod(buffer);
+		file.ignore(); //ignorer le \n
+
+		bufferMeasurement[sensorID].push_back(Measurement(timestamp, value, attribute));
+	}
+	file.close();
+
+	//lecture des cleaner --------------------------------------------------------------------------
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
+	map<int, Cleaner> bufferCleaner;
+
+	if (!file) {
+		return 1;
+	} 
+
+	while (!file.eof()) {
+		getline(file, buffer, ';'); //lecture au format csv
+		int cleanerID = stoi(buffer.substr(7));
+		getline(file, buffer, ';');
+		double latitude = stod(buffer);
+		getline(file, buffer, ';');
+		double longitude = stod(buffer);
+
+		getline(file, buffer, ';');
+		tm* tmp = new tm();
+		tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
+		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+		tmp->tm_mday = stoi(buffer.substr(8, 2));
+		tmp->tm_hour = stoi(buffer.substr(11, 2));
+		tmp->tm_min = stoi(buffer.substr(14, 2));
+		tmp->tm_sec = stoi(buffer.substr(17, 2));
+		time_t start = mktime(tmp);
+		delete tmp;
+		getline(file, buffer, ';');
+		tmp = new tm();
+		tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
+		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+		tmp->tm_mday = stoi(buffer.substr(8, 2));
+		tmp->tm_hour = stoi(buffer.substr(11, 2));
+		tmp->tm_min = stoi(buffer.substr(14, 2));
+		tmp->tm_sec = stoi(buffer.substr(17, 2));
+		time_t end = mktime(tmp);
+		delete tmp;
+		file.ignore(); //ignorer le \n
+
+		bufferCleaner[cleanerID] = Cleaner(cleanerID, -1, latitude, longitude, start, end);
+	}
+	file.close();
+
+	//lecture des providers --------------------------------------------------------------------------
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE);
+	map<int, Provider> bufferProvider;
+	map<int, Provider>::iterator it;
+	map<int, Cleaner>::iterator itCleaner;
+	if (!file) {
+		return 1;
+	}
+
+	while (!file.eof()) {
+		getline(file, buffer, ';'); //lecture au format csv
+		int providerID = stoi(buffer.substr(8));
+		getline(file, buffer, ';');
+		int cleanerID = stoi(buffer.substr(7));
+		file.ignore(); //ignorer le \n
+
+		itCleaner= bufferCleaner.find(cleanerID);
+		if (itCleaner == bufferCleaner.end()) {
+			return 2; //erreur de lecture
+		}
+		itCleaner->second.SetProviderID(providerID);
+		it = bufferProvider.find(providerID);
+		if (it!= bufferProvider.end()) {
+			it->second.AddCleaner(itCleaner->second);
+		}
+		else {
+			bufferProvider[providerID] = Provider(providerID, itCleaner->second);
+		}
+		cleaners.push_back(itCleaner->second);
+	}
+	file.close();
+
+	for (it = bufferProvider.begin(); it != bufferProvider.end(); ++it) {
+		providers.push_back(it->second);
+	}
+
+	//lecture des sensors --------------------------------------------------------------------------
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE);
+	map<int, Sensor> bufferSensor;
+	map<int, vector<Measurement>>::iterator itMeasure;
+	if (!file) {
+		return 1;
+	}
+
+	while (!file.eof()) {
+		getline(file, buffer, ';'); //lecture au format csv
+		int sensorID = stoi(buffer.substr(6));
+		getline(file, buffer, ';');
+		double latitude = stod(buffer);
+		getline(file, buffer, ';');
+		double longitude = stod(buffer);
+		file.ignore(); //ignorer le \n
+
+		Sensor sensor(sensorID, latitude, longitude);
+		itMeasure = bufferMeasurement.find(sensorID);
+		if (itMeasure != bufferMeasurement.end()) {
+			vector<Measurement>::iterator itM;
+			for (itM = itMeasure->second.begin(); itM != itMeasure->second.end(); ++itM) {
+				sensor.AddMeasurement(*itM);
+			}
+		}
+		bufferSensor[sensorID] = sensor;
+	}
+	file.close();
+
+	//lecture des users --------------------------------------------------------------------------
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
+	map<int, IndividualUser> bufferUser;
+	map<int, IndividualUser>::iterator itUser;
+	map<int, Sensor>::iterator itSensor;
+
+	while (!file.eof()) {
+		getline(file, buffer, ';'); //lecture au format csv
+		int userID = stoi(buffer.substr(4));
+		getline(file, buffer, ';');
+		int sensorID = stoi(buffer.substr(6));
+		file.ignore(); //ignorer le \n
+
+		itSensor = bufferSensor.find(sensorID);
+		if (itSensor == bufferSensor.end()) {
+			return 2;
+		}
+		itSensor->second.SetUser(userID);
+		itUser = bufferUser.find(userID);
+		if (itUser != bufferUser.end()) {
+			itUser->second.AddSensor(itSensor->second);
+		}
+		else {
+			bufferUser[userID] = IndividualUser(userID,itSensor->second);
+		}
+		privateSensors.push_back(itSensor->second);
+	}
+	file.close();
+
+	for (itUser = bufferUser.begin(); itUser != bufferUser.end(); ++itUser) {
+		individuals.push_back(itUser->second);
+	}
+	for (itSensor = bufferSensor.begin(); itSensor != bufferSensor.end(); ++itSensor) {
+		privateSensors.push_back(itSensor->second);
+	}
+	return 0;
 }
 
 

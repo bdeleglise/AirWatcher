@@ -76,17 +76,19 @@ public:
     // Contrat :
     //
     
+    IndividualUser();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+    
     IndividualUser(int id, Sensor& unSensor);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    IndividualUser();
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+
 
     virtual ~IndividualUser();
     // Mode d'emploi :

@@ -39,6 +39,11 @@ int Cleaner::GetProviderID()
     return providerID;
 }
 
+void Cleaner::SetProviderID(int proID)
+{
+    providerID = proID;
+}
+
 double Cleaner::GetLatitude()
 {
     return latitude;
@@ -96,6 +101,11 @@ Cleaner::Cleaner(int id, int provider, double latitude, double longitude, time_t
     cout << "Appel au constructeur de <Cleaner>" << endl;
 #endif
 } //----- Fin de Cleaner
+
+Cleaner::Cleaner()
+    : cleanerID(-1)
+{
+}
 
 Cleaner::~Cleaner()
 // Algorithme :

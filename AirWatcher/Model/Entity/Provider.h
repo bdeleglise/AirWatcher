@@ -46,6 +46,10 @@ public:
 
 
 //------------------------------------------------- Surcharge d'opérateurs
+    bool operator ==(const Provider& unProvider);
+
+    bool operator <(const Provider& unProvider);
+
     Provider& operator = (const Provider& unProvider);
     // Mode d'emploi :
     //

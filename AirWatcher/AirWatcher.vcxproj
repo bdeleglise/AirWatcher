@@ -169,7 +169,9 @@
   <ItemGroup>
     <None Include="Dataset\attributes.csv" />
     <None Include="Dataset\cleaners.csv" />
-    <None Include="Dataset\measurements.csv" />
+    <None Include="Dataset\measurements.csv">
+      <FileType>Document</FileType>
+    </None>
     <None Include="Dataset\providers.csv" />
     <None Include="Dataset\sensors.csv" />
     <None Include="Dataset\users.csv" />

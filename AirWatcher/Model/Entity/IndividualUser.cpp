@@ -118,6 +118,11 @@ IndividualUser::IndividualUser(int id)
 #endif
 } //----- Fin de GovernmentAgency
 
+IndividualUser::IndividualUser()
+    : individualUserID(-1), totalPoints(0), reliable(true), sensors()
+{
+}
+
 IndividualUser::IndividualUser(int id, Sensor& unSensor)
     : individualUserID(id), totalPoints(0), reliable(true), sensors()
 {

@@ -309,3 +309,4 @@ TEST(TestIndividual, SetUnReliable) {
 	EXPECT_EQ((*user.GetSensors())[0].GetState(), false);
 	EXPECT_EQ(user.GetReliable(), false);
 }
+
