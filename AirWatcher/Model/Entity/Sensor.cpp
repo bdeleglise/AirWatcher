@@ -63,7 +63,7 @@ void Sensor::SetUser(int privateUser)
     user = privateUser;
 }
 
-map<Date, vector<Measurement>>* Sensor::GetMeasurements()
+map<time_t, vector<Measurement>>* Sensor::GetMeasurements()
 {
     return &measurements;
 }

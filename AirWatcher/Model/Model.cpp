@@ -175,6 +175,13 @@ vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double lat
 }
 
 
+
+int Model::LoadData()
+{
+	return 0;
+}
+
+
 //////////////
 
 void Model::IncrementPointIndividualUser(int idIndividual) {
@@ -185,6 +192,14 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 		}
 	}
 }
+
+Model::Model()
+	:governmentAgencies(), cleaners(), individuals(), sensors(), maintenanceSensors(), privateSensors(), maliciousSensors(), providers()
+{
+}
+
+
+
 
 
 /////////////////

@@ -21,102 +21,90 @@ TEST(TestGovernmentAgency, GovernmentInit) {
 }
 
 TEST(TestDate, CreateDate) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	EXPECT_EQ(2019, date.year);
-	EXPECT_EQ(1, date.hour);
-	EXPECT_EQ(5, date.min);
-	EXPECT_EQ(5, date.month);
-	EXPECT_EQ(01, date.sec);
-	EXPECT_EQ(12, date.day);
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	EXPECT_EQ(2019, tmp.tm_year +1900);
+	EXPECT_EQ(1, tmp.tm_hour);
+	EXPECT_EQ(5, tmp.tm_mon+1);
+	EXPECT_EQ(12, tmp.tm_mday);
 }
 
 TEST(TestDate, DateEqual) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date2 = date;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 11;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = date;
 	EXPECT_EQ(date2, date);
 }
 
 TEST(TestDate, CopyDate) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2 = date;
-	EXPECT_EQ(date2.day, 12);
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	tm tmp2 =tmp;
+	EXPECT_EQ(tmp2.tm_mday, 12);
 }
 
 TEST(TestDate, CompareDate) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date.day = 11;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 11;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = mktime(&tmp);
 	EXPECT_LT(date2, date);
 }
 
 TEST(TestCleaner, InitCleaner) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date.day = 29;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 29;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = mktime(&tmp);
+
 	Cleaner cleaner(1,3, 25, 33.1, date, date2);
 	EXPECT_EQ(cleaner.GetID(), 1);
 	EXPECT_EQ(cleaner.GetLatitude(), 25);
 	EXPECT_EQ(cleaner.GetProviderID(), 3);
-	EXPECT_EQ(cleaner.GetStart(),date);
+	EXPECT_EQ(cleaner.GetStart(), date);
 	EXPECT_EQ(cleaner.GetStop(), date2);
 }
 
 TEST(TestCleaner, CopyConstructCleaner) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date.day = 29;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 29;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = mktime(&tmp);
 	Cleaner cleaner(1, 3, 25, 33.1, date, date2);
 	Cleaner cleaner2(cleaner);
 	EXPECT_EQ(cleaner2.GetID(), 1);
@@ -127,20 +115,17 @@ TEST(TestCleaner, CopyConstructCleaner) {
 }
 
 TEST(TestCleaner, CopyEqualCleaner) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date.day = 29;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 29;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = mktime(&tmp);
 	Cleaner cleaner(1, 3, 25, 33.1, date, date2);
 	Cleaner cleaner2=cleaner;
 	EXPECT_EQ(cleaner2.GetID(), 1);
@@ -157,20 +142,17 @@ TEST(TestProvider, InitProvider)
 }
 
 TEST(TestProvider, InitProviderWithCleaner) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date.day = 29;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 29;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = mktime(&tmp);
 	Cleaner cleaner(1, 3, 25, 33.1, date, date2);
 	Provider provider(2, cleaner);
 	EXPECT_EQ(provider.GetID(), 2);
@@ -180,20 +162,17 @@ TEST(TestProvider, InitProviderWithCleaner) {
 
 
 TEST(TestProvider, AddCleanerProvider) {
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
-	Date date2;
-	date.day = 29;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
+	tmp.tm_mday = 29;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date2 = mktime(&tmp);
 	Cleaner cleaner(1, 3, 25, 33.1, date, date2);
 	Provider provider(2);
 	provider.AddCleaner(cleaner);
@@ -209,13 +188,12 @@ TEST(TestAttribute, InitAttribute) {
 
 TEST(TestMeasurement, InitMeasure) {
 	Attribute att("O3", "µg/m3", "concentration d'ozone");
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
 	Measurement mesure(date, 44.5, att);
 	EXPECT_EQ(mesure.GetTime(), date);
 	EXPECT_EQ(mesure.GetValue(), 44.5);
@@ -238,13 +216,12 @@ TEST(TestSensor, SetStateSensor) {
 
 TEST(TestSensor, AddMeasurementSensor) {
 	Attribute att("O3", "µg/m3", "concentration d'ozone");
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
 	Measurement mesure(date, 44.5, att);
 	Sensor s(1, 24.5, -76);
 	s.AddMeasurement(mesure);
@@ -254,13 +231,12 @@ TEST(TestSensor, AddMeasurementSensor) {
 
 TEST(TestSensor, AddMeasurementsSensor) {
 	Attribute att("O3", "µg/m3", "concentration d'ozone");
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
 	Measurement mesure(date, 44.5, att);
 	Measurement mesure2(date, 55.5, att);
 	Sensor s(1, 24.5, -76);
@@ -272,13 +248,12 @@ TEST(TestSensor, AddMeasurementsSensor) {
 
 TEST(TestSensor, CopySensor) {
 	Attribute att("O3", "µg/m3", "concentration d'ozone");
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
 	Measurement mesure(date, 44.5, att);
 	Measurement mesure2(date, 55.5, att);
 	Sensor s(1, 24.5, -76);
@@ -314,13 +289,12 @@ TEST(TestIndividual, AddSensor) {
 TEST(TestIndividual, AccesData) {
 	IndividualUser user(IndividualUser(1));
 	Attribute att("O3", "µg/m3", "concentration d'ozone");
-	Date date;
-	date.day = 12;
-	date.hour = 1;
-	date.min = 5;
-	date.month = 05;
-	date.sec = 01;
-	date.year = 2019;
+	tm tmp = tm();
+	tmp.tm_mday = 12;
+	tmp.tm_mon = 5 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 1;
+	time_t date = mktime(&tmp);
 	Measurement mesure(date, 44.5, att);
 	Sensor s(1, 24.5, -76);
 	s.AddMeasurement(mesure);

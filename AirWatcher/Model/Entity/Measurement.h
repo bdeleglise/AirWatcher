@@ -37,7 +37,7 @@ public:
     // Contrat :
     //
     
-    Date GetTime();
+    time_t GetTime();
 
     Attribute GetAttribute();
 
@@ -50,7 +50,7 @@ public:
 
     Measurement(const Measurement& unMeasurement);
 
-    Measurement(Date time, double val, Attribute& unAttribute);
+    Measurement(time_t time, double val, Attribute& unAttribute);
 
     virtual ~Measurement();
     // Mode d'emploi :
@@ -71,7 +71,7 @@ protected:
 
 private:
     //------------------------------------------------------- Attributs privés
-    Date timestamp;
+    time_t timestamp;
     double value;
     Attribute attribute;
     //---------------------------------------------------------- Classes amies

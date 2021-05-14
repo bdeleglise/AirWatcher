@@ -15,6 +15,7 @@
 #include "IndividualUser.h"
 #include <map>
 #include <vector>
+#include <ctime>
 #include "../../Util/Date.h"
 #include "Measurement.h"
 
@@ -55,7 +56,7 @@ public:
 
     void SetUser(int privateUser);
 
-    map<Date, vector<Measurement>>* GetMeasurements();
+    map<time_t, vector<Measurement>>* GetMeasurements();
 
     void AddMeasurement(Measurement& measure);
 
@@ -90,7 +91,7 @@ private:
     double longitude;
     bool state;
     int user;
-    map<Date, vector<Measurement>> measurements;
+    map<time_t, vector<Measurement>> measurements;
     //---------------------------------------------------------- Classes amies
 
     //-------------------------------------------------------- Classes privées

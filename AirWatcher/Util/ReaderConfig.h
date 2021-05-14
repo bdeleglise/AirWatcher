@@ -17,24 +17,12 @@ using namespace std;
 struct Config
 {
 
-
-    string DIRECTORYPATH;
-    string SENSORFILE;
-    string MEASUREMENTSFILE;
-    string ATTRIBUTESFILE;
-    string PROVIDERSFILE;
-    string CLEANERSFILE;
-    string USERSFILE;
-
-    Config()
-    {
-        DIRECTORYPATH = filesystem::current_path().string();
-        SENSORFILE = "sensors.csv";
-        MEASUREMENTSFILE = "measurements.csv";
-        ATTRIBUTESFILE = "attributes.csv";
-        PROVIDERSFILE = "providers.csv";
-        CLEANERSFILE = "cleaners.csv";
-        USERSFILE = "user.csv";
-    }
+    string DIRECTORYPATH = "../Dataset/";
+    string SENSORFILE = "sensors.csv";
+    string MEASUREMENTSFILE = "measurements.csv";
+    string ATTRIBUTESFILE = "attributes.csv";
+    string PROVIDERSFILE = "providers.csv";
+    string CLEANERSFILE = "cleaners.csv";
+    string USERSFILE = "user.csv";
 };
 #endif

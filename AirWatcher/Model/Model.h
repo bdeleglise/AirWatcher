@@ -11,9 +11,10 @@
 #include "Entity/Provider.h"
 #include "Entity/Cleaner.h"
 #include "Entity/Sensor.h"
+#include "../Util/ReaderConfig.h"
 using namespace std;
 
-
+const Config FILE_NAME;
 
 class Model {
 
@@ -111,7 +112,7 @@ public:
 	   Contrat:
 		Aucun*/
 
-	bool SaveDataOnDatabase();
+	bool SaveDataOnDatabase();  //Pas à implémenter
 	/* Mode d'emploi:
 		La méthode SaveDataOnDatabase permet de sauvegarder la dernière version des données qui ont été chargées dans la base de données locales et de mettre à jour les profils utilisateurs qui auraient été modifiés pendant l’exécution de l’application.
 	   Contrat:
@@ -153,7 +154,7 @@ public:
 	   Contrat:
 		Aucun*/
 
-
+	Model();
 
 
 

@@ -33,7 +33,7 @@ double Measurement::GetValue()
     return value;
 }
 
-Date Measurement::GetTime()
+time_t Measurement::GetTime()
 {
     return timestamp;
 }
@@ -54,7 +54,7 @@ Measurement::Measurement(const Measurement& unMeasurement)
     attribute = unMeasurement.attribute;
 }
 
-Measurement::Measurement(Date time, double val, Attribute& unAttribute)
+Measurement::Measurement(time_t time, double val, Attribute& unAttribute)
     : timestamp(time), value(val), attribute(unAttribute)
 {
 #ifdef MAP

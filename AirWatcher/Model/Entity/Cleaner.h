@@ -45,9 +45,9 @@ public:
 
     double GetLongitude() ;
 
-    Date GetStart() ;
+    time_t GetStart() ;
 
-    Date GetStop() ;
+    time_t GetStop() ;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -65,7 +65,7 @@ public:
     // Contrat :
     //
 
-    Cleaner(int id, int provider, double latitude, double longitude, Date start, Date stop);
+    Cleaner(int id, int provider, double latitude, double longitude, time_t start, time_t stop);
     // Mode d'emploi :
     //
     // Contrat :
@@ -101,8 +101,8 @@ private:
     int providerID;
     double latitude;
     double longitude;
-    Date start;
-    Date stop;
+    time_t start;
+    time_t stop;
 
     //---------------------------------------------------------- Classes amies
 

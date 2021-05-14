@@ -14,32 +14,7 @@ using namespace std;
 int main()
 {
     std::cout << "Hello World!\n";
-    GovernmentAgency a(6);
-    cout << a.GetID() << endl;
-    Date date1;
-    date1.year = 1900;
-    date1.month = 02;
-    date1.day= 01;
-    date1.hour = 12;
-
-    Date date2;
-    date2.year = 1900;
-    date2.month = 03;
-    date2.day = 01;
-    date2.hour = 00;
-
-    Config path;
-    cout << path.DIRECTORYPATH << endl;
-
-    Cleaner c(1, 2, 44.5, -52, date1, date2);
-    cout << c.GetID() << " " << c.GetProviderID() << " " << c.GetLatitude() << " " << c.GetLongitude() << endl;
-    Date res = c.GetStart();
-    cout << res.hour << endl;
     
-
-
-    Attribute att("O3", "µg/m3", "concentration d'ozone");
-    cout << att.GetID() << " " << att.GetDescription() << " " << att.GetUnit() << endl;
 
 
     
