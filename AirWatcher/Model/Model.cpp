@@ -1,5 +1,5 @@
 ﻿#include "Model.h"
-
+#include <fstream>
 
 
 
@@ -178,7 +178,7 @@ vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double lat
 
 int Model::LoadData()
 {
-	return 0;
+	
 }
 
 

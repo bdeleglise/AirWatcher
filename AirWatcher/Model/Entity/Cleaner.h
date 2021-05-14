@@ -12,7 +12,6 @@
 //--------------------------------------------------- Interfaces utilisées
 #include <ctime>
 #include <string>
-#include "../../Util/Date.h"
 
 using namespace std;
 //------------------------------------------------------------- Constantes 

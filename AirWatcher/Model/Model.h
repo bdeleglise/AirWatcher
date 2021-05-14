@@ -159,6 +159,7 @@ public:
 
 
 private:
+
 	vector<GovernmentAgency> governmentAgencies;
 	vector<Cleaner> cleaners;
 	vector<IndividualUser> individuals;

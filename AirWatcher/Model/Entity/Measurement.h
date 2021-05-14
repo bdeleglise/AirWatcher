@@ -13,7 +13,6 @@
 #include <string>
 #include <ctime>
 #include "Attribute.h"
-#include "../../Util/Date.h"
 //------------------------------------------------------------- Constantes 
 
 //------------------------------------------------------------------ Types 
