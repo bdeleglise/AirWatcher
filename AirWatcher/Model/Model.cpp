@@ -181,6 +181,7 @@ int Model::LoadData()
 	//lecture des attributs --------------------------------------------------------
 	ifstream file;
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
+	cout << "Loading of attributs" << endl;
 	
 	map<string, Attribute> bufferAttributes;
 
@@ -207,6 +208,7 @@ int Model::LoadData()
 	
 	//lecture des mesures --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
+	cout << "Loading of measurements" << endl;
 	map<int, vector<Measurement>> bufferMeasurement;
 
 	if (!file) {
@@ -237,6 +239,7 @@ int Model::LoadData()
 	file.close();
 	//lecture des cleaner --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
+	cout << "Loading of cleaners" << endl;
 	map<int, Cleaner> bufferCleaner;
 
 	if (!file) {
@@ -281,6 +284,7 @@ int Model::LoadData()
 
 	//lecture des providers --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE);
+	cout << "Loading of providers" << endl;
 	map<int, Provider> bufferProvider;
 	map<int, Provider>::iterator it;
 	map<int, Cleaner>::iterator itCleaner;
@@ -290,7 +294,6 @@ int Model::LoadData()
 	}
 
 	while (getline(file, buffer, ';')) {
-		cout << buffer << endl;
 		int providerID = stoi(buffer.substr(8));
 		getline(file, buffer, ';');
 		int cleanerID = stoi(buffer.substr(7));
@@ -317,6 +320,7 @@ int Model::LoadData()
 
 	//lecture des sensors --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE);
+	cout << "Loading of sensors" << endl;
 	map<int, Sensor> bufferSensor;
 	map<int, vector<Measurement>>::iterator itMeasure;
 	if (!file) {
@@ -345,6 +349,7 @@ int Model::LoadData()
 	file.close();
 	
 	//lecture des users --------------------------------------------------------------------------
+	cout << "Loading of users" << endl;
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
 	map<int, IndividualUser> bufferUser;
 	map<int, IndividualUser>::iterator itUser;
@@ -381,7 +386,7 @@ int Model::LoadData()
 		individuals.push_back(itUser->second);
 	}
 	for (itSensor = bufferSensor.begin(); itSensor != bufferSensor.end(); ++itSensor) {
-		privateSensors.push_back(itSensor->second);
+		sensors.push_back(itSensor->second);
 	}
 	return 0;
 }

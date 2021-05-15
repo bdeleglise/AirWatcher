@@ -39,7 +39,7 @@ public:
     time_t GetTime();
 
     Attribute GetAttribute();
-
+    friend ostream& operator<<(ostream& os, const Measurement& unMeasurement);
 
 //------------------------------------------------- Surcharge d'opérateurs
     Measurement& operator = (const Measurement& unMeasurement);

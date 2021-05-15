@@ -152,8 +152,10 @@
     <ClCompile Include="Model\Entity\User.cpp" />
     <ClCompile Include="Model\Entity\Sensor.cpp" />
     <ClCompile Include="Model\Model.cpp" />
+    <ClCompile Include="Controller\System.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller\System.h" />
     <ClInclude Include="Util\Date.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\Entity\IndividualUser.h" />

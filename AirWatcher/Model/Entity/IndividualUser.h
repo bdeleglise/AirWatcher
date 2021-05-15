@@ -56,7 +56,7 @@ public:
 
     void SetSensors(vector<Sensor>& listeSensors);
 
-
+    friend ostream& operator<<(ostream& os, const IndividualUser& user);
 //------------------------------------------------- Surcharge d'opérateurs
     IndividualUser& operator = (const IndividualUser& unIndividualUser);
     // Mode d'emploi :

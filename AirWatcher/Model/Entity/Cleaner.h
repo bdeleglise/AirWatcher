@@ -50,7 +50,7 @@ public:
 
     time_t GetStop() ;
 
-
+    friend ostream& operator<<(ostream& os, const Cleaner& cleaner);
 //------------------------------------------------- Surcharge d'opérateurs
     Cleaner& operator = (const Cleaner& unCleaner);
     // Mode d'emploi :

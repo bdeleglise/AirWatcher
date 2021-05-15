@@ -59,6 +59,8 @@ public:
 
     void AddMeasurement(Measurement& measure);
 
+    friend ostream& operator<<(ostream& os, const Sensor& sensor);
+
 //------------------------------------------------- Surcharge d'opérateurs
     Sensor& operator =(const Sensor& unSensor);
 //-------------------------------------------- Constructeurs - destructeur

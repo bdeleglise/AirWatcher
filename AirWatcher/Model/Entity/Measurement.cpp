@@ -78,3 +78,13 @@ Measurement::~Measurement()
 //----------------------------------------------------- M�thodes protégées
 
 //------------------------------------------------------- M�thodes privées
+
+ostream& operator<<(ostream& os, const Measurement& unMeasurement)
+{
+    struct tm* tmp = new tm();
+    localtime_s(tmp, &unMeasurement.timestamp);
+    os << "Measurement of the " << tmp->tm_year + 1900 << "-" << tmp->tm_mon + 1 << "-" << tmp->tm_mday << " " << tmp->tm_hour << ":" << tmp->tm_min << ":" << tmp->tm_sec << endl;
+    os << "Value :" << unMeasurement.value << " in " << unMeasurement.attribute << endl;
+    delete tmp;
+    return os;
+}

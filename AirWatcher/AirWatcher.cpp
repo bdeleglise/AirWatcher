@@ -13,18 +13,58 @@ using namespace std;
 #include "Model/Entity/Sensor.h"
 #include "Model/Model.h"
 #include "Util/ReaderConfig.h"
+#include "Controller/System.h"
 int main()
 {
     cout << "Hello World!\n";
-    ifstream file;
-    file.open("./Dataset/attributes.csv");
-    if (file) {
-        cout << "yes" << endl;
-    }
-
+    System system;
+    system.InitializedMeasurement();
+    cout << "Chargement des données ..." << endl;
     Model model;
     int res = model.LoadData();
     cout << res << endl;
+    cout << "Données chargées" << endl;
+    system.EndMeasurement();
+    cout << "Données chargées en : " << system.GetAlgorithmEfficiency()<< " secondes" << endl;
+
+    if (res == 0) {
+        system.InitializedMeasurement();
+        cout << "List of sensors : " << endl;
+        vector<Sensor>* sensors = model.GetSensors();
+        vector<Sensor>::iterator i;
+        i = sensors->begin();
+        for (i = sensors->begin(); i != sensors->end(); ++i) {
+            cout << *i <<endl;
+        }
+
+        cout << endl;
+
+        cout << "List of cleaners : " << endl;
+        vector<Cleaner>::iterator itCleaner = model.GetCleaners()->begin();
+        for (itCleaner; itCleaner != model.GetCleaners()->end(); ++itCleaner) {
+            cout << *itCleaner << endl;
+        }
+
+        cout << endl;
+
+        cout << "List of providers : " << endl;
+        vector<Provider>::iterator itProvider = model.GetProviders()->begin();
+        for (itProvider; itProvider != model.GetProviders()->end(); ++itProvider) {
+            cout << *itProvider << endl;
+        }
+
+        cout << endl;
+
+        cout << "List of users : " << endl;
+        vector<IndividualUser>::iterator itIndividualUser = model.GetIndividuals()->begin();
+        for (itIndividualUser; itIndividualUser != model.GetIndividuals()->end(); ++itIndividualUser) {
+            cout << *itIndividualUser << endl;
+        }
+
+        cout << endl;
+        system.EndMeasurement();
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes"<<endl;
+    }
     
 }
 

@@ -105,7 +105,7 @@ Sensor::Sensor(const Sensor& unSensor)
 }
 
 Sensor::Sensor(int id, double latitude, double longitude)
-    : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(0)
+    : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(-1)
 {
 }
 
@@ -135,3 +135,16 @@ Sensor::~Sensor()
 //----------------------------------------------------- M�thodes protégées
 
 //------------------------------------------------------- M�thodes privées
+
+ostream& operator<<(ostream& os, const Sensor& sensor)
+{
+    os << "Sensor" << sensor.sensorID << endl;
+    os << "Latitude : " << sensor.latitude << endl;
+    os << "Longitude : " << sensor.longitude << endl;
+    os << sensor.measurements.size() << " mesures" << endl;
+    if (sensor.user != -1) {
+        os << "Appartient à user" << sensor.user << endl;
+    }
+    os << "Etat :" << sensor.state << endl;
+    return os;
+}

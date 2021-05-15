@@ -148,3 +148,17 @@ IndividualUser::~IndividualUser()
 //----------------------------------------------------- M�thodes protégées
 
 //------------------------------------------------------- M�thodes privées
+
+ostream& operator<<(ostream& os, const IndividualUser& user)
+{
+    os << "user" << user.individualUserID << endl;
+    os << "Total points : " << user.totalPoints << endl;
+    os << "Reliable : " << user.reliable << endl;
+    os << "Number of sensors :" << user.sensors.size() << endl;
+    os << "List of sensors : " << endl;
+    vector<Sensor>::const_iterator it;
+    for (it = user.sensors.begin(); it != user.sensors.end(); ++it) {
+        os << *it << endl;
+    }
+    return os;
+}

@@ -103,4 +103,14 @@ Provider::~Provider()
 
 //------------------------------------------------------- M�thodes privées
 
-
+ostream& operator<<(ostream& os, const Provider& provider)
+{
+    os << "provider" << provider.providerID << endl;
+    os << provider.cleaners.size() << " cleaners" << endl;
+    os << "List of cleaners :" << endl;
+    vector<Cleaner>::const_iterator it=provider.cleaners.begin();
+    for (it = provider.cleaners.begin(); it != provider.cleaners.end(); ++it) {
+        os << *it << endl;
+    }
+    return os;
+}

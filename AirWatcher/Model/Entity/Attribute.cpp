@@ -97,3 +97,9 @@ Attribute::~Attribute()
 //----------------------------------------------------- M�thodes protégées
 
 //------------------------------------------------------- M�thodes privées
+
+ostream& operator<<(ostream& os, const Attribute& unAtt)
+{
+    os << unAtt.attributeID << " " << unAtt.unit;
+    return os;
+}

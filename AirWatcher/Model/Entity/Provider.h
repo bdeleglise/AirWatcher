@@ -44,6 +44,7 @@ public:
 
     void setCleaners(vector<Cleaner>& listcleaners);
 
+    friend ostream& operator<<(ostream& os, const Provider& provider);
 
 //------------------------------------------------- Surcharge d'opérateurs
     bool operator ==(const Provider& unProvider);

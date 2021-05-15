@@ -40,6 +40,8 @@ public:
 
     string GetDescription();
 
+    friend ostream& operator<<(ostream& os, const Attribute& unAtt);
+
 //------------------------------------------------- Surcharge d'opérateurs
     Attribute& operator = (const Attribute& unAttribute);
 //-------------------------------------------- Constructeurs - destructeur
