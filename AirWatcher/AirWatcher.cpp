@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 #include "Model/Entity/GovernmentAgency.h"
 #include "Model/Entity/Cleaner.h"
@@ -15,7 +16,11 @@ using namespace std;
 int main()
 {
     cout << "Hello World!\n";
-    
+    ifstream file;
+    file.open("./Dataset/attributes.csv");
+    if (file) {
+        cout << "yes" << endl;
+    }
 
     Model model;
     int res = model.LoadData();

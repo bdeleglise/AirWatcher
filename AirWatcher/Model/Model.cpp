@@ -181,17 +181,19 @@ int Model::LoadData()
 	//lecture des attributs --------------------------------------------------------
 	ifstream file;
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
+	
 	map<string, Attribute> bufferAttributes;
 
 	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE << " n'existe pas" << endl;
 		return 1;   //le fichier n'existe pas
 	}
 
 	string buffer;
 	getline(file, buffer);  //Ligne de description
 
-	while (!file.eof()) {
-		getline(file, buffer, ';'); //lecture au format csv
+	while (getline(file, buffer, ';')) {
+		//lecture au format csv
 		string attributeID = buffer;
 		getline(file, buffer, ';');
 		string unit = buffer;
@@ -202,17 +204,17 @@ int Model::LoadData()
 		bufferAttributes[attributeID] = Attribute(attributeID, unit, description);
 	}
 	file.close();
-
+	
 	//lecture des mesures --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
 	map<int, vector<Measurement>> bufferMeasurement;
 
 	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE << " n'existe pas" << endl;
 		return 1;
 	}
-
-	while (!file.eof()) {
-		getline(file, buffer, ';'); //lecture au format csv
+	
+	while (getline(file, buffer, ';')) { //lecture au format csv
 		tm* tmp = new tm();
 		tmp->tm_year = stoi(buffer.substr(0, 4))-1900;
 		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
@@ -229,21 +231,21 @@ int Model::LoadData()
 		getline(file, buffer, ';');
 		double value = stod(buffer);
 		file.ignore(); //ignorer le \n
-
+		
 		bufferMeasurement[sensorID].push_back(Measurement(timestamp, value, attribute));
 	}
 	file.close();
-
 	//lecture des cleaner --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
 	map<int, Cleaner> bufferCleaner;
 
 	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE << " n'existe pas" << endl;
 		return 1;
 	} 
 
-	while (!file.eof()) {
-		getline(file, buffer, ';'); //lecture au format csv
+	
+	while (getline(file, buffer, ';')) {
 		int cleanerID = stoi(buffer.substr(7));
 		getline(file, buffer, ';');
 		double latitude = stod(buffer);
@@ -271,9 +273,10 @@ int Model::LoadData()
 		time_t end = mktime(tmp);
 		delete tmp;
 		file.ignore(); //ignorer le \n
-
+		
 		bufferCleaner[cleanerID] = Cleaner(cleanerID, -1, latitude, longitude, start, end);
 	}
+	
 	file.close();
 
 	//lecture des providers --------------------------------------------------------------------------
@@ -282,11 +285,12 @@ int Model::LoadData()
 	map<int, Provider>::iterator it;
 	map<int, Cleaner>::iterator itCleaner;
 	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE << " n'existe pas" << endl;
 		return 1;
 	}
 
-	while (!file.eof()) {
-		getline(file, buffer, ';'); //lecture au format csv
+	while (getline(file, buffer, ';')) {
+		cout << buffer << endl;
 		int providerID = stoi(buffer.substr(8));
 		getline(file, buffer, ';');
 		int cleanerID = stoi(buffer.substr(7));
@@ -307,7 +311,6 @@ int Model::LoadData()
 		cleaners.push_back(itCleaner->second);
 	}
 	file.close();
-
 	for (it = bufferProvider.begin(); it != bufferProvider.end(); ++it) {
 		providers.push_back(it->second);
 	}
@@ -317,11 +320,11 @@ int Model::LoadData()
 	map<int, Sensor> bufferSensor;
 	map<int, vector<Measurement>>::iterator itMeasure;
 	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE << " n'existe pas" << endl;
 		return 1;
 	}
 
-	while (!file.eof()) {
-		getline(file, buffer, ';'); //lecture au format csv
+	while (getline(file, buffer, ';')) {
 		int sensorID = stoi(buffer.substr(6));
 		getline(file, buffer, ';');
 		double latitude = stod(buffer);
@@ -340,15 +343,19 @@ int Model::LoadData()
 		bufferSensor[sensorID] = sensor;
 	}
 	file.close();
-
+	
 	//lecture des users --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
 	map<int, IndividualUser> bufferUser;
 	map<int, IndividualUser>::iterator itUser;
 	map<int, Sensor>::iterator itSensor;
 
-	while (!file.eof()) {
-		getline(file, buffer, ';'); //lecture au format csv
+	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE << " n'existe pas" << endl;
+		return 1;
+	}
+
+	while (getline(file, buffer, ';')) {
 		int userID = stoi(buffer.substr(4));
 		getline(file, buffer, ';');
 		int sensorID = stoi(buffer.substr(6));

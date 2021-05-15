@@ -16,13 +16,13 @@ using namespace std;
 
 struct Config
 {
-
-    string DIRECTORYPATH = "../Dataset/";
+    //Redirection par rapport ou l'objet model est créé
+    string DIRECTORYPATH = "./Dataset/";
     string SENSORFILE = "sensors.csv";
     string MEASUREMENTSFILE = "measurements.csv";
     string ATTRIBUTESFILE = "attributes.csv";
     string PROVIDERSFILE = "providers.csv";
     string CLEANERSFILE = "cleaners.csv";
-    string USERSFILE = "user.csv";
+    string USERSFILE = "users.csv";
 };
 #endif
