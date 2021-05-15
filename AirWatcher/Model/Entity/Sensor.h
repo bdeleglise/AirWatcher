@@ -57,6 +57,8 @@ public:
 
     map<time_t, vector<Measurement>>* GetMeasurements();
 
+    vector<Measurement>* GetMeasurements(time_t& time);
+
     void AddMeasurement(Measurement& measure);
 
     friend ostream& operator<<(ostream& os, const Sensor& sensor);

@@ -68,6 +68,10 @@ map<time_t, vector<Measurement>>* Sensor::GetMeasurements()
     return &measurements;
 }
 
+vector<Measurement>*Sensor::GetMeasurements(time_t& time) {
+    return &measurements[time];
+}
+
 void Sensor::AddMeasurement(Measurement& measure)
 {
     measurements[measure.GetTime()].push_back(measure);

@@ -14,14 +14,15 @@ using namespace std;
 #include "Model/Model.h"
 #include "Util/ReaderConfig.h"
 #include "Controller/System.h"
+#include "Controller/Statistics.h"
 int main()
 {
     cout << "Hello World!\n";
     System system;
     system.InitializedMeasurement();
     cout << "Chargement des données ..." << endl;
-    Model model;
-    int res = model.LoadData();
+    
+    int res = Model::LoadData();
     cout << res << endl;
     cout << "Données chargées" << endl;
     system.EndMeasurement();
@@ -30,34 +31,35 @@ int main()
     if (res == 0) {
         system.InitializedMeasurement();
         cout << "List of sensors : " << endl;
-        vector<Sensor>* sensors = model.GetSensors();
+        vector<Sensor>* sensors = Model::GetSensors();
         vector<Sensor>::iterator i;
         i = sensors->begin();
         for (i = sensors->begin(); i != sensors->end(); ++i) {
             cout << *i <<endl;
+           
         }
 
         cout << endl;
 
         cout << "List of cleaners : " << endl;
-        vector<Cleaner>::iterator itCleaner = model.GetCleaners()->begin();
-        for (itCleaner; itCleaner != model.GetCleaners()->end(); ++itCleaner) {
+        vector<Cleaner>::iterator itCleaner = Model::GetCleaners()->begin();
+        for (itCleaner; itCleaner != Model::GetCleaners()->end(); ++itCleaner) {
             cout << *itCleaner << endl;
         }
 
         cout << endl;
 
         cout << "List of providers : " << endl;
-        vector<Provider>::iterator itProvider = model.GetProviders()->begin();
-        for (itProvider; itProvider != model.GetProviders()->end(); ++itProvider) {
+        vector<Provider>::iterator itProvider = Model::GetProviders()->begin();
+        for (itProvider; itProvider != Model::GetProviders()->end(); ++itProvider) {
             cout << *itProvider << endl;
         }
 
         cout << endl;
 
         cout << "List of users : " << endl;
-        vector<IndividualUser>::iterator itIndividualUser = model.GetIndividuals()->begin();
-        for (itIndividualUser; itIndividualUser != model.GetIndividuals()->end(); ++itIndividualUser) {
+        vector<IndividualUser>::iterator itIndividualUser = Model::GetIndividuals()->begin();
+        for (itIndividualUser; itIndividualUser != Model::GetIndividuals()->end(); ++itIndividualUser) {
             cout << *itIndividualUser << endl;
         }
 
@@ -65,7 +67,12 @@ int main()
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes"<<endl;
     }
-    
+
+    system.InitializedMeasurement();
+    double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
+    cout << "Qualité de l'air: " <<test << endl;
+    system.EndMeasurement();
+    cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

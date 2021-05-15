@@ -5,7 +5,14 @@
 
 // M�thodes publiques 
 
-
+vector<GovernmentAgency> Model::governmentAgencies = {};
+vector<Cleaner> Model::cleaners = {};
+vector<IndividualUser> Model::individuals = {};
+vector<Sensor> Model::sensors = {};
+vector<Sensor> Model::maintenanceSensors = {};
+vector<Sensor> Model::privateSensors = {};
+vector<Sensor> Model::maliciousSensors = {};
+vector<Provider> Model::providers = {};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -153,7 +160,7 @@ vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, 
 	double distance;
 	vector<Sensor>::iterator iter;
 	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
-		distance = sqrt(pow(iter->GetLatitude()-latitude,2)+pow(iter->GetLongitude()-longitude,2));
+		distance = sqrt(pow(latitude-iter->GetLatitude(),2)+pow(longitude-iter->GetLongitude(),2));
 		SensorsOrderedByDistance.push_back(make_pair(*iter, distance));
 	}
 	sort(SensorsOrderedByDistance.begin(), SensorsOrderedByDistance.end(),sortByValue);
@@ -178,6 +185,9 @@ vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double lat
 
 int Model::LoadData()
 {
+	
+
+
 	//lecture des attributs --------------------------------------------------------
 	ifstream file;
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
@@ -401,11 +411,6 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 			iter->SetPoints(iter->GetPoints() + 1);
 		}
 	}
-}
-
-Model::Model()
-	:governmentAgencies(), cleaners(), individuals(), sensors(), maintenanceSensors(), privateSensors(), maliciousSensors(), providers()
-{
 }
 
 
