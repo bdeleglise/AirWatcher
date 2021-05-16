@@ -25,7 +25,12 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
     for (it; it != sensors->end(); ++it) {
         double distance = it->second;
         Sensor* sensor = &it->first;
+        cout << "Sensor : " << sensorUsed << endl;
+        cout << *sensor << endl;
         if (distance <= radius) {
+            
+
+
             sensorUsed++;
             vector<Measurement>* measuresSensor = sensor->GetMeasurements(*time);
             if (measuresSensor != nullptr) {
@@ -33,6 +38,8 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             
                 for (itMeasure = measuresSensor->begin(); itMeasure != measuresSensor->end(); ++itMeasure) {
                     string idAttribute = itMeasure->GetAttribute().GetID();
+                    cout << idAttribute << " " << itMeasure->GetValue() << endl;
+                    cout << *itMeasure << endl;
                     if (idAttribute == "O3") {
                         O3 += itMeasure->GetValue();
                     }
@@ -70,16 +77,20 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             sumDist += distance;
             ++it;
         }
+        double ponderDist = sumDist - sumDist / 3;
+
+
         it = sensors->begin();
         for (int i = 0; i < 3; i++) {
             Sensor* sensor = &it->first;
+
             vector<Measurement>* measuresSensor = sensor->GetMeasurements(*time);
             if (measuresSensor != nullptr) {
                 vector<Measurement>::iterator itMeasure;
 
                 for (itMeasure = measuresSensor->begin(); itMeasure != measuresSensor->end(); ++itMeasure) {
                     string idAttribute = itMeasure->GetAttribute().GetID();
-                    double value = itMeasure->GetValue()*(sumDist - tabDist[i]) / sumDist; //pondération
+                    double value = itMeasure->GetValue()*(sumDist - tabDist[i]) / ponderDist; //pondération
                     if (idAttribute == "O3") {
                         O3 += value;
                     }
@@ -100,6 +111,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
                     Model::IncrementPointIndividualUser(sensor->GetUserID());
                 }
             }
+            ++it;
         }
     }
 
