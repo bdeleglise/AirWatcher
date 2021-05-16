@@ -419,6 +419,93 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 
 
 
+void Model::UpdateSensorState(int idSensor) {
+	
+	vector<Sensor>* privateSensorsArray;
+	privateSensorsArray = GetPrivateSensors();
+	
+
+	vector<Sensor>::iterator iter;
+	Sensor* toFind = nullptr;
+	vector<IndividualUser>::iterator iterUser;
+
+
+	// First look if it's a private sensor 
+	for (iter = privateSensors.begin(); iter != privateSensors.end(); iter++) {
+		if (iter->GetID() == idSensor) {
+			toFind = &(*iter);
+		}
+	}
+
+	if (toFind != nullptr) {
+		// add to list of malicious sensors
+		maliciousSensors.push_back(*toFind);
+		// erase from list of private sensors
+		privateSensors.erase(iter);
+		// dysfunction it
+		toFind->SetState(false);
+		// set its individual user as UnReliable
+		// erase the sensor from its owner's sensors list 
+		int userID = toFind->GetUserID();
+		for (iterUser = individuals.begin(); iterUser != individuals.end(); iterUser++) {
+			if (iterUser->GetID() == userID) {
+				iterUser->SetReliable(false);
+				iterUser->GetSensors()->erase(iter);
+			}
+		}
+	} 
+
+	// if not, then it's a government sensor
+	else {
+		for (iter = sensors.begin(); iter != sensors.end(); iter++) {
+			if (iter->GetID() == idSensor) {
+				toFind = &(*iter);
+			}
+		}
+
+		if (toFind != nullptr) {
+			// add it to list of maintenance srnsors 
+			maintenanceSensors.push_back(*toFind);
+			// dysfunction it
+			toFind->SetState(false);
+		}
+	}
+}
+
+
+
+void Model::UpdateIndividualState(int idIndividual) {
+	IndividualUser* individualPtr = SearchIndividual(idIndividual);
+	vector<Sensor>::iterator iter;
+	if (individualPtr != nullptr) {
+		individualPtr->SetReliable(!individualPtr->GetReliable());
+		bool reliable = individualPtr->GetReliable();
+		// if the individual user is not reliable, then : 
+		// move its sensors from privateSensors list to malicious
+		if (!reliable) {
+			for (iter = individualPtr->GetSensors()->begin(); iter != individualPtr->GetSensors()->end(); iter++) {
+				maliciousSensors.push_back(*iter);
+				privateSensors.erase(iter);
+			}
+		}
+		// if not
+		// move its sensors from malicious to private
+		else {
+			for (iter = maliciousSensors.begin(); iter != maliciousSensors.end(); iter++) {
+				if (iter->GetUserID() == individualPtr->GetID()) {
+					privateSensors.push_back(*iter);
+					// erase it from the list we run through 
+					maliciousSensors.erase(iter);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
 /////////////////
 // TODO : finir 
 // Bien faire attention dans les updates les capteurs stockés dans les listes et ceux des individuals sont pas la même mais 
@@ -440,3 +527,4 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 //		}
 //	}
 //}
+
