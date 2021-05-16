@@ -7,6 +7,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
 {
     double airQuality = 0; 
     vector<pair<Sensor, double>>* sensors = Model::GetSensorsOrderByDistance(latitude, longitude);
+
     vector<pair<Sensor, double>>::iterator it = sensors->begin();
     if (sensors->empty()) {
         return -1; //Erreur
@@ -25,8 +26,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
     for (it; it != sensors->end(); ++it) {
         double distance = it->second;
         Sensor* sensor = &it->first;
-        cout << "Sensor : " << sensorUsed << endl;
-        cout << *sensor << endl;
+    
         if (distance <= radius) {
             
 
@@ -38,8 +38,6 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             
                 for (itMeasure = measuresSensor->begin(); itMeasure != measuresSensor->end(); ++itMeasure) {
                     string idAttribute = itMeasure->GetAttribute().GetID();
-                    cout << idAttribute << " " << itMeasure->GetValue() << endl;
-                    cout << *itMeasure << endl;
                     if (idAttribute == "O3") {
                         O3 += itMeasure->GetValue();
                     }
@@ -116,7 +114,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
     }
 
     airQuality = atmoIndex(O3/((double)sensorUsed), SO2/ ((double)sensorUsed), NO2/ ((double)sensorUsed), PM10/ ((double)sensorUsed));
-
+    delete sensors;
     return airQuality;
 }
 

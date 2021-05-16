@@ -156,15 +156,17 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
-	static vector<pair<Sensor, double>> SensorsOrderedByDistance;
+	vector<pair<Sensor, double>>* SensorsOrderedByDistance = new vector<pair<Sensor, double>>;
 	double distance;
 	vector<Sensor>::iterator iter;
-	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
+	for (iter = sensors.begin(); iter != sensors.end(); ++iter) {
 		distance = sqrt(pow(latitude-iter->GetLatitude(),2)+pow(longitude-iter->GetLongitude(),2));
-		SensorsOrderedByDistance.push_back(make_pair(*iter, distance));
+		SensorsOrderedByDistance->push_back(make_pair(*iter, distance));
 	}
-	sort(SensorsOrderedByDistance.begin(), SensorsOrderedByDistance.end(),sortByValue);
-	return &SensorsOrderedByDistance;
+	sort(SensorsOrderedByDistance->begin(), SensorsOrderedByDistance->end(),sortByValue);
+
+
+	return SensorsOrderedByDistance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

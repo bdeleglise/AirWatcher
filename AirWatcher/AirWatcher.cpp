@@ -103,11 +103,13 @@ int main()
     cout << "Stat rayon non null et date non null" << endl;
     system.InitializedMeasurement();
     test = Statistics::CircularMeanAirQuality(44, 0, 0.4, &date);
-    cout << "Qualité de l'air (attendu 2): " << test << endl;
+    cout << "Qualité de l'air (attendu à calculer): " << test << endl;
     system.EndMeasurement();
     cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
+   
 
+    cout << endl;
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
