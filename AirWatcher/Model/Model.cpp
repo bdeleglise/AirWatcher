@@ -1,6 +1,7 @@
 ﻿#include "Model.h"
 #include <fstream>
 #include <string>
+#include "../Controller/System.h"
 
 
 // M�thodes publiques 
@@ -153,6 +154,12 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
       return (a.second < b.second);
     }
 
+	bool testSort(Sensor& a, Sensor& b, double latitude, double longitude) {
+		double da = pow(latitude - a.GetLatitude(), 2) + pow(longitude - a.GetLongitude(), 2);
+		double db = pow(latitude - b.GetLatitude(), 2) + pow(longitude - b.GetLongitude(), 2);
+		return (da < db);
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
@@ -163,8 +170,9 @@ vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, 
 		distance = sqrt(pow(latitude-iter->GetLatitude(),2)+pow(longitude-iter->GetLongitude(),2));
 		SensorsOrderedByDistance->push_back(make_pair(*iter, distance));
 	}
-	sort(SensorsOrderedByDistance->begin(), SensorsOrderedByDistance->end(),sortByValue);
 
+	partial_sort(SensorsOrderedByDistance->begin(), SensorsOrderedByDistance->begin()+ SensorsOrderedByDistance->size()/2,SensorsOrderedByDistance->end(),sortByValue);
+	
 
 	return SensorsOrderedByDistance;
 }

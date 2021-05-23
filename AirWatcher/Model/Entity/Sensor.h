@@ -47,6 +47,8 @@ public:
 
     double GetLongitude();
 
+ 
+
     bool GetState();
 
     void SetState(bool newstate);

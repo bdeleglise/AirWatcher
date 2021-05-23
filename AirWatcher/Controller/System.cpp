@@ -13,7 +13,7 @@ void System::EndMeasurement()
 
 double System::GetAlgorithmEfficiency()
 {
-	return ((double)finalTime - (double)initialTime)/ CLOCKS_PER_SEC;
+	return ((double)(finalTime - initialTime))/ CLOCKS_PER_SEC;
 }
 
 System::System()

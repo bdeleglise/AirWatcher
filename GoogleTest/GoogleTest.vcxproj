@@ -33,6 +33,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClInclude Include="..\AirWatcher\Controller\Statistics.h" />
+    <ClInclude Include="..\AirWatcher\Controller\System.h" />
     <ClInclude Include="..\AirWatcher\Model\Entity\Attribute.h" />
     <ClInclude Include="..\AirWatcher\Model\Entity\Cleaner.h" />
     <ClInclude Include="..\AirWatcher\Model\Entity\GovernmentAgency.h" />
@@ -41,10 +43,13 @@
     <ClInclude Include="..\AirWatcher\Model\Entity\Provider.h" />
     <ClInclude Include="..\AirWatcher\Model\Entity\Sensor.h" />
     <ClInclude Include="..\AirWatcher\Model\Entity\User.h" />
-    <ClInclude Include="..\AirWatcher\Util\Date.h" />
+    <ClInclude Include="..\AirWatcher\Model\Model.h" />
+    <ClInclude Include="..\AirWatcher\Util\ReaderConfig.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\AirWatcher\Controller\Statistics.cpp" />
+    <ClCompile Include="..\AirWatcher\Controller\System.cpp" />
     <ClCompile Include="..\AirWatcher\Model\Entity\Attribute.cpp" />
     <ClCompile Include="..\AirWatcher\Model\Entity\Cleaner.cpp" />
     <ClCompile Include="..\AirWatcher\Model\Entity\GovernmentAgency.cpp" />
@@ -53,6 +58,7 @@
     <ClCompile Include="..\AirWatcher\Model\Entity\Provider.cpp" />
     <ClCompile Include="..\AirWatcher\Model\Entity\Sensor.cpp" />
     <ClCompile Include="..\AirWatcher\Model\Entity\User.cpp" />
+    <ClCompile Include="..\AirWatcher\Model\Model.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

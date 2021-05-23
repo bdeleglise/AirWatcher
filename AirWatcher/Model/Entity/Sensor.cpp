@@ -43,6 +43,8 @@ double Sensor::GetLongitude()
     return longitude;
 }
 
+
+
 bool Sensor::GetState()
 {
     return state;

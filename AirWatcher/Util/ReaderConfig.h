@@ -11,7 +11,7 @@
 #define READERCONFIG_H
 
 #include <string>
-#include <filesystem>
+
 using namespace std;
 
 struct Config

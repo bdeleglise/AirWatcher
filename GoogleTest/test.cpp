@@ -9,6 +9,8 @@
 
 #include <vector>
 #include <string>
+#include "../AirWatcher/Model/Model.h"
+#include "../AirWatcher/Controller/Statistics.h"
 
 TEST(TestCaseName, TestName) {
   EXPECT_TRUE(true);
@@ -310,3 +312,9 @@ TEST(TestIndividual, SetUnReliable) {
 	EXPECT_EQ(user.GetReliable(), false);
 }
 
+TEST(TestStatistics, CircularMeanAirQualityDateNULL) {
+	int res = Model::LoadData();
+	EXPECT_EQ(res, 0);
+	double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
+	EXPECT_EQ(test, 2);
+}
