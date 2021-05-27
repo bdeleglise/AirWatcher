@@ -35,8 +35,8 @@ int main()
         vector<Sensor>::iterator i;
         i = sensors->begin();
         for (i = sensors->begin(); i != sensors->end(); ++i) {
-            cout << *i <<endl;
-           
+            cout << *i << endl;
+
         }
 
         cout << endl;
@@ -65,51 +65,73 @@ int main()
 
         cout << endl;
         system.EndMeasurement();
-        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes"<<endl;
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+
+        cout << "Stat date NULL" << endl;
+        system.InitializedMeasurement();
+        double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
+        cout << "Qualité de l'air (attendu 2): " << test << endl;
+        system.EndMeasurement();
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+        cout << "Stat date non null" << endl;
+        tm tmp = tm();
+        tmp.tm_mday = 28;
+        tmp.tm_mon = 3 - 1;
+        tmp.tm_year = 2019 - 1900;
+        tmp.tm_hour = 12;
+        time_t date = mktime(&tmp);
+        system.InitializedMeasurement();
+        test = Statistics::CircularMeanAirQuality(44, 0, 0, &date);
+        cout << "Qualité de l'air (attendu 2): " << test << endl;
+        system.EndMeasurement();
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+        cout << "Stat rayon non null" << endl;
+        system.InitializedMeasurement();
+        test = Statistics::CircularMeanAirQuality(44, 0, 0.4, nullptr);
+        cout << "Qualité de l'air (attendu 2): " << test << endl;
+        system.EndMeasurement();
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+        tmp.tm_mday = 9;
+        tmp.tm_mon = 2 - 1;
+        tmp.tm_year = 2019 - 1900;
+        tmp.tm_hour = 12;
+        date = mktime(&tmp);
+        cout << "Stat rayon non null et date non null" << endl;
+        system.InitializedMeasurement();
+        test = Statistics::CircularMeanAirQuality(44, 0, 0.4, &date);
+        cout << "Qualité de l'air (attendu à calculer): " << test << endl;
+        system.EndMeasurement();
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+
+
+        cout << endl;
+
+
+        cout << "List of private sensors : " << endl;
+        vector<Sensor>* sensorsPrive = Model::GetPrivateSensors();
+        i = sensorsPrive->begin();
+        for (i = sensorsPrive->begin(); i != sensorsPrive->end(); ++i) {
+            cout << *i << endl;
+            cout << "Qualité de l'air évalué par le sensor : " << Statistics::AirQualitySensor(&*i) << endl;
+        }
+
+        tmp.tm_mday = 3;
+        tmp.tm_mon = 12 - 1;
+        tmp.tm_year = 2019 - 1900;
+        tmp.tm_hour = 12;
+        date = mktime(&tmp);
+        i = sensorsPrive->begin();
+        for (i = sensorsPrive->begin(); i != sensorsPrive->end(); ++i) {
+            cout << *i << endl;
+            cout << "Qualité de l'air évalué par le sensor : " << Statistics::AirQualitySensor(&*i,&date) << endl;
+        }
+
     }
-
-    cout << "Stat date NULL" << endl;
-    system.InitializedMeasurement();
-    double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
-    cout << "Qualité de l'air (attendu 2): " <<test << endl;
-    system.EndMeasurement();
-    cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-
-    cout << "Stat date non null" << endl;
-    tm tmp = tm();
-    tmp.tm_mday = 28;
-    tmp.tm_mon = 3 - 1;
-    tmp.tm_year = 2019 - 1900;
-    tmp.tm_hour = 12;
-    time_t date = mktime(&tmp);
-    system.InitializedMeasurement();
-    test = Statistics::CircularMeanAirQuality(44, 0, 0, &date);
-    cout << "Qualité de l'air (attendu 2): " << test << endl;
-    system.EndMeasurement();
-    cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-
-    cout << "Stat rayon non null" << endl;
-    system.InitializedMeasurement();
-    test = Statistics::CircularMeanAirQuality(44, 0, 0.4, nullptr);
-    cout << "Qualité de l'air (attendu 2): " << test << endl;
-    system.EndMeasurement();
-    cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-
-    tmp.tm_mday = 9;
-    tmp.tm_mon = 2 - 1;
-    tmp.tm_year = 2019 - 1900;
-    tmp.tm_hour = 12;
-    date = mktime(&tmp);
-    cout << "Stat rayon non null et date non null" << endl;
-    system.InitializedMeasurement();
-    test = Statistics::CircularMeanAirQuality(44, 0, 0.4, &date);
-    cout << "Qualité de l'air (attendu à calculer): " << test << endl;
-    system.EndMeasurement();
-    cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-
-   
-
-    cout << endl;
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
