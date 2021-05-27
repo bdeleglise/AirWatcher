@@ -315,6 +315,4 @@ TEST(TestIndividual, SetUnReliable) {
 TEST(TestStatistics, CircularMeanAirQualityDateNULL) {
 	int res = Model::LoadData();
 	EXPECT_EQ(res, 0);
-	double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
-	EXPECT_EQ(test, 2);
 }

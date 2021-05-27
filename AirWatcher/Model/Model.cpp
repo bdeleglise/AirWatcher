@@ -197,7 +197,8 @@ int Model::LoadData()
 {
 	
 
-
+	System system;
+	system.InitializedMeasurement();
 	//lecture des attributs --------------------------------------------------------
 	ifstream file;
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
@@ -226,37 +227,10 @@ int Model::LoadData()
 	}
 	file.close();
 	
-	//lecture des mesures --------------------------------------------------------------------------
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
-	cout << "Loading of measurements" << endl;
-	map<int, vector<Measurement>> bufferMeasurement;
-
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE << " n'existe pas" << endl;
-		return 1;
-	}
+	system.EndMeasurement();
+	cout << "Etape attribut en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 	
-	while (getline(file, buffer, ';')) { //lecture au format csv
-		tm* tmp = new tm();
-		tmp->tm_year = stoi(buffer.substr(0, 4))-1900;
-		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
-		tmp->tm_mday = stoi(buffer.substr(8, 2));
-		tmp->tm_hour = stoi(buffer.substr(11, 2));
-		tmp->tm_min = stoi(buffer.substr(14, 2));
-		tmp->tm_sec = stoi(buffer.substr(17, 2));
-		time_t timestamp = mktime(tmp);
-		delete tmp;
-		getline(file, buffer, ';');
-		int sensorID = stoi(buffer.substr(6));
-		getline(file, buffer, ';');
-		Attribute attribute = bufferAttributes[buffer];
-		getline(file, buffer, ';');
-		double value = stod(buffer);
-		file.ignore(); //ignorer le \n
-		
-		bufferMeasurement[sensorID].push_back(Measurement(timestamp, value, attribute));
-	}
-	file.close();
+	system.InitializedMeasurement();
 	//lecture des cleaner --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
 	cout << "Loading of cleaners" << endl;
@@ -302,6 +276,9 @@ int Model::LoadData()
 	
 	file.close();
 
+	system.EndMeasurement();
+	cout << "Etape cleaner en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+	system.InitializedMeasurement();
 	//lecture des providers --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE);
 	cout << "Loading of providers" << endl;
@@ -338,6 +315,9 @@ int Model::LoadData()
 		providers.push_back(it->second);
 	}
 
+	system.EndMeasurement();
+	cout << "Etape provider en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+	system.InitializedMeasurement();
 	//lecture des sensors --------------------------------------------------------------------------
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE);
 	cout << "Loading of sensors" << endl;
@@ -357,17 +337,49 @@ int Model::LoadData()
 		file.ignore(); //ignorer le \n
 
 		Sensor sensor(sensorID, latitude, longitude);
-		itMeasure = bufferMeasurement.find(sensorID);
-		if (itMeasure != bufferMeasurement.end()) {
-			vector<Measurement>::iterator itM;
-			for (itM = itMeasure->second.begin(); itM != itMeasure->second.end(); ++itM) {
-				sensor.AddMeasurement(*itM);
-			}
-		}
 		bufferSensor[sensorID] = sensor;
 	}
 	file.close();
 	
+	system.EndMeasurement();
+	cout << "Etape sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+	system.InitializedMeasurement();
+	//lecture des mesures --------------------------------------------------------------------------
+	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
+	cout << "Loading of measurements" << endl;
+	map<int, vector<Measurement>> bufferMeasurement;
+
+	if (!file) {
+		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE << " n'existe pas" << endl;
+		return 1;
+	}
+
+	while (getline(file, buffer, ';')) { //lecture au format csv
+		tm* tmp = new tm();
+		tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
+		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+		tmp->tm_mday = stoi(buffer.substr(8, 2));
+		tmp->tm_hour = stoi(buffer.substr(11, 2));
+		tmp->tm_min = stoi(buffer.substr(14, 2));
+		tmp->tm_sec = stoi(buffer.substr(17, 2));
+		time_t timestamp = mktime(tmp);
+		delete tmp;
+		getline(file, buffer, ';');
+		int sensorID = stoi(buffer.substr(6));
+		getline(file, buffer, ';');
+		Attribute attribute = bufferAttributes[buffer];
+		getline(file, buffer, ';');
+		double value = stod(buffer);
+		file.ignore(); //ignorer le \n
+		Measurement measure(timestamp, value, attribute);
+		bufferSensor[sensorID].AddMeasurement(measure);
+	}
+	file.close();
+
+
+	system.EndMeasurement();
+	cout << "Etape mesures en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+	system.InitializedMeasurement();
 	//lecture des users --------------------------------------------------------------------------
 	cout << "Loading of users" << endl;
 	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
@@ -401,13 +413,25 @@ int Model::LoadData()
 		privateSensors.push_back(itSensor->second);
 	}
 	file.close();
+	system.EndMeasurement();
+	cout << "Etape user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+	system.InitializedMeasurement();
 
 	for (itUser = bufferUser.begin(); itUser != bufferUser.end(); ++itUser) {
 		individuals.push_back(itUser->second);
 	}
+	system.EndMeasurement();
+	cout << "Etape copie user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+	system.InitializedMeasurement();
 	for (itSensor = bufferSensor.begin(); itSensor != bufferSensor.end(); ++itSensor) {
 		sensors.push_back(itSensor->second);
 	}
+	system.EndMeasurement();
+	cout << "Etape copie sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+
+	
+
 	return 0;
 }
 
@@ -427,57 +451,38 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 
 
 
-void Model::UpdateSensorState(int idSensor) {
-	
-	vector<Sensor>* privateSensorsArray;
-	privateSensorsArray = GetPrivateSensors();
-	
-
+void Model::UpdateSensorState(int idSensor) 
+{
 	vector<Sensor>::iterator iter;
-	Sensor* toFind = nullptr;
-	vector<IndividualUser>::iterator iterUser;
+	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
 
-
-	// First look if it's a private sensor 
-	for (iter = privateSensors.begin(); iter != privateSensors.end(); iter++) {
 		if (iter->GetID() == idSensor) {
-			toFind = &(*iter);
-		}
-	}
+			Sensor* toFind = &(*iter);
 
-	if (toFind != nullptr) {
-		// add to list of malicious sensors
-		maliciousSensors.push_back(*toFind);
-		// erase from list of private sensors
-		privateSensors.erase(iter);
-		// dysfunction it
-		toFind->SetState(false);
-		// set its individual user as UnReliable
-		// erase the sensor from its owner's sensors list 
-		int userID = toFind->GetUserID();
-		for (iterUser = individuals.begin(); iterUser != individuals.end(); iterUser++) {
-			if (iterUser->GetID() == userID) {
-				iterUser->SetReliable(false);
-				iterUser->GetSensors()->erase(iter);
-			}
-		}
-	} 
-
-	// if not, then it's a government sensor
-	else {
-		for (iter = sensors.begin(); iter != sensors.end(); iter++) {
-			if (iter->GetID() == idSensor) {
-				toFind = &(*iter);
-			}
-		}
-
-		if (toFind != nullptr) {
-			// add it to list of maintenance srnsors 
-			maintenanceSensors.push_back(*toFind);
 			// dysfunction it
 			toFind->SetState(false);
+
+			//erase from list of sensors
+			sensors.erase(iter);
+
+			// First look if it's a private sensor 
+			if (toFind->GetUserID() != -1) {    
+
+				// add to list of malicious sensors
+				maliciousSensors.push_back(*toFind);
+				UpdateIndividualState(toFind->GetUserID());
+			}
+
+			// if not, then it's a government sensor
+			else {
+				// add it to list of maintenance srnsors 
+				maintenanceSensors.push_back(*toFind);
+			}
+			break;
 		}
 	}
+
+
 }
 
 
@@ -491,22 +496,38 @@ void Model::UpdateIndividualState(int idIndividual) {
 		// if the individual user is not reliable, then : 
 		// move its sensors from privateSensors list to malicious
 		if (!reliable) {
-			for (iter = individualPtr->GetSensors()->begin(); iter != individualPtr->GetSensors()->end(); iter++) {
-				maliciousSensors.push_back(*iter);
-				privateSensors.erase(iter);
+			for (iter = privateSensors.begin(); iter != privateSensors.end(); iter++) {
+				if (idIndividual == iter->GetUserID())
+				{
+					iter->SetState(false);
+					maliciousSensors.push_back(*iter);
+					privateSensors.erase(iter);
+				}
+			}
+
+			for (iter = sensors.begin(); iter != sensors.end(); iter++) {
+				if (idIndividual == iter->GetUserID())
+				{
+					sensors.erase(iter);
+				}
 			}
 		}
 		// if not
 		// move its sensors from malicious to private
 		else {
 			for (iter = maliciousSensors.begin(); iter != maliciousSensors.end(); iter++) {
-				if (iter->GetUserID() == individualPtr->GetID()) {
+				if (iter->GetUserID() == idIndividual) {
+					iter->SetState(true);
 					privateSensors.push_back(*iter);
+					sensors.push_back(*iter);
 					// erase it from the list we run through 
 					maliciousSensors.erase(iter);
 				}
 			}
 		}
+	}
+	else {
+		exit(1);
 	}
 }
 

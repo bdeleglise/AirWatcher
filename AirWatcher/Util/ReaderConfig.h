@@ -17,7 +17,7 @@ using namespace std;
 struct Config
 {
     //Redirection par rapport ou l'objet model est créé
-    string DIRECTORYPATH = "./Dataset/";
+    string DIRECTORYPATH = "../Dataset/";
     string SENSORFILE = "sensors.csv";
     string MEASUREMENTSFILE = "measurements.csv";
     string ATTRIBUTESFILE = "attributes.csv";

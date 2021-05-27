@@ -99,12 +99,4 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Dataset\attributes.csv" />
-    <None Include="Dataset\cleaners.csv" />
-    <None Include="Dataset\providers.csv" />
-    <None Include="Dataset\sensors.csv" />
-    <None Include="Dataset\users.csv" />
-    <None Include="Dataset\measurements.csv" />
-  </ItemGroup>
 </Project>
