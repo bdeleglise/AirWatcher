@@ -15,12 +15,12 @@ SensorManagement::SensorManagement(Model* unModel) : model(unModel)
 }
 
 vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
-	Statistics stats(&model);
+	Statistics stats(model);
 
 	map<int, Sensor>* privateSensors;
-	privateSensors = model.GetPrivateSensors();
+	privateSensors = model->GetPrivateSensors();
 
-	vector<Sensor>::iterator iter;
+	map<int, Sensor>::iterator iter;
 	
 	double atmoCourant;
 	double atmoAlentourMoyen;
@@ -31,9 +31,9 @@ vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
 
 	for (iter = privateSensors->begin(); iter != privateSensors->end(); iter++) {
 		// idk if the parameter of AirQualitySensor is correct (ie &(*iter))?
-		atmoCourant = stats.AirQualitySensor(&(*iter));
+		atmoCourant = stats.AirQualitySensor(&iter->second);
 		atmoAlentourMoyen = 0;
-		neighbors = model.GetPrivateSensorsOrderByDistance(iter->GetLatitude(), iter->GetLongitude());
+		neighbors = model->GetPrivateSensorsOrderByDistance(iter->second.GetLatitude(), iter->second.GetLongitude());
 
 
 
@@ -43,7 +43,7 @@ vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
 		}
 		atmoAlentourMoyen = atmoAlentourMoyen/3;
 		if (abs(atmoCourant - atmoAlentourMoyen) > 0.1 * atmoAlentourMoyen) {
-			falseSensors.push_back(make_pair(*iter, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100));
+			falseSensors.push_back(make_pair(iter->second, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100));
 		}
 	}
 	return falseSensors;

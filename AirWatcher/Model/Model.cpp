@@ -461,6 +461,7 @@ void Model::UpdateSensorState(int idSensor)
 		{
 			maliciousSensors[sensor->GetID()] = *sensor;
 			sensors.erase(iter);
+			privateSensors.erase(idSensor);
 			UpdateIndividualState(sensor->GetUserID());
 		}
 		else 
@@ -496,7 +497,7 @@ void Model::UpdateSensorState(int idSensor)
 
 
 void Model::UpdateIndividualState(int idIndividual) {
-	IndividualUser* individualPtr = SearchIndividual(idIndividual);
+	IndividualUser* individualPtr = &individuals[idIndividual];
 	if (individualPtr != nullptr) {
 		individualPtr->SetReliable(!individualPtr->GetReliable());
 		bool reliable = individualPtr->GetReliable();

@@ -74,7 +74,7 @@ void UserInterface::StatisticsUI()
     }
     int x, y, r;
     time_t time;
-    double result;
+    double result=0;
     cout << "Merci d'entrer les coordonnées de l'endroit dont vous souhaitez observer la qualité d'air" << endl;
     x = getXcoord();
     y = getYcoord();

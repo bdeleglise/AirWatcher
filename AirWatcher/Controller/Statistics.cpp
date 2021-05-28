@@ -52,7 +52,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             double buffNO2 = 0;
             double buffPM10 = 0;
             double buffSO2 = 0;
-            while (itMes->first<end && itMes != measurementSensor->end()) {
+            while (itMes != measurementSensor->end() && itMes->first<end) {
                 nbMesureSensor++;
                 vector<Measurement>::iterator itMeasure;
 
@@ -127,7 +127,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             double buffNO2 = 0;
             double buffPM10 = 0;
             double buffSO2 = 0;
-            while (itMes->first < end && itMes != measurementSensor->end()) {
+            while (itMes != measurementSensor->end() && itMes->first < end) {
                 nbMesureSensor++;
                 vector<Measurement>::iterator itMeasure;
 
@@ -210,55 +210,66 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
     *end = mktime(time);
     time->tm_mday = time->tm_mday - 7;
     time_t start = mktime(time);
+    time->tm_mday = time->tm_mday + 1;
+    time_t next = mktime(time);
 
-    int numberMesure = 0;
-    double O3 = 0;
-    double NO2 = 0;
-    double PM10 = 0;
-    double SO2 = 0;
-    
+   
+    double indexAtmoWeek = 0;
+    int numberIndex = 0;
     System system;
     system.InitializedMeasurement();
+    while (start < *end) {
+        map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
+        map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
+        int numberMesure = 0;
+        double O3 = 0;
+        double NO2 = 0;
+        double PM10 = 0;
+        double SO2 = 0;
+        while (itMes != measurementSensor->end() && itMes->first < next) {
+            numberMesure++;
+            vector<Measurement>::iterator itMeasure;
 
-    map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
-    map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
-    while (itMes->first < *end) {
-         numberMesure++;
-         vector<Measurement>::iterator itMeasure;
+            for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
+                string idAttribute = itMeasure->GetAttribute().GetID();
+                double value = itMeasure->GetValue();
+                if (idAttribute == "O3") {
+                    O3 += value;
+                }
+                else if (idAttribute == "NO2") {
+                    NO2 += value;
+                }
+                else if (idAttribute == "SO2") {
+                    SO2 += value;
+                }
+                else if (idAttribute == "PM10") {
+                    PM10 += value;
+                }
+                else {
+                    return -1; //Erreur dans la lecture des mesures
+                }
+            }
 
-         for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
-             string idAttribute = itMeasure->GetAttribute().GetID();
-             double value = itMeasure->GetValue();
-             if (idAttribute == "O3") {
-                 O3 += value;
-             }
-             else if (idAttribute == "NO2") {
-                 NO2 += value;
-             }
-             else if (idAttribute == "SO2") {
-                 SO2 += value;
-             }
-             else if (idAttribute == "PM10") {
-                 PM10 += value;
-             }
-             else {
-                 return -1; //Erreur dans la lecture des mesures
-             }
-         }
-        
-        itMes++;
+            itMes++;
+        }
+        if (numberMesure != 0) {
+            numberIndex++;
+            indexAtmoWeek += atmoIndex(O3 / ((double)numberMesure), SO2 / ((double)numberMesure), NO2 / ((double)numberMesure), PM10 / ((double)numberMesure));
+        }
+        time->tm_mday = time->tm_mday + 1;
+        start = next;
+        next = mktime(time);
     }
-    if (numberMesure == 0) {
+
+    if (numberIndex == 0) {
         return -2;
     }
-    
-    double airQuality = atmoIndex(O3 / ((double)numberMesure), SO2 / ((double)numberMesure), NO2 / ((double)numberMesure), PM10 / ((double)numberMesure));
 
     cout << "Calculé en :  " << system.GetAlgorithmEfficiency() << " secondes" << endl;
     system.InitializedMeasurement();
 
     delete time;
-    return airQuality;
+    return indexAtmoWeek/numberIndex;
 }
 
 Statistics::Statistics(Model* unModel)

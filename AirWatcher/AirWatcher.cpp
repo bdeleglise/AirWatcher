@@ -141,7 +141,7 @@ int main()
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
-
+        cout << "Test 1" << endl;
         Sensor* sensor = model.SearchSensor(0);
         size_t size1 = model.GetSensors()->size();
         size_t size2 = model.GetMaintenanceSensors()->size();
@@ -176,7 +176,7 @@ int main()
             cout << *sensor << endl;
 
         }
-
+        cout << "Test 2" << endl;
         IndividualUser* user = model.SearchIndividual(1);
         size1 = model.GetSensors()->size();
         size2 = model.GetMaliciousIndividualSensors()->size();
@@ -193,7 +193,43 @@ int main()
         cout << size1 << endl;
         cout << size2 << endl;
         cout << size3 << endl;
+        cout << model.GetMaliciousIndividualSensors()->begin()->second << endl;
+        model.UpdateIndividualState(user->GetID());
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaliciousIndividualSensors()->size();
+        size3 = model.GetPrivateSensors()->size();
+        cout << *user << endl;
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << size3 << endl;
 
+        cout << "Test 3" << endl;
+        sensor = model.SearchSensor(36);
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaliciousIndividualSensors()->size();
+        size3 = model.GetPrivateSensors()->size();
+        cout << *sensor << endl;
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << size3 << endl;
+        model.UpdateSensorState(36);
+        sensor = model.SearchSensor(36);
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaliciousIndividualSensors()->size();
+        size3 = model.GetPrivateSensors()->size();
+        cout << *sensor << endl;
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << size3 << endl;
+        model.UpdateSensorState(36);
+        sensor = model.SearchSensor(36);
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaliciousIndividualSensors()->size();
+        size3 = model.GetPrivateSensors()->size();
+        cout << *sensor << endl;
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << size3 << endl;
     }
 
     UserInterface ui(&model);

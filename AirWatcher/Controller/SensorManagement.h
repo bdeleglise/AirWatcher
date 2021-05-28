@@ -1,12 +1,13 @@
 #if ! defined (SENSORMANAGEMENT_H)
 #define SENSORMANAGEMENT_H
 
+#pragma once
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <cmath>
 #include<list>
-#include "../Model/Entity/Sensor.cpp"
+#include "../Model/Entity/Sensor.h"
 #include "../Model/Model.h"
 
 
@@ -26,6 +27,6 @@ public:
 
     SensorManagement(Model* unModel);
 private:
-    Model model;
+    Model* model;
 };
 #endif

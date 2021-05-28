@@ -397,7 +397,7 @@ TEST(StatisticsTest, CircularMeanAirQuality) {
 	tmp.tm_hour = 12;
 	time_t date = mktime(&tmp);
 	double test = Statistics::CircularMeanAirQuality(44, 0, 0, &date);
-	EXPECT_EQ(test, 2.25);
+	EXPECT_EQ(test, 2);
 }
 
 TEST(StatisticsTest, AirQualitySensorDateNULLSensorNULL) {
