@@ -12,7 +12,7 @@
 
 vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
 	Model model;
-	Statistics stats;
+	Statistics stats(&model);
 
 	vector<Sensor>* privateSensors;
 	privateSensors = model.GetPrivateSensors();
