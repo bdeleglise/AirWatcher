@@ -156,6 +156,7 @@
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Controller\System.cpp" />
     <ClCompile Include="Controller\Statistics.cpp" />
+    <ClCompile Include="View\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller\SensorManagement.h" />
