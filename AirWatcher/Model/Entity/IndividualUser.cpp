@@ -27,7 +27,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-int IndividualUser::GetID()
+const int IndividualUser::GetID()
 {
     return individualUserID;
 }
@@ -86,27 +86,11 @@ void IndividualUser::SetSensors(vector<Sensor>& listeSensors)
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-IndividualUser& IndividualUser::operator=(const IndividualUser& unIndividualUser)
-{
-    if (this != &unIndividualUser)
-    {
-        individualUserID = unIndividualUser.individualUserID;
-        totalPoints = unIndividualUser.totalPoints;
-        reliable = unIndividualUser.reliable;
-        sensors = unIndividualUser.sensors;
-    }
-    return *this;
-}
+
 
 
 //-------------------------------------------- Constructeurs - destructeur
-IndividualUser::IndividualUser(const IndividualUser& unIndividualUser)
-{
-    individualUserID = unIndividualUser.individualUserID;
-    totalPoints = unIndividualUser.totalPoints;
-    reliable = unIndividualUser.reliable;
-    sensors = unIndividualUser.sensors;
-}
+
 
 IndividualUser::IndividualUser(int id)
     : individualUserID(id), totalPoints(0), reliable(true), sensors()

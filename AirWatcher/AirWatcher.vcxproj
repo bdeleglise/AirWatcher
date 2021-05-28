@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AirWatcher.cpp" />
+    <ClCompile Include="Controller\SensorManagement.cpp" />
     <ClCompile Include="Model\Entity\IndividualUser.cpp" />
     <ClCompile Include="Model\Entity\Measurement.cpp" />
     <ClCompile Include="Model\Entity\Attribute.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="View\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller\SensorManagement.h" />
     <ClInclude Include="Controller\System.h" />
     <ClInclude Include="Controller\Statistics.h" />
     <ClInclude Include="Util\Date.h" />

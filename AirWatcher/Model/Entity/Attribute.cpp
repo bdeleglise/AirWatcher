@@ -28,12 +28,12 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-string Attribute::GetID()
+const string Attribute::GetID()
 {
     return attributeID;
 }
 
-string Attribute::GetDescription()
+const string Attribute::GetDescription()
 {
     return description;
 }
@@ -41,30 +41,17 @@ string Attribute::GetDescription()
 
 
 
-string Attribute::GetUnit()
+const string Attribute::GetUnit()
 {
     return unit;
 }
 //------------------------------------------------- Surcharge d'opérateurs
 
-Attribute& Attribute::operator=(const Attribute& unAttribute)
-{
-    if (this != &unAttribute) {
-        attributeID = unAttribute.attributeID;
-        unit = unAttribute.unit;
-        description = unAttribute.description;
-    }
-    return *this;
-}
+
+
 
 //-------------------------------------------- Constructeurs - destructeur
-Attribute::Attribute(const Attribute& unAttribute)
-{
-    attributeID = unAttribute.attributeID;
-    unit = unAttribute.unit;
-    description = unAttribute.description;
 
-}
 
 Attribute::Attribute()
     : attributeID(), unit(), description()

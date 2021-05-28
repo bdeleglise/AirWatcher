@@ -29,7 +29,7 @@ class GovernmentAgency :
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    int GetID() ;
+    const int GetID() ;
     // Mode d'emploi :
     //
     // Contrat :
@@ -37,11 +37,8 @@ public:
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-    GovernmentAgency &operator = (const GovernmentAgency &unGovernmentAgency);
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+
+
 //-------------------------------------------- Constructeurs - destructeur
     GovernmentAgency(const GovernmentAgency &unGovernmentAgency);
     // Mode d'emploi (constructeur de copie) :

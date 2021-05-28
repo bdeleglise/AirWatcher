@@ -34,7 +34,7 @@ class IndividualUser :
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    int GetID();
+    const int GetID();
     // Mode d'emploi :
     //
     // Contrat :
@@ -58,17 +58,9 @@ public:
 
     friend ostream& operator<<(ostream& os, const IndividualUser& user);
 //------------------------------------------------- Surcharge d'opérateurs
-    IndividualUser& operator = (const IndividualUser& unIndividualUser);
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+// 
 //-------------------------------------------- Constructeurs - destructeur
-    IndividualUser(const IndividualUser& unIndividualUser);
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
+
 
     IndividualUser(int id);
     // Mode d'emploi :

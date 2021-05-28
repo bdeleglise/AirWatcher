@@ -101,7 +101,7 @@
     <ClInclude Include="Controller\Statistics.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="View\UserInterface.h">
+    <ClInclude Include="Controller\SensorManagement.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

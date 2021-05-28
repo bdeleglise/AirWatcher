@@ -29,16 +29,16 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-int Sensor::GetID() {
+const int Sensor::GetID() {
     return sensorID;
 }
 
-double Sensor::GetLatitude()
+const double Sensor::GetLatitude()
 {
     return latitude;
 }
 
-double Sensor::GetLongitude()
+const double Sensor::GetLongitude()
 {
     return longitude;
 }
@@ -87,28 +87,8 @@ void Sensor::AddMeasurement(Measurement& measure)
 //-------------------------------------------- Constructeurs - destructeur
 
 
-Sensor& Sensor::operator=(const Sensor& unSensor)
-{
-    if (this != &unSensor) {
-        sensorID = unSensor.sensorID;
-        state = unSensor.state;
-        latitude = unSensor.latitude;
-        longitude = unSensor.longitude;
-        user = unSensor.user;
-        measurements = unSensor.measurements;
-    }
-    return *this;
-}
 
-Sensor::Sensor(const Sensor& unSensor)
-{
-    sensorID=unSensor.sensorID;
-    state=unSensor.state;
-    latitude=unSensor.latitude;
-    longitude=unSensor.longitude;
-    user=unSensor.user;
-    measurements = unSensor.measurements;
-}
+
 
 Sensor::Sensor(int id, double latitude, double longitude)
     : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(-1)
