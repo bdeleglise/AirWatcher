@@ -66,9 +66,7 @@ public:
     friend ostream& operator<<(ostream& os, const Sensor& sensor);
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Sensor& operator =(const Sensor& unSensor);
 //-------------------------------------------- Constructeurs - destructeur
-    Sensor(const Sensor& unSensor);
     Sensor();
     Sensor(int id, double latitude, double longitude);
     Sensor(int id, double latitude, double longitude, int privateUser);

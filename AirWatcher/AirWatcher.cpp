@@ -18,11 +18,13 @@ using namespace std;
 int main()
 {
     cout << "Hello World!\n";
+    Model model;
     System system;
+    Statistics stat(&model);
     system.InitializedMeasurement();
     cout << "Chargement des données ..." << endl;
 
-    int res = Model::LoadData();
+    int res = model.LoadData();
     cout << res << endl;
     cout << "Données chargées" << endl;
     system.EndMeasurement();
@@ -31,36 +33,36 @@ int main()
     if (res == 0) {
         system.InitializedMeasurement();
         cout << "List of sensors : " << endl;
-        vector<Sensor>* sensors = Model::GetSensors();
-        vector<Sensor>::iterator i;
+        map< int, Sensor>* sensors = model.GetSensors();
+        map< int, Sensor>::iterator i; //Auto
         i = sensors->begin();
         for (i = sensors->begin(); i != sensors->end(); ++i) {
-            cout << *i << endl;
+            cout << i->second << endl;
 
         }
-
+        //for (const auto & currentSensor : model.sensors) {
         cout << endl;
 
         cout << "List of cleaners : " << endl;
-        vector<Cleaner>::iterator itCleaner = Model::GetCleaners()->begin();
-        for (itCleaner; itCleaner != Model::GetCleaners()->end(); ++itCleaner) {
-            cout << *itCleaner << endl;
+        map< int, Cleaner>::iterator itCleaner = model.GetCleaners()->begin();
+        for (itCleaner; itCleaner != model.GetCleaners()->end(); ++itCleaner) {
+            cout << itCleaner->second << endl;
         }
 
         cout << endl;
 
         cout << "List of providers : " << endl;
-        vector<Provider>::iterator itProvider = Model::GetProviders()->begin();
-        for (itProvider; itProvider != Model::GetProviders()->end(); ++itProvider) {
-            cout << *itProvider << endl;
+        map< int, Provider>::iterator itProvider = model.GetProviders()->begin();
+        for (itProvider; itProvider != model.GetProviders()->end(); ++itProvider) {
+            cout << itProvider->second << endl;
         }
 
         cout << endl;
 
         cout << "List of users : " << endl;
-        vector<IndividualUser>::iterator itIndividualUser = Model::GetIndividuals()->begin();
-        for (itIndividualUser; itIndividualUser != Model::GetIndividuals()->end(); ++itIndividualUser) {
-            cout << *itIndividualUser << endl;
+        map< int, IndividualUser>::iterator itIndividualUser = model.GetIndividuals()->begin();
+        for (itIndividualUser; itIndividualUser != model.GetIndividuals()->end(); ++itIndividualUser) {
+            cout << itIndividualUser->second << endl;
         }
 
         cout << endl;
@@ -70,7 +72,7 @@ int main()
 
         cout << "Stat date NULL" << endl;
         system.InitializedMeasurement();
-        double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
+        double test = stat.CircularMeanAirQuality(44, 0, 0, nullptr);
         cout << "Qualité de l'air (attendu 2): " << test << endl;
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
@@ -83,14 +85,14 @@ int main()
         tmp.tm_hour = 12;
         time_t date = mktime(&tmp);
         system.InitializedMeasurement();
-        test = Statistics::CircularMeanAirQuality(44, 0, 0, &date);
+        test = stat.CircularMeanAirQuality(44, 0, 0, &date);
         cout << "Qualité de l'air (attendu 2): " << test << endl;
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
         cout << "Stat rayon non null" << endl;
         system.InitializedMeasurement();
-        test = Statistics::CircularMeanAirQuality(44, 0, 0.4, nullptr);
+        test = stat.CircularMeanAirQuality(44, 0, 0.4, nullptr);
         cout << "Qualité de l'air (attendu 2): " << test << endl;
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
@@ -102,7 +104,7 @@ int main()
         date = mktime(&tmp);
         cout << "Stat rayon non null et date non null" << endl;
         system.InitializedMeasurement();
-        test = Statistics::CircularMeanAirQuality(44, 0, 0.4, &date);
+        test = stat.CircularMeanAirQuality(44, 0, 0.4, &date);
         cout << "Qualité de l'air (attendu à calculer): " << test << endl;
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
@@ -113,11 +115,11 @@ int main()
 
 
         cout << "List of private sensors : " << endl;
-        vector<Sensor>* sensorsPrive = Model::GetPrivateSensors();
+        map< int, Sensor>* sensorsPrive = model.GetPrivateSensors();
         i = sensorsPrive->begin();
         for (i = sensorsPrive->begin(); i != sensorsPrive->end(); ++i) {
-            cout << *i << endl;
-            cout << "Qualité de l'air évalué par le sensor : " << Statistics::AirQualitySensor(&*i) << endl;
+            cout << i->second << endl;
+            cout << "Qualité de l'air évalué par le sensor : " << stat.AirQualitySensor(&i->second) << endl;
         }
 
         tmp.tm_mday = 3;
@@ -127,39 +129,39 @@ int main()
         date = mktime(&tmp);
         i = sensorsPrive->begin();
         for (i = sensorsPrive->begin(); i != sensorsPrive->end(); ++i) {
-            cout << *i << endl;
-            cout << "Qualité de l'air évalué par le sensor : " << Statistics::AirQualitySensor(&*i, &date) << endl;
+            cout << i->second << endl;
+            cout << "Qualité de l'air évalué par le sensor : " << stat.AirQualitySensor(&i->second, &date) << endl;
         }
         system.InitializedMeasurement();
-        cout << *Model::SearchSensor(1) << endl;
+        cout << *model.SearchSensor(1) << endl;
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
 
-        Sensor* sensor = Model::SearchSensor(0);
-        int size1 = Model::GetSensors()->size();
-        int size2 = Model::GetMaintenanceSensors()->size();
+        Sensor* sensor = model.SearchSensor(0);
+        int size1 = model.GetSensors()->size();
+        int size2 = model.GetMaintenanceSensors()->size();
         cout << size1 << endl;
         cout << size2 << endl;
         cout << *sensor << endl;
-        Model::UpdateSensorState(0);
-        sensor = Model::SearchSensor(0);
-        size1 = Model::GetSensors()->size();
-        size2 = Model::GetMaintenanceSensors()->size();
+        model.UpdateSensorState(0);
+        sensor = model.SearchSensor(0);
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaintenanceSensors()->size();
         cout << size1 << endl;
         cout << size2 << endl;
         if (sensor == nullptr) {
             cout << "pb" << endl;
-            cout << *Model::GetMaintenanceSensors()->begin() << endl;
+            cout << model.GetMaintenanceSensors()->begin()->second << endl;
         }
         else {
             cout << *sensor << endl;
 
         }
-        Model::UpdateSensorState(0);
-        sensor = Model::SearchSensor(0);
-        size1 = Model::GetSensors()->size();
-        size2 = Model::GetMaintenanceSensors()->size();
+        model.UpdateSensorState(0);
+        sensor = model.SearchSensor(0);
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaintenanceSensors()->size();
         cout << size1 << endl;
         cout << size2 << endl;
         if (sensor == nullptr) {
@@ -171,18 +173,18 @@ int main()
 
         }
 
-        IndividualUser* user = Model::SearchIndividual(1);
-        size1 = Model::GetSensors()->size();
-        size2 = Model::GetMaliciousIndividualSensors()->size();
-        int size3 = Model::GetPrivateSensors()->size();
+        IndividualUser* user = model.SearchIndividual(1);
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaliciousIndividualSensors()->size();
+        int size3 = model.GetPrivateSensors()->size();
         cout << *user << endl;
         cout << size1 << endl;
         cout << size2 << endl;
         cout << size3 << endl;
-        Model::UpdateIndividualState(user->GetID());
-        size1 = Model::GetSensors()->size();
-        size2 = Model::GetMaliciousIndividualSensors()->size();
-        size3 = Model::GetPrivateSensors()->size();
+        model.UpdateIndividualState(user->GetID());
+        size1 = model.GetSensors()->size();
+        size2 = model.GetMaliciousIndividualSensors()->size();
+        size3 = model.GetPrivateSensors()->size();
         cout << *user << endl;
         cout << size1 << endl;
         cout << size2 << endl;

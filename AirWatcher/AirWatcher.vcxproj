@@ -158,7 +158,6 @@
   <ItemGroup>
     <ClInclude Include="Controller\System.h" />
     <ClInclude Include="Controller\Statistics.h" />
-    <ClInclude Include="Util\Date.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\Entity\IndividualUser.h" />
     <ClInclude Include="Model\Entity\Measurement.h" />
