@@ -27,7 +27,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const int GovernmentAgency::GetID() 
+int GovernmentAgency::GetID() const
 {
     return governementAgencyID;
 }

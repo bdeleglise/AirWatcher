@@ -29,7 +29,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const int Cleaner::GetID() 
+int Cleaner::GetID() const
 {
     return cleanerID;
 }
@@ -44,22 +44,22 @@ void Cleaner::SetProviderID(int proID)
     providerID = proID;
 }
 
-const double Cleaner::GetLatitude()
+double Cleaner::GetLatitude() const
 {
     return latitude;
 }
 
-const double Cleaner::GetLongitude()
+double Cleaner::GetLongitude() const
 {
     return longitude;
 }
 
-const time_t Cleaner::GetStart()
+time_t Cleaner::GetStart() const
 {
     return start;
 }
 
-const time_t Cleaner::GetStop()
+time_t Cleaner::GetStop() const
 {
     return stop;
 }

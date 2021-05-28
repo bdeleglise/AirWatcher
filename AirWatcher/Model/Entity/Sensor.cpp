@@ -29,16 +29,16 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const int Sensor::GetID() {
+int Sensor::GetID() const{
     return sensorID;
 }
 
-const double Sensor::GetLatitude()
+double Sensor::GetLatitude() const
 {
     return latitude;
 }
 
-const double Sensor::GetLongitude()
+double Sensor::GetLongitude() const
 {
     return longitude;
 }

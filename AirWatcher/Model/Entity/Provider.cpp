@@ -28,7 +28,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const int Provider::GetID()
+int Provider::GetID() const
 {
     return providerID;
 }

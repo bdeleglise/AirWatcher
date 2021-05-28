@@ -28,12 +28,12 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const string Attribute::GetID()
+string Attribute::GetID() const
 {
     return attributeID;
 }
 
-const string Attribute::GetDescription()
+string Attribute::GetDescription() const
 {
     return description;
 }
@@ -41,7 +41,7 @@ const string Attribute::GetDescription()
 
 
 
-const string Attribute::GetUnit()
+string Attribute::GetUnit() const
 {
     return unit;
 }

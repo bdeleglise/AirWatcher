@@ -27,7 +27,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const int IndividualUser::GetID()
+int IndividualUser::GetID() const
 {
     return individualUserID;
 }

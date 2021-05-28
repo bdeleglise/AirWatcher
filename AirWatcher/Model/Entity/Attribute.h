@@ -29,16 +29,16 @@ class Attribute
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    const string GetID();
+    string GetID() const;
     // Mode d'emploi :
     //
     // Contrat :
     //
     
-    const string GetUnit();
+    string GetUnit() const;
 
 
-    const string GetDescription();
+    string GetDescription() const;
 
     friend ostream& operator<<(ostream& os, const Attribute& unAtt);
 

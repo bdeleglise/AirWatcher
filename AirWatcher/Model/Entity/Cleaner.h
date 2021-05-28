@@ -32,7 +32,7 @@ class Cleaner
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    const int GetID() ;
+    int GetID() const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -42,13 +42,13 @@ public:
 
     void SetProviderID(int proID);
 
-    const double GetLatitude() ;
+    double GetLatitude() const;
 
-    const double GetLongitude() ;
+    double GetLongitude() const;
 
-    const time_t GetStart() ;
+    time_t GetStart() const;
 
-    const time_t GetStop() ;
+    time_t GetStop() const;
 
     friend ostream& operator<<(ostream& os, const Cleaner& cleaner);
 //------------------------------------------------- Surcharge d'opérateurs

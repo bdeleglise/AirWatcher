@@ -28,17 +28,17 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-const double Measurement::GetValue()
+double Measurement::GetValue() const
 {
     return value;
 }
 
-const time_t Measurement::GetTime()
+time_t Measurement::GetTime() const
 {
     return timestamp;
 }
 
-const Attribute Measurement::GetAttribute() 
+Attribute Measurement::GetAttribute() const
 {
     return attribute;
 }

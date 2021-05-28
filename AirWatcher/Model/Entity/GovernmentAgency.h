@@ -29,7 +29,7 @@ class GovernmentAgency :
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    const int GetID() ;
+    int GetID() const;
     // Mode d'emploi :
     //
     // Contrat :
