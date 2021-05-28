@@ -32,7 +32,7 @@ class Provider :
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    int GetID();
+    const int GetID();
     // Mode d'emploi :
     //
     // Contrat :

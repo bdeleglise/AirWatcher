@@ -29,24 +29,24 @@ class Attribute
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    string GetID();
+    const string GetID();
     // Mode d'emploi :
     //
     // Contrat :
     //
     
-    string GetUnit();
+    const string GetUnit();
 
 
-    string GetDescription();
+    const string GetDescription();
 
     friend ostream& operator<<(ostream& os, const Attribute& unAtt);
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Attribute& operator = (const Attribute& unAttribute);
+
 //-------------------------------------------- Constructeurs - destructeur
     
-    Attribute(const Attribute& unAttribute);
+
 
     Attribute();
 

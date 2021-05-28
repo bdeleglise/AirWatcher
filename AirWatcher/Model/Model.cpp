@@ -166,10 +166,17 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 
 		vector<pair<Sensor, double>>* SensorsOrderedByDistance = new vector<pair<Sensor, double>>;
 		vector<Sensor>* nearSensors = new vector<Sensor>(3);
-		vector<Sensor>* sensors = Model::GetSensors();
-		vector<Sensor>::iterator it = sensors->begin();
+		vector<Sensor>* SensorsVector = new vector<Sensor>;
+		map<Sensor>* sensors = GetSensors();
 
-		partial_sort_copy(sensors->begin(), sensors->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
+		map<Sensor>::iterator iter;
+		for (iter = sensors->begin(); iter != sensors->end(); iter++) {
+			SensorsVector->push_back(iter*);
+		}
+
+		vector<Sensor>::iterator it;
+
+		partial_sort_copy(SensorsVector->begin(), SensorsVector->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
 			double d1 = pow(latitude - s1.GetLatitude(), 2) + pow(longitude - s1.GetLongitude(), 2);
 			double d2 = pow(latitude - s2.GetLatitude(), 2) + pow(longitude - s2.GetLongitude(), 2);
 			return (d1 < d2);
@@ -178,8 +185,8 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 		int index = 0;
 
 		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
-			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
-			SensorsOrderedByDistance->push_back(make_pair(*it, distance));
+			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2));
+			SensorsOrderedByDistance->push_back(make_pair(*it,distance);
 			index++;
 		}
 
@@ -192,10 +199,16 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 	vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude) {
 		vector<pair<Sensor, double>>* privateSensorsOrderedByDistance = new vector<pair<Sensor, double>>;
 		vector<Sensor>* nearSensors = new vector<Sensor>(3);
-		vector<Sensor>* privateSensors = Model::GetPrivateSensors();
-		vector<Sensor>::iterator it = privateSensors->begin();
+		vector<Sensor>* PrivateSensorsVector = new vector<Sensor>;
+		map<Sensor>* privateSensors = GetPrivateSensors();
 
-		partial_sort_copy(privateSensors->begin(), privateSensors->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
+		map<Sensor>::iterator iter;
+		for (iter = privateSensors->begin(); iter != privateSensors->end(); iter++) {
+			PrivateSensorsVector->push_back(iter*);
+		}
+		vector<Sensor>::iterator it;
+
+		partial_sort_copy(PrivateSensorsVector->begin(), PrivateSensorsVector->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
 			double d1 = pow(latitude - s1.GetLatitude(), 2) + pow(longitude - s1.GetLongitude(), 2);
 			double d2 = pow(latitude - s2.GetLatitude(), 2) + pow(longitude - s2.GetLongitude(), 2);
 			return (d1 < d2);
@@ -204,8 +217,8 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 		int index = 0;
 
 		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
-			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
-			privateSensorsOrderedByDistance->push_back(make_pair(*it, distance));
+			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2));
+			privateSensorsOrderedByDistance->push_back(make_pair(*it, distance);
 			index++;
 		}
 
