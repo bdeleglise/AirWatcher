@@ -312,7 +312,169 @@ TEST(TestIndividual, SetUnReliable) {
 	EXPECT_EQ(user.GetReliable(), false);
 }
 
-TEST(TestStatistics, CircularMeanAirQualityDateNULL) {
+
+TEST(ModelTest, ReadData) {
+	Model::LoadData();
 	int res = Model::LoadData();
-	EXPECT_EQ(res, 0);
+	EXPECT_EQ(res, 3);
+	EXPECT_EQ(Model::GetCleaners()->size(), 2);
+	EXPECT_EQ(Model::GetProviders()->size(), 2);
+	EXPECT_EQ(Model::GetIndividuals()->size(), 2);
+	EXPECT_EQ(Model::GetSensors()->size(), 100);
+	EXPECT_EQ(Model::GetPrivateSensors()->size(), 2);
+}
+
+TEST(ModelTest, SearchGovernmentAgency) {
+	EXPECT_EQ(Model::SearchGovernmentAgency(2), nullptr);
+}
+
+TEST(ModelTest, SearchIndividual) {
+	IndividualUser* user = Model::SearchIndividual(0);
+	EXPECT_EQ(user->GetID(), 0);
+	EXPECT_EQ(user->GetReliable(), true);
+	EXPECT_EQ(user->GetSensors()->begin()->GetID(), 70);
+
+	user = Model::SearchIndividual(25);
+	EXPECT_EQ(user, nullptr);
+}
+
+TEST(ModelTest, SearchProvider) {
+	Provider* user = Model::SearchProvider(0);
+	EXPECT_EQ(user->GetID(), 0);
+	EXPECT_EQ(user->GetCleaners()->begin()->GetID(), 0);
+
+	user = Model::SearchProvider(25);
+	EXPECT_EQ(user, nullptr);
+}
+
+TEST(ModelTest, SearchCleaner) {
+	Cleaner* cleaner = Model::SearchCleaner(0);
+	EXPECT_EQ(cleaner->GetID(), 0);
+	EXPECT_EQ(cleaner->GetLatitude(), 45.333333);
+	EXPECT_EQ(cleaner->GetLongitude(), 1.333333);
+
+	cleaner = Model::SearchCleaner(29);
+	EXPECT_EQ(cleaner, nullptr);
+}
+
+TEST(ModelTest, SearchSensor) {
+	Sensor* sensor = Model::SearchSensor(1);
+	EXPECT_EQ(sensor->GetID(), 1);
+	EXPECT_EQ(sensor->GetLatitude(), 44);
+	EXPECT_EQ(sensor->GetLongitude(), -0.3);
+	EXPECT_EQ(sensor->GetMeasurements()->size(), 365);
+
+	sensor = Model::SearchSensor(1500);
+	EXPECT_EQ(sensor, nullptr);
+}
+
+TEST(StatisticsTest, CircularMeanAirQualityDateNULLRayonNULL) {
+	double test = Statistics::CircularMeanAirQuality(44, 0, 0, nullptr);
+	EXPECT_EQ(test, 2);
+}
+
+TEST(StatisticsTest, CircularMeanAirQualityRayonNull) {
+	tm tmp = tm();
+	tmp.tm_mday = 28;
+	tmp.tm_mon = 3 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 12;
+	time_t date = mktime(&tmp);
+	double test = Statistics::CircularMeanAirQuality(44, 0, 0, &date);
+	EXPECT_EQ(test, 2);
+}
+
+TEST(StatisticsTest, CircularMeanAirQualityDateNULL) {
+	double test = Statistics::CircularMeanAirQuality(44, 0, 0.4, nullptr);
+	EXPECT_EQ(test, 2);
+}
+
+TEST(StatisticsTest, CircularMeanAirQuality) {
+	tm tmp = tm();
+	tmp.tm_mday = 9;
+	tmp.tm_mon = 2 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 12;
+	time_t date = mktime(&tmp);
+	double test = Statistics::CircularMeanAirQuality(44, 0, 0, &date);
+	EXPECT_EQ(test, 2.25);
+}
+
+TEST(StatisticsTest, AirQualitySensorDateNULLSensorNULL) {
+	double test = Statistics::AirQualitySensor(nullptr);
+	EXPECT_EQ(test, -1);
+}
+
+TEST(StatisticsTest, AirQualitySensorDateNULL) {
+	Sensor* sensor = Model::SearchSensor(36);
+	double test = Statistics::AirQualitySensor(sensor);
+	EXPECT_EQ(test, 1.75);
+}
+
+TEST(StatisticsTest, AirQualitySensor) {
+	tm tmp = tm();
+	tmp.tm_mday = 3;
+	tmp.tm_mon = 12 - 1;
+	tmp.tm_year = 2019 - 1900;
+	tmp.tm_hour = 12;
+	time_t date = mktime(&tmp);
+	Sensor* sensor = Model::SearchSensor(36);
+	double test = Statistics::AirQualitySensor(sensor, &date);
+	EXPECT_EQ(test, 1.75);
+}
+
+TEST(StatisticsTest, AirQualitySensorWrongFormat) {
+	tm tmp = tm();
+	tmp.tm_mday = 3;
+	tmp.tm_mon = 12 - 1;
+	tmp.tm_year = 2017 - 1900;
+	tmp.tm_hour = 12;
+	time_t date = mktime(&tmp);
+	Sensor* sensor = Model::SearchSensor(36);
+	double test = Statistics::AirQualitySensor(sensor, &date);
+	EXPECT_EQ(test, -2);
+
+	tmp.tm_mday = 3;
+	tmp.tm_mon = 12 - 1;
+	tmp.tm_year = 2020 - 1900;
+	tmp.tm_hour = 12;
+	date = mktime(&tmp);
+	test = Statistics::AirQualitySensor(sensor, &date);
+	EXPECT_EQ(test, -2);
+}
+
+TEST(ModelTest, UpdateSensorStateSensorOfGovernement) {
+	Sensor* sensor = Model::SearchSensor(99);
+	int size1 = Model::GetSensors()->size();
+	int size2 = Model::GetMaintenanceSensors()->size();
+	EXPECT_EQ(sensor->GetState(), true);
+	Model::UpdateSensorState(99);
+	sensor = Model::SearchSensor(99);
+	EXPECT_EQ(sensor->GetState(), false);
+	EXPECT_EQ(Model::GetSensors()->size(), size1-1);
+	EXPECT_EQ(Model::GetMaintenanceSensors()->size(), size2+1);
+
+	Model::UpdateSensorState(99);
+	sensor = Model::SearchSensor(99);
+	EXPECT_EQ(sensor->GetState(), true);
+	EXPECT_EQ(Model::GetSensors()->size(), size1 );
+	EXPECT_EQ(Model::GetMaintenanceSensors()->size(), size2 );
+}
+
+TEST(ModelTest, UpdateIndividualState) {
+	IndividualUser* user = Model::SearchIndividual(1);
+	int size1 = Model::GetSensors()->size();
+	int size2 = Model::GetMaliciousIndividualSensors()->size();
+	int size3 = Model::GetPrivateSensors()->size();
+	EXPECT_EQ(user->GetReliable(), true);
+	Model::UpdateIndividualState(user->GetID());
+	EXPECT_EQ(user->GetReliable(), false);
+	EXPECT_EQ(Model::GetSensors()->size(), size1 - 1);
+	EXPECT_EQ(Model::GetMaintenanceSensors()->size(), size2 + 1);
+	EXPECT_EQ(Model::GetMaintenanceSensors()->size(), size3 - 1);
+	vector<Sensor>* sensors = user->GetSensors();
+	vector<Sensor>::iterator iter;
+	for (iter = sensors->begin(); iter != sensors->end(); ++iter) {
+		EXPECT_EQ(iter->GetState(), false);
+	}
 }

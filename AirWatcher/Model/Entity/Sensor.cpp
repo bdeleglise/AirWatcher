@@ -147,7 +147,7 @@ ostream& operator<<(ostream& os, const Sensor& sensor)
     os << "Sensor" << sensor.sensorID << endl;
     os << "Latitude : " << sensor.latitude << endl;
     os << "Longitude : " << sensor.longitude << endl;
-    os << sensor.measurements.size() << " mesures" << endl;
+    os << sensor.measurements.size() << " jour de mesures" << endl;
     if (sensor.user != -1) {
         os << "Appartient à user" << sensor.user << endl;
     }
