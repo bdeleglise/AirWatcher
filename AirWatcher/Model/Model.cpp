@@ -178,7 +178,7 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 		int index = 0;
 
 		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
-			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
+			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2));
 			SensorsOrderedByDistance->push_back(make_pair(*it, distance));
 			index++;
 		}
@@ -204,7 +204,7 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 		int index = 0;
 
 		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
-			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
+			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2));
 			privateSensorsOrderedByDistance->push_back(make_pair(*it, distance));
 			index++;
 		}

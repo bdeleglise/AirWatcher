@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,6 +155,7 @@
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Controller\System.cpp" />
     <ClCompile Include="Controller\Statistics.cpp" />
+    <ClCompile Include="View\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller\System.h" />
