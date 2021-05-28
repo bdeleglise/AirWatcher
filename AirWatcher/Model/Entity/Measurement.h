@@ -30,15 +30,15 @@ class Measurement {
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    double GetValue();
+    const double GetValue();
     // Mode d'emploi :
     //
     // Contrat :
     //
     
-    time_t GetTime();
+    const time_t GetTime();
 
-    Attribute GetAttribute();
+    const Attribute GetAttribute();
     friend ostream& operator<<(ostream& os, const Measurement& unMeasurement);
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -47,7 +47,7 @@ public:
 //-------------------------------------------- Constructeurs - destructeur
     Measurement();
 
-    Measurement(const Measurement& unMeasurement);
+
 
     Measurement(time_t time, double val, Attribute& unAttribute);
 

@@ -28,17 +28,17 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-double Measurement::GetValue()
+const double Measurement::GetValue()
 {
     return value;
 }
 
-time_t Measurement::GetTime()
+const time_t Measurement::GetTime()
 {
     return timestamp;
 }
 
-Attribute Measurement::GetAttribute() 
+const Attribute Measurement::GetAttribute() 
 {
     return attribute;
 }
@@ -47,12 +47,7 @@ Attribute Measurement::GetAttribute()
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Measurement::Measurement(const Measurement& unMeasurement) 
-{
-    timestamp = unMeasurement.timestamp;
-    value = unMeasurement.value;
-    attribute = unMeasurement.attribute;
-}
+
 
 Measurement::Measurement(time_t time, double val, Attribute& unAttribute)
     : timestamp(time), value(val), attribute(unAttribute)

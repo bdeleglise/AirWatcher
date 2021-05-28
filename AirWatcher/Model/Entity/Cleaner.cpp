@@ -29,7 +29,7 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-int Cleaner::GetID() 
+const int Cleaner::GetID() 
 {
     return cleanerID;
 }
@@ -44,53 +44,33 @@ void Cleaner::SetProviderID(int proID)
     providerID = proID;
 }
 
-double Cleaner::GetLatitude()
+const double Cleaner::GetLatitude()
 {
     return latitude;
 }
 
-double Cleaner::GetLongitude()
+const double Cleaner::GetLongitude()
 {
     return longitude;
 }
 
-time_t Cleaner::GetStart()
+const time_t Cleaner::GetStart()
 {
     return start;
 }
 
-time_t Cleaner::GetStop()
+const time_t Cleaner::GetStop()
 {
     return stop;
 }
 
 //------------------------------------------------- Surcharge d'opérateurs
-Cleaner& Cleaner::operator=(const Cleaner& unCleaner)
-{
-    if (this != &unCleaner)
-    {
-        cleanerID = unCleaner.cleanerID;
-        providerID = unCleaner.providerID;
-        latitude = unCleaner.latitude;
-        longitude = unCleaner.longitude;
-        start = unCleaner.start;
-        stop = unCleaner.stop;
-    }
-    return *this;
-}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 
 
-Cleaner::Cleaner(const Cleaner& unCleaner)
-{
-    cleanerID = unCleaner.cleanerID;
-    providerID = unCleaner.providerID;
-    latitude = unCleaner.latitude;
-    longitude = unCleaner.longitude;
-    start = unCleaner.start;
-    stop = unCleaner.stop;
-}
+
 
 Cleaner::Cleaner(int id, int provider, double latitude, double longitude, time_t start, time_t stop)
     : cleanerID(id), providerID(provider), latitude(latitude), longitude(longitude), start(start), stop(stop)

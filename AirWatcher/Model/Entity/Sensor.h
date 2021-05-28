@@ -37,15 +37,15 @@ class Sensor
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    int GetID();
+    const int GetID();
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    double GetLatitude();
+    const double GetLatitude();
 
-    double GetLongitude();
+    const double GetLongitude();
 
  
 
@@ -66,7 +66,9 @@ public:
     friend ostream& operator<<(ostream& os, const Sensor& sensor);
 
 //------------------------------------------------- Surcharge d'opérateurs
+    Sensor& operator =(const Sensor& unSensor);
 //-------------------------------------------- Constructeurs - destructeur
+
     Sensor();
     Sensor(int id, double latitude, double longitude);
     Sensor(int id, double latitude, double longitude, int privateUser);
