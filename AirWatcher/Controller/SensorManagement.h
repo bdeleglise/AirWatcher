@@ -16,17 +16,17 @@ using namespace std;
 class SensorManagement {
 
 public:
-    list<pair<Sensor, int>> MalfunctionningSensorsDetection();
-    int GetEvaluationSensor(int SensorId);
-    int GetEvaluationPrivateSensor(int SensorId);
-    bool ChangeSensorState(int SensorId);
-    list<Sensor> SimilaritySensorRanking(int SensorId, Date start, Date end);
-    vector<pair<Sensor, int>> FraudulentSensorDetection();
-    list<pair<Sensor, int>> FraudulentIndividualDetection(int individualId);
+    //list<pair<Sensor, int>> MalfunctionningSensorsDetection();
+    //int GetEvaluationSensor(int SensorId);
+    //int GetEvaluationPrivateSensor(int SensorId);
+    //bool ChangeSensorState(int SensorId);
+    //list<Sensor> SimilaritySensorRanking(int SensorId, Date start, Date end);
+    vector<pair<Sensor, double>> FraudulentSensorDetection();
+    //list<pair<Sensor, int>> FraudulentIndividualDetection(int individualId);
     bool ClassifyAsUnreliable(int individualId);
 
 
-
+    
 
 
 };
