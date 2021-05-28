@@ -141,6 +141,16 @@ int main()
         system.EndMeasurement();
         cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
+        cout << "Test recherche " << endl;
+        IndividualUser* unUser = model.SearchIndividual(1);
+        cout << *unUser << endl;
+        unUser = model.SearchIndividual(1);
+        cout << *unUser << endl;
+        unUser = model.SearchIndividual(1);
+        cout << *unUser << endl;
+        unUser = model.SearchIndividual(1);
+        cout << *unUser << endl;
+
         cout << "Test 1" << endl;
         Sensor* sensor = model.SearchSensor(0);
         size_t size1 = model.GetSensors()->size();
@@ -212,6 +222,7 @@ int main()
         cout << size1 << endl;
         cout << size2 << endl;
         cout << size3 << endl;
+        cout << "Test 3.1" << endl;
         model.UpdateSensorState(36);
         sensor = model.SearchSensor(36);
         size1 = model.GetSensors()->size();
@@ -221,6 +232,7 @@ int main()
         cout << size1 << endl;
         cout << size2 << endl;
         cout << size3 << endl;
+        cout << "Test 3.2" << endl;
         model.UpdateSensorState(36);
         sensor = model.SearchSensor(36);
         size1 = model.GetSensors()->size();

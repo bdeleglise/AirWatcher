@@ -9,90 +9,78 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 GovernmentAgency* Model::SearchGovernmentAgency(int id) {
-	
-	for (auto& pair : governmentAgencies) {
-		const int idGov = pair.first;
-		if (idGov == id) {
-			GovernmentAgency* user = &pair.second;
-			return user;
-		}
+	GovernmentAgency* user = nullptr;
+	if (governmentAgencies.find(id) != governmentAgencies.end())
+	{
+		user = &governmentAgencies[id];
 	}
-
-	return(nullptr);
+	
+	return user;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 IndividualUser* Model::SearchIndividual(int id) {
-	
-	for (auto& pair : individuals) {
-		const int idUser = pair.first;
-		if (idUser == id) {
-			IndividualUser* user = &pair.second;
-			return user;
-		}
+	IndividualUser* user = nullptr;
+	if (individuals.find(id) != individuals.end())
+	{
+		user = &individuals[id];
 	}
-
-	return(nullptr);
+	return user;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Provider* Model::SearchProvider(int id) {
-	
-	for (auto& pair : providers) {
-		const int idUser = pair.first;
-		if (idUser == id) {
-			Provider* user = &pair.second;
-			return user;
-		}
+	Provider* user = nullptr;
+	if (providers.find(id) != providers.end())
+	{
+		user = &providers[id];
 	}
 
-	return(nullptr);
+	return user;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 Cleaner* Model::SearchCleaner(int id) {
-	
-	for (auto& pair : cleaners) {
-		const int idCleaner = pair.first;
-		if (idCleaner == id) {
-			Cleaner* cleaner = &pair.second;
-			return cleaner;
-		}
+	Cleaner* cleaner = nullptr;
+	if (cleaners.find(id) != cleaners.end())
+	{
+		cleaner = &cleaners[id];
 	}
 
-	return(nullptr);
+	return cleaner;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Sensor* Model::SearchSensor(int id) {
-	for (auto& pair : sensors) {
-		const int idSensor = pair.first;
-		if (idSensor == id) {
-			Sensor* sensor = &pair.second;
-			return sensor;
+	map<int, Sensor>::iterator iter = sensors.find(id);
+	bool find = false;
+	Sensor* res = nullptr;
+	if (iter != sensors.end()) {
+		find = true;
+		res = &iter->second;
+	}
+	if (!find) {
+		iter = maliciousSensors.find(id);
+		if (iter != maliciousSensors.end()) {
+			find = true;
+			res = &iter->second;
 		}
 	}
-	for (auto& pair : maintenanceSensors) {
-		const int idSensor = pair.first;
-		if (idSensor == id) {
-			Sensor* sensor = &pair.second;
-			return sensor;
+	if (!find) {
+		iter = maintenanceSensors.find(id);
+		if (iter != maintenanceSensors.end()) {
+			find = true;
+			res = &iter->second;
 		}
 	}
-	for (auto& pair : maliciousSensors) {
-		const int idSensor = pair.first;
-		if (idSensor == id) {
-			Sensor* sensor = &pair.second;
-			return sensor;
-		}
-	}
+	return res;
 
-	return(nullptr);
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -402,7 +390,6 @@ int Model::LoadData()
 		//lecture des users --------------------------------------------------------------------------
 		cout << "Loading of users" << endl;
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
-		map<int, IndividualUser> bufferUser;
 		map<int, IndividualUser>::iterator itUser;
 		map<int, Sensor>::iterator itSensor;
 
@@ -422,8 +409,8 @@ int Model::LoadData()
 				return 2;
 			}
 			itSensor->second.SetUser(userID);
-			itUser = bufferUser.find(userID);
-			if (itUser != bufferUser.end()) {
+			itUser = individuals.find(userID);
+			if (itUser != individuals.end()) {
 				itUser->second.AddSensor(itSensor->second);
 			}
 			else {
@@ -456,16 +443,13 @@ void Model::UpdateSensorState(int idSensor)
 	if (iter != sensors.end())
 	{
 		Sensor* sensor = &iter->second;
-		sensor->SetState(false);
 		if (sensor->GetUserID() != -1)
 		{
-			maliciousSensors[sensor->GetID()] = *sensor;
-			sensors.erase(iter);
-			privateSensors.erase(idSensor);
 			UpdateIndividualState(sensor->GetUserID());
 		}
 		else 
 		{
+			sensor->SetState(false);
 			maintenanceSensors[sensor->GetID()] = *sensor;
 			sensors.erase(iter);
 		}
@@ -484,10 +468,6 @@ void Model::UpdateSensorState(int idSensor)
 	iter = maliciousSensors.find(idSensor);
 	if (iter != maliciousSensors.end()) {
 		Sensor* sensor = &iter->second;
-		sensor->SetState(true);
-		sensors[sensor->GetID()] = *sensor;
-		privateSensors[sensor->GetID()] = *sensor;
-		maliciousSensors.erase(iter);
 		UpdateIndividualState(sensor->GetUserID());
 		return;
 	}
@@ -497,8 +477,8 @@ void Model::UpdateSensorState(int idSensor)
 
 
 void Model::UpdateIndividualState(int idIndividual) {
-	IndividualUser* individualPtr = &individuals[idIndividual];
-	if (individualPtr != nullptr) {
+	if (individuals.find(idIndividual) != individuals.end()) {
+		IndividualUser* individualPtr = &individuals[idIndividual];
 		individualPtr->SetReliable(!individualPtr->GetReliable());
 		bool reliable = individualPtr->GetReliable();
 		// if the individual user is not reliable, then : 

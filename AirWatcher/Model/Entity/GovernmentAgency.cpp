@@ -46,6 +46,11 @@ GovernmentAgency::GovernmentAgency(int id)
 #endif
 } //----- Fin de GovernmentAgency
 
+GovernmentAgency::GovernmentAgency()
+    : governementAgencyID(-1)
+{
+}
+
 
 GovernmentAgency::~GovernmentAgency()
 // Algorithme :
