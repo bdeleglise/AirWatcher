@@ -15,6 +15,10 @@ using namespace std;
 #include "Util/ReaderConfig.h"
 #include "Controller/System.h"
 #include "Controller/Statistics.h"
+#include "View/UserInterface.h"
+
+
+
 int main()
 {
     cout << "Hello World!\n";
@@ -179,16 +183,22 @@ int main()
         cout << size1 << endl;
         cout << size2 << endl;
         cout << size3 << endl;
-        Model::UpdateIndividualState(user->GetID());
+       /* Model::UpdateIndividualState(user->GetID());
         size1 = Model::GetSensors()->size();
         size2 = Model::GetMaliciousIndividualSensors()->size();
         size3 = Model::GetPrivateSensors()->size();
         cout << *user << endl;
         cout << size1 << endl;
         cout << size2 << endl;
-        cout << size3 << endl;
+        cout << size3 << endl;*/
 
     }
+
+    UserInterface ui;
+    ui.MenuUI();
+
+
+
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

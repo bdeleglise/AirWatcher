@@ -171,6 +171,7 @@
     <ClInclude Include="Model\Entity\Provider.h" />
     <ClInclude Include="Model\Entity\Sensor.h" />
     <ClInclude Include="Util\ReaderConfig.h" />
+    <ClInclude Include="View\UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
