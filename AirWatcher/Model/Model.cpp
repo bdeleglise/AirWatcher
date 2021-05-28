@@ -162,34 +162,58 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
-	vector<pair<Sensor, double>>* SensorsOrderedByDistance = new vector<pair<Sensor, double>>;
-	double distance;
-	vector<Sensor>::iterator iter;
-	for (iter = sensors.begin(); iter != sensors.end(); ++iter) {
-		distance = sqrt(pow(latitude-iter->GetLatitude(),2)+pow(longitude-iter->GetLongitude(),2));
-		SensorsOrderedByDistance->push_back(make_pair(*iter, distance));
+	vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
+
+		vector<pair<Sensor, double>>* SensorsOrderedByDistance = new vector<pair<Sensor, double>>;
+		vector<Sensor>* nearSensors = new vector<Sensor>(3);
+		vector<Sensor>* sensors = Model::GetSensors();
+		vector<Sensor>::iterator it = sensors->begin();
+
+		partial_sort_copy(sensors->begin(), sensors->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
+			double d1 = pow(latitude - s1.GetLatitude(), 2) + pow(longitude - s1.GetLongitude(), 2);
+			double d2 = pow(latitude - s2.GetLatitude(), 2) + pow(longitude - s2.GetLongitude(), 2);
+			return (d1 < d2);
+			});
+
+		int index = 0;
+
+		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
+			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
+			SensorsOrderedByDistance->push_back(make_pair(*it, distance));
+			index++;
+		}
+
+		return(SensorsOrderedByDistance);
+
 	}
 
-	partial_sort(SensorsOrderedByDistance->begin(), SensorsOrderedByDistance->begin()+ SensorsOrderedByDistance->size()/2,SensorsOrderedByDistance->end(),sortByValue);
-	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	return SensorsOrderedByDistance;
-}
+	vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude) {
+		vector<pair<Sensor, double>>* privateSensorsOrderedByDistance = new vector<pair<Sensor, double>>;
+		vector<Sensor>* nearSensors = new vector<Sensor>(3);
+		vector<Sensor>* privateSensors = Model::GetPrivateSensors();
+		vector<Sensor>::iterator it = privateSensors->begin();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		partial_sort_copy(privateSensors->begin(), privateSensors->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
+			double d1 = pow(latitude - s1.GetLatitude(), 2) + pow(longitude - s1.GetLongitude(), 2);
+			double d2 = pow(latitude - s2.GetLatitude(), 2) + pow(longitude - s2.GetLongitude(), 2);
+			return (d1 < d2);
+			});
 
-vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude){
-	static vector<pair<Sensor, double>> privateSensorsOrderedByDistance;
-	double distance;
-	vector<Sensor>::iterator iter;
-	for (iter = privateSensors.begin(); iter != privateSensors.end(); iter++) {
-		distance = sqrt(pow(iter->GetLatitude()-latitude,2)+pow(iter->GetLongitude()-longitude,2));
-		privateSensorsOrderedByDistance.push_back(make_pair(*iter, distance));
+		int index = 0;
+
+		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
+			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
+			privateSensorsOrderedByDistance->push_back(make_pair(*it, distance));
+			index++;
+		}
+
+		return(privateSensorsOrderedByDistance);
 	}
-	sort(privateSensorsOrderedByDistance.begin(),privateSensorsOrderedByDistance.end(),sortByValue);
-	return &privateSensorsOrderedByDistance;
-}
+
+
+
 
 
 
@@ -469,6 +493,7 @@ void Model::UpdateSensorState(int idSensor)
 			if (toFind->GetUserID() != -1) {    
 
 				// add to list of malicious sensors
+				
 				maliciousSensors.push_back(*toFind);
 				UpdateIndividualState(toFind->GetUserID());
 			}
@@ -502,6 +527,7 @@ void Model::UpdateIndividualState(int idIndividual) {
 					iter->SetState(false);
 					maliciousSensors.push_back(*iter);
 					privateSensors.erase(iter);
+					
 				}
 			}
 
