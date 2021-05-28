@@ -143,8 +143,8 @@ int main()
 
 
         Sensor* sensor = model.SearchSensor(0);
-        int size1 = model.GetSensors()->size();
-        int size2 = model.GetMaintenanceSensors()->size();
+        size_t size1 = model.GetSensors()->size();
+        size_t size2 = model.GetMaintenanceSensors()->size();
         cout << size1 << endl;
         cout << size2 << endl;
         cout << *sensor << endl;
@@ -180,7 +180,7 @@ int main()
         IndividualUser* user = model.SearchIndividual(1);
         size1 = model.GetSensors()->size();
         size2 = model.GetMaliciousIndividualSensors()->size();
-        int size3 = model.GetPrivateSensors()->size();
+        size_t size3 = model.GetPrivateSensors()->size();
         cout << *user << endl;
         cout << size1 << endl;
         cout << size2 << endl;
@@ -192,11 +192,11 @@ int main()
         cout << *user << endl;
         cout << size1 << endl;
         cout << size2 << endl;
-        cout << size3 << endl;*/
+        cout << size3 << endl;
 
     }
 
-    UserInterface ui;
+    UserInterface ui(&model);
     ui.MenuUI();
 
 

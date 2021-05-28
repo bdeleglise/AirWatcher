@@ -3,7 +3,11 @@
 using namespace std;
 
 #include "UserInterface.h"
-#include "../Controller/Statistics.h"
+
+UserInterface::UserInterface(Model* unModel)
+    : model(unModel)
+{
+}
 
 int UserInterface::GetInput()
 //Récuperer le choix de l'utilisateur
@@ -33,9 +37,27 @@ void UserInterface::MenuUI()
     }
 }
 
+void UserInterface::FraudUI()
+{
+    SensorManagement sm(model);
+    vector<pair<Sensor, double>> frauds;
+    cout << "------------Détection des Fraudes-------------\n"
+        "Voici une liste des capteurs déterminés frauduleurs : \n"
+    << endl;
+    frauds = sm.FraudulentSensorDetection();
+    for (const auto& currentPair : frauds)
+    {
+        cout << "Capteur : " << currentPair.first.GetID() << "\n"
+            "Pourcentage d'erreur mesuré : " << currentPair.second << "\n"
+            << endl;
+    }
+    
+}
 void UserInterface::StatisticsUI()
 //Menu statistiques
 {
+
+    Statistics stats(model);
     cout << "------------Affichage des statistiques-------------\n"
         "\n"
         "1 - Afficher la qualité d'air moyenne d'un endroit précis à l'heure actuelle \n"
@@ -52,7 +74,7 @@ void UserInterface::StatisticsUI()
     }
     int x, y, r;
     time_t time;
-    int result;
+    double result;
     cout << "Merci d'entrer les coordonnées de l'endroit dont vous souhaitez observer la qualité d'air" << endl;
     x = getXcoord();
     y = getYcoord();
@@ -60,22 +82,21 @@ void UserInterface::StatisticsUI()
     {
     case 1:
         r = 0;
-        time = 0;
-        result = Statistics::CircularMeanAirQuality(x, y, r, nullptr);
+        result = stats.CircularMeanAirQuality(x, y, r, nullptr);
         break;
     case 2:
         r = 0;
         time = getTime();
-        result = Statistics::CircularMeanAirQuality(x, y, r, &time);
+        result = stats.CircularMeanAirQuality(x, y, r, &time);
         break;
     case 3:
         r = getRayon();
-        result = Statistics::CircularMeanAirQuality(x, y, r, nullptr);
+        result = stats.CircularMeanAirQuality(x, y, r, nullptr);
         break;
     case 4:
         r = getRayon();
         time = getTime();
-        result = Statistics::CircularMeanAirQuality(x, y, r, &time);
+        result = stats.CircularMeanAirQuality(x, y, r, &time);
         break;
     }
 

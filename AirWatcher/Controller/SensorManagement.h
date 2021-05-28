@@ -7,7 +7,6 @@
 #include <cmath>
 #include<list>
 #include "../Model/Entity/Sensor.cpp"
-#include "../Util/Date.h"
 #include "../Model/Model.h"
 
 
@@ -23,11 +22,10 @@ public:
     //list<Sensor> SimilaritySensorRanking(int SensorId, Date start, Date end);
     vector<pair<Sensor, double>> FraudulentSensorDetection();
     //list<pair<Sensor, int>> FraudulentIndividualDetection(int individualId);
-    bool ClassifyAsUnreliable(int individualId);
+    bool ClassifyAsUnreliable(int individualId);   
 
-
-    
-
-
+    SensorManagement(Model* unModel);
+private:
+    Model model;
 };
 #endif
