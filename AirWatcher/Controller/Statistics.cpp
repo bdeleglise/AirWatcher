@@ -31,43 +31,62 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         time = &timeBuffer;
     }
 
-    if (*time < it->second.GetMeasurements()->begin()->first || *time>it->second.GetMeasurements()->crbegin()->first)
-    {
-        return -2;  //Erreur la date ne rentre pas dans la plage des données
-    }
+    tm tmp;
+    localtime_s(&tmp, time);
+    tmp.tm_hour = 0;
+    tmp.tm_min = 0;
+    tmp.tm_sec = 0;
+    time_t start = mktime(&tmp);
+    tmp.tm_mday = tmp.tm_mday + 1;
+    time_t end = mktime(&tmp);
 
     system.InitializedMeasurement();
     for (it; it != sensors->end(); ++it) {
         Sensor* sensor = &it->second;
         double distance = pow(latitude - sensor->GetLatitude(), 2) + pow(longitude - sensor->GetLongitude(), 2);
         if (distance <= (radius*radius)) {
-            sensorUsed++;
-            vector<Measurement>* measuresSensor = sensor->GetMeasurements(*time);
-            if (measuresSensor != nullptr) {
+            map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
+            map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
+            int nbMesureSensor = 0;
+            double buffO3 = 0;
+            double buffNO2 = 0;
+            double buffPM10 = 0;
+            double buffSO2 = 0;
+            while (itMes->first<end && itMes != measurementSensor->end()) {
+                nbMesureSensor++;
                 vector<Measurement>::iterator itMeasure;
 
-                for (itMeasure = measuresSensor->begin(); itMeasure != measuresSensor->end(); ++itMeasure) {
+                for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
                     string idAttribute = itMeasure->GetAttribute().GetID();
                     if (idAttribute == "O3") {
-                        O3 += itMeasure->GetValue();
+                        buffO3 += itMeasure->GetValue();
                     }
                     else if (idAttribute == "NO2") {
-                        NO2 += itMeasure->GetValue();
+                        buffNO2 += itMeasure->GetValue();
                     }
                     else if (idAttribute == "SO2") {
-                        SO2 += itMeasure->GetValue();
+                        buffPM10 += itMeasure->GetValue();
                     }
                     else if (idAttribute == "PM10") {
-                        PM10 += itMeasure->GetValue();
+                        buffSO2 += itMeasure->GetValue();
                     }
                     else {
                         return -1;
                     }
                 }
+                itMes++;
+            }
+            if (nbMesureSensor != 0) {
+                sensorUsed++;
+                O3 += buffO3 / nbMesureSensor;
+                NO2 += buffNO2 / nbMesureSensor;
+                PM10 += buffPM10 / nbMesureSensor;
+                SO2 += buffSO2 / nbMesureSensor;
                 if (sensor->GetUserID() != -1) {
                     model->IncrementPointIndividualUser(sensor->GetUserID());
                 }
             }
+            
         }
     }
     system.EndMeasurement();
@@ -86,7 +105,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             return (d1 < d2);
         });
 
-        sensorUsed = 3;
+
         double tabDist[3];
         double sumDist = 0;
         int index = 0;
@@ -101,12 +120,20 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         index = 0;
 
         for (auto& currentSensor : nearSensors) {
-            vector<Measurement>* measuresSensor = currentSensor->GetMeasurements(*time);
-            if (measuresSensor != nullptr) {
+            map<time_t, vector<Measurement>>* measurementSensor = currentSensor->GetMeasurements();
+            map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
+            int nbMesureSensor = 0;
+            double buffO3 = 0;
+            double buffNO2 = 0;
+            double buffPM10 = 0;
+            double buffSO2 = 0;
+            while (itMes->first < end && itMes != measurementSensor->end()) {
+                nbMesureSensor++;
+                vector<Measurement>::iterator itMeasure;
 
-                for (auto& currentMeasure : *measuresSensor) {
-                    string idAttribute = currentMeasure.GetAttribute().GetID();
-                    double value = currentMeasure.GetValue() * (sumDist - tabDist[index]) / ponderDist; //pondération
+                for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
+                    string idAttribute = itMeasure->GetAttribute().GetID();
+                    double value = itMeasure->GetValue(); 
                     if (idAttribute == "O3") {
                         O3 += value;
                     }
@@ -123,13 +150,27 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
                         return -1;
                     }
                 }
+              
+                itMes++;
+            }
+            if (nbMesureSensor != 0) {
+                sensorUsed++;
+                O3 += (buffO3 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor; //pondération
+                NO2 += (buffNO2 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor;
+                PM10 += (buffPM10 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor;
+                SO2 += (buffSO2 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor;
                 if (currentSensor->GetUserID() != -1) {
                     model->IncrementPointIndividualUser(currentSensor->GetUserID());
                 }
             }
             index++;
+
         }
     }
+    if (sensorUsed == 0) {
+        return -2;
+    }
+
     system.EndMeasurement();
     cout << "Etape 3 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
     system.InitializedMeasurement();
@@ -162,13 +203,15 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
 
     tm* time = new tm();
     localtime_s(time, end);
-    time->tm_mday = time->tm_mday - 6;
-    time_t currentDate = mktime(time);
+    time->tm_hour = 0;
+    time->tm_min = 0;
+    time->tm_sec = 0;
+    time->tm_mday = time->tm_mday + 1;
+    *end = mktime(time);
+    time->tm_mday = time->tm_mday - 7;
+    time_t start = mktime(time);
 
-    if (currentDate < sensor->GetMeasurements()->begin()->first) {
-        currentDate = sensor->GetMeasurements()->begin()->first;
-    }
-    int numberDay = 0;
+    int numberMesure = 0;
     double O3 = 0;
     double NO2 = 0;
     double PM10 = 0;
@@ -177,38 +220,39 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
     System system;
     system.InitializedMeasurement();
 
-    while (currentDate <= *end) {
-        vector<Measurement>* measuresSensor = sensor->GetMeasurements(currentDate);
-        if (measuresSensor != nullptr) {
-            numberDay++;
-            vector<Measurement>::iterator itMeasure;
+    map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
+    map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
+    while (itMes->first < *end) {
+         numberMesure++;
+         vector<Measurement>::iterator itMeasure;
 
-            for (itMeasure = measuresSensor->begin(); itMeasure != measuresSensor->end(); ++itMeasure) {
-                string idAttribute = itMeasure->GetAttribute().GetID();
-                double value = itMeasure->GetValue();
-                if (idAttribute == "O3") {
-                    O3 += value;
-                }
-                else if (idAttribute == "NO2") {
-                    NO2 += value;
-                }
-                else if (idAttribute == "SO2") {
-                    SO2 += value;
-                }
-                else if (idAttribute == "PM10") {
-                    PM10 += value;
-                }
-                else {
-                    return -1; //Erreur dans la lecture des mesures
-                }
-            }
-        }
-        localtime_s(time, &currentDate);
-        time->tm_mday = time->tm_mday + 1;
-        currentDate = mktime(time);
+         for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
+             string idAttribute = itMeasure->GetAttribute().GetID();
+             double value = itMeasure->GetValue();
+             if (idAttribute == "O3") {
+                 O3 += value;
+             }
+             else if (idAttribute == "NO2") {
+                 NO2 += value;
+             }
+             else if (idAttribute == "SO2") {
+                 SO2 += value;
+             }
+             else if (idAttribute == "PM10") {
+                 PM10 += value;
+             }
+             else {
+                 return -1; //Erreur dans la lecture des mesures
+             }
+         }
+        
+        itMes++;
+    }
+    if (numberMesure == 0) {
+        return -2;
     }
     
-    double airQuality = atmoIndex(O3 / ((double)numberDay), SO2 / ((double)numberDay), NO2 / ((double)numberDay), PM10 / ((double)numberDay));
+    double airQuality = atmoIndex(O3 / ((double)numberMesure), SO2 / ((double)numberMesure), NO2 / ((double)numberMesure), PM10 / ((double)numberMesure));
 
     cout << "Calculé en :  " << system.GetAlgorithmEfficiency() << " secondes" << endl;
     system.InitializedMeasurement();

@@ -30,7 +30,7 @@ class User
 
     public:
     //----------------------------------------------------- Méthodes publiques
-        virtual int GetID() = 0;
+        virtual int GetID() const = 0;
         // Mode d'emploi :
         //
         // Contrat :
