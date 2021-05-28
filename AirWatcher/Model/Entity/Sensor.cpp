@@ -87,19 +87,6 @@ void Sensor::AddMeasurement(Measurement& measure)
 //-------------------------------------------- Constructeurs - destructeur
 
 
-
-
-
-        sensorID = unSensor.sensorID;
-        state = unSensor.state;
-        latitude = unSensor.latitude;
-        longitude = unSensor.longitude;
-        user = unSensor.user;
-        measurements = unSensor.measurements;
-    }
-    return *this;
-}
-
 Sensor::Sensor(const Sensor& unSensor)
 {
     sensorID=unSensor.sensorID;

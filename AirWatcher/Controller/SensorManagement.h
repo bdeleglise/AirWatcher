@@ -22,11 +22,10 @@ public:
     //list<Sensor> SimilaritySensorRanking(int SensorId, Date start, Date end);
     vector<pair<Sensor, double>> FraudulentSensorDetection();
     //list<pair<Sensor, int>> FraudulentIndividualDetection(int individualId);
-    bool ClassifyAsUnreliable(int individualId);
+    bool ClassifyAsUnreliable(int individualId);   
 
-
-    
-
-
+    SensorManagement(Model* unModel);
+private:
+    Model model;
 };
 #endif

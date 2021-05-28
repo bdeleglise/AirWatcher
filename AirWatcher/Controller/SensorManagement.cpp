@@ -10,11 +10,14 @@
 
 #include "../Controller/Statistics.h"
 
+SensorManagement::SensorManagement(Model* unModel) : model(unModel)
+{
+}
+
 vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
-	Model model;
 	Statistics stats(&model);
 
-	vector<Sensor>* privateSensors;
+	map<int, Sensor>* privateSensors;
 	privateSensors = model.GetPrivateSensors();
 
 	vector<Sensor>::iterator iter;

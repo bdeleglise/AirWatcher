@@ -39,7 +39,7 @@ void UserInterface::MenuUI()
 
 void UserInterface::FraudUI()
 {
-    SensorManagement sm;
+    SensorManagement sm(model);
     vector<pair<Sensor, double>> frauds;
     cout << "------------Détection des Fraudes-------------\n"
         "Voici une liste des capteurs déterminés frauduleurs : \n"
@@ -74,7 +74,7 @@ void UserInterface::StatisticsUI()
     }
     int x, y, r;
     time_t time;
-    int result;
+    double result;
     cout << "Merci d'entrer les coordonnées de l'endroit dont vous souhaitez observer la qualité d'air" << endl;
     x = getXcoord();
     y = getYcoord();
