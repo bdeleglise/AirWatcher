@@ -90,6 +90,26 @@ void Sensor::AddMeasurement(Measurement& measure)
 
 
 
+        sensorID = unSensor.sensorID;
+        state = unSensor.state;
+        latitude = unSensor.latitude;
+        longitude = unSensor.longitude;
+        user = unSensor.user;
+        measurements = unSensor.measurements;
+    }
+    return *this;
+}
+
+Sensor::Sensor(const Sensor& unSensor)
+{
+    sensorID=unSensor.sensorID;
+    state=unSensor.state;
+    latitude=unSensor.latitude;
+    longitude=unSensor.longitude;
+    user=unSensor.user;
+    measurements = unSensor.measurements;
+}
+
 Sensor::Sensor(int id, double latitude, double longitude)
     : sensorID(id), latitude(latitude), longitude(longitude), state(true), user(-1)
 {

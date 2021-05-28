@@ -6,14 +6,17 @@ using namespace std;
 
 double Statistics::CircularMeanAirQuality(double latitude, double longitude, double radius, time_t* time)
 {
+    if (model == nullptr) {
+        return -1;
+    }
     double airQuality = 0;
     System system;
     system.InitializedMeasurement();
-    vector<Sensor>* sensors = Model::GetSensors();
+    map<int, Sensor>* sensors = model->GetSensors();
     system.EndMeasurement();
     cout << "Etape 1 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
-    vector<Sensor>::iterator it = sensors->begin();
+    map<int, Sensor>::iterator it = sensors->begin();
     if (sensors->empty()) {
         return -1; //Erreur
     }
@@ -24,21 +27,22 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
     double SO2 = 0;
 
     if (time == nullptr) {
-        time_t timeBuffer = it->GetMeasurements()->crbegin()->first;
+        time_t timeBuffer = it->second.GetMeasurements()->crbegin()->first;
         time = &timeBuffer;
     }
 
-    if (*time < it->GetMeasurements()->begin()->first || *time>it->GetMeasurements()->crbegin()->first)
+    if (*time < it->second.GetMeasurements()->begin()->first || *time>it->second.GetMeasurements()->crbegin()->first)
     {
         return -2;  //Erreur la date ne rentre pas dans la plage des données
     }
 
     system.InitializedMeasurement();
     for (it; it != sensors->end(); ++it) {
-        double distance = pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2);
+        Sensor* sensor = &it->second;
+        double distance = pow(latitude - sensor->GetLatitude(), 2) + pow(longitude - sensor->GetLongitude(), 2);
         if (distance <= (radius*radius)) {
             sensorUsed++;
-            vector<Measurement>* measuresSensor = it->GetMeasurements(*time);
+            vector<Measurement>* measuresSensor = sensor->GetMeasurements(*time);
             if (measuresSensor != nullptr) {
                 vector<Measurement>::iterator itMeasure;
 
@@ -60,8 +64,8 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
                         return -1;
                     }
                 }
-                if (it->GetUserID() != -1) {
-                    Model::IncrementPointIndividualUser(it->GetUserID());
+                if (sensor->GetUserID() != -1) {
+                    model->IncrementPointIndividualUser(sensor->GetUserID());
                 }
             }
         }
@@ -70,10 +74,15 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
     cout << "Etape 2 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
     system.InitializedMeasurement();
     if (sensorUsed == 0) {
-        vector<Sensor>* nearSensors = new vector<Sensor>(3);
-        partial_sort_copy(sensors->begin(), sensors->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
-            double d1 = pow(latitude - s1.GetLatitude(), 2) + pow(longitude - s1.GetLongitude(), 2);
-            double d2 = pow(latitude - s2.GetLatitude(), 2) + pow(longitude - s2.GetLongitude(), 2);
+        vector<Sensor*> copySensors;
+        for (auto& pair : *sensors) {
+            copySensors.push_back(&pair.second);
+            // des choses
+        }
+        vector<Sensor*> nearSensors(3); //sans new et sans étoile
+        partial_sort_copy(copySensors.begin(), copySensors.end(), nearSensors.begin(), nearSensors.end(), [latitude, longitude](Sensor* s1, Sensor* s2) {
+            double d1 = pow(latitude - s1->GetLatitude(), 2) + pow(longitude - s1->GetLongitude(), 2);
+            double d2 = pow(latitude - s2->GetLatitude(), 2) + pow(longitude - s2->GetLongitude(), 2);
             return (d1 < d2);
         });
 
@@ -82,8 +91,8 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         double sumDist = 0;
         int index = 0;
 
-        for (it= nearSensors->begin(); it != nearSensors->end(); ++it) {
-            double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2)) - radius;
+        for (auto& currentSensor : nearSensors) {
+            double distance = sqrt(pow(latitude - currentSensor->GetLatitude(), 2) + pow(longitude - currentSensor->GetLongitude(), 2)) - radius;
             tabDist[index] = distance;
             sumDist += distance;
             index++;
@@ -91,14 +100,13 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         double ponderDist = sumDist - sumDist / 3;
         index = 0;
 
-        for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
-            vector<Measurement>* measuresSensor = it->GetMeasurements(*time);
+        for (auto& currentSensor : nearSensors) {
+            vector<Measurement>* measuresSensor = currentSensor->GetMeasurements(*time);
             if (measuresSensor != nullptr) {
-                vector<Measurement>::iterator itMeasure;
 
-                for (itMeasure = measuresSensor->begin(); itMeasure != measuresSensor->end(); ++itMeasure) {
-                    string idAttribute = itMeasure->GetAttribute().GetID();
-                    double value = itMeasure->GetValue() * (sumDist - tabDist[index]) / ponderDist; //pondération
+                for (auto& currentMeasure : *measuresSensor) {
+                    string idAttribute = currentMeasure.GetAttribute().GetID();
+                    double value = currentMeasure.GetValue() * (sumDist - tabDist[index]) / ponderDist; //pondération
                     if (idAttribute == "O3") {
                         O3 += value;
                     }
@@ -115,8 +123,8 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
                         return -1;
                     }
                 }
-                if (it->GetUserID() != -1) {
-                    Model::IncrementPointIndividualUser(it->GetUserID());
+                if (currentSensor->GetUserID() != -1) {
+                    model->IncrementPointIndividualUser(currentSensor->GetUserID());
                 }
             }
             index++;
@@ -135,7 +143,8 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
 
 double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
 {
-    if (sensor == nullptr)
+
+    if (sensor == nullptr || model ==nullptr)
     {
         return -1;  //Erreur le sensor est null
     }
@@ -206,6 +215,11 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
 
     delete time;
     return airQuality;
+}
+
+Statistics::Statistics(Model* unModel)
+    : model(unModel)
+{
 }
 
 

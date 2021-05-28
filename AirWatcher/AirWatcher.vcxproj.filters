@@ -86,9 +86,6 @@
     <ClInclude Include="Model\Entity\IndividualUser.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Date.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Model\Model.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
