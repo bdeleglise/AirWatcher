@@ -219,244 +219,250 @@ vector<Sensor>* Model::GetMaliciousIndividualSensors() {
 
 int Model::LoadData()
 {
-	
+	static bool call = false;
+	if (!call) {
+		call = true;
 
-	System system;
-	system.InitializedMeasurement();
-	//lecture des attributs --------------------------------------------------------
-	ifstream file;
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
-	cout << "Loading of attributs" << endl;
-	
-	map<string, Attribute> bufferAttributes;
+		System system;
+		system.InitializedMeasurement();
+		//lecture des attributs --------------------------------------------------------
+		ifstream file;
+		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
+		cout << "Loading of attributs" << endl;
 
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE << " n'existe pas" << endl;
-		return 1;   //le fichier n'existe pas
-	}
+		map<string, Attribute> bufferAttributes;
 
-	string buffer;
-	getline(file, buffer);  //Ligne de description
-
-	while (getline(file, buffer, ';')) {
-		//lecture au format csv
-		string attributeID = buffer;
-		getline(file, buffer, ';');
-		string unit = buffer;
-		getline(file, buffer, ';');
-		string description = buffer;
-		file.ignore(); //ignorer le \n
-
-		bufferAttributes[attributeID] = Attribute(attributeID, unit, description);
-	}
-	file.close();
-	
-	system.EndMeasurement();
-	cout << "Etape attribut en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	
-	system.InitializedMeasurement();
-	//lecture des cleaner --------------------------------------------------------------------------
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
-	cout << "Loading of cleaners" << endl;
-	map<int, Cleaner> bufferCleaner;
-
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE << " n'existe pas" << endl;
-		return 1;
-	} 
-
-	
-	while (getline(file, buffer, ';')) {
-		int cleanerID = stoi(buffer.substr(7));
-		getline(file, buffer, ';');
-		double latitude = stod(buffer);
-		getline(file, buffer, ';');
-		double longitude = stod(buffer);
-
-		getline(file, buffer, ';');
-		tm* tmp = new tm();
-		tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
-		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
-		tmp->tm_mday = stoi(buffer.substr(8, 2));
-		tmp->tm_hour = stoi(buffer.substr(11, 2));
-		tmp->tm_min = stoi(buffer.substr(14, 2));
-		tmp->tm_sec = stoi(buffer.substr(17, 2));
-		time_t start = mktime(tmp);
-		delete tmp;
-		getline(file, buffer, ';');
-		tmp = new tm();
-		tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
-		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
-		tmp->tm_mday = stoi(buffer.substr(8, 2));
-		tmp->tm_hour = stoi(buffer.substr(11, 2));
-		tmp->tm_min = stoi(buffer.substr(14, 2));
-		tmp->tm_sec = stoi(buffer.substr(17, 2));
-		time_t end = mktime(tmp);
-		delete tmp;
-		file.ignore(); //ignorer le \n
-		
-		bufferCleaner[cleanerID] = Cleaner(cleanerID, -1, latitude, longitude, start, end);
-	}
-	
-	file.close();
-
-	system.EndMeasurement();
-	cout << "Etape cleaner en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	system.InitializedMeasurement();
-	//lecture des providers --------------------------------------------------------------------------
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE);
-	cout << "Loading of providers" << endl;
-	map<int, Provider> bufferProvider;
-	map<int, Provider>::iterator it;
-	map<int, Cleaner>::iterator itCleaner;
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE << " n'existe pas" << endl;
-		return 1;
-	}
-
-	while (getline(file, buffer, ';')) {
-		int providerID = stoi(buffer.substr(8));
-		getline(file, buffer, ';');
-		int cleanerID = stoi(buffer.substr(7));
-		file.ignore(); //ignorer le \n
-
-		itCleaner= bufferCleaner.find(cleanerID);
-		if (itCleaner == bufferCleaner.end()) {
-			return 2; //erreur de lecture
+		if (!file) {
+			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE << " n'existe pas" << endl;
+			return 1;   //le fichier n'existe pas
 		}
-		itCleaner->second.SetProviderID(providerID);
-		it = bufferProvider.find(providerID);
-		if (it!= bufferProvider.end()) {
-			it->second.AddCleaner(itCleaner->second);
+
+		string buffer;
+		getline(file, buffer);  //Ligne de description
+
+		while (getline(file, buffer, ';')) {
+			//lecture au format csv
+			string attributeID = buffer;
+			getline(file, buffer, ';');
+			string unit = buffer;
+			getline(file, buffer, ';');
+			string description = buffer;
+			file.ignore(); //ignorer le \n
+
+			bufferAttributes[attributeID] = Attribute(attributeID, unit, description);
 		}
-		else {
-			bufferProvider[providerID] = Provider(providerID, itCleaner->second);
+		file.close();
+
+		system.EndMeasurement();
+		cout << "Etape attribut en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+		system.InitializedMeasurement();
+		//lecture des cleaner --------------------------------------------------------------------------
+		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
+		cout << "Loading of cleaners" << endl;
+		map<int, Cleaner> bufferCleaner;
+
+		if (!file) {
+			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE << " n'existe pas" << endl;
+			return 1;
 		}
-		cleaners.push_back(itCleaner->second);
-	}
-	file.close();
-	for (it = bufferProvider.begin(); it != bufferProvider.end(); ++it) {
-		providers.push_back(it->second);
-	}
-
-	system.EndMeasurement();
-	cout << "Etape provider en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	system.InitializedMeasurement();
-	//lecture des sensors --------------------------------------------------------------------------
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE);
-	cout << "Loading of sensors" << endl;
-	map<int, Sensor> bufferSensor;
-	map<int, vector<Measurement>>::iterator itMeasure;
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE << " n'existe pas" << endl;
-		return 1;
-	}
-
-	while (getline(file, buffer, ';')) {
-		int sensorID = stoi(buffer.substr(6));
-		getline(file, buffer, ';');
-		double latitude = stod(buffer);
-		getline(file, buffer, ';');
-		double longitude = stod(buffer);
-		file.ignore(); //ignorer le \n
-
-		Sensor sensor(sensorID, latitude, longitude);
-		bufferSensor[sensorID] = sensor;
-	}
-	file.close();
-	
-	system.EndMeasurement();
-	cout << "Etape sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	system.InitializedMeasurement();
-	//lecture des mesures --------------------------------------------------------------------------
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
-	cout << "Loading of measurements" << endl;
-	map<int, vector<Measurement>> bufferMeasurement;
-
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE << " n'existe pas" << endl;
-		return 1;
-	}
-
-	while (getline(file, buffer, ';')) { //lecture au format csv
-		tm* tmp = new tm();
-		tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
-		tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
-		tmp->tm_mday = stoi(buffer.substr(8, 2));
-		tmp->tm_hour = stoi(buffer.substr(11, 2));
-		tmp->tm_min = stoi(buffer.substr(14, 2));
-		tmp->tm_sec = stoi(buffer.substr(17, 2));
-		time_t timestamp = mktime(tmp);
-		delete tmp;
-		getline(file, buffer, ';');
-		int sensorID = stoi(buffer.substr(6));
-		getline(file, buffer, ';');
-		Attribute attribute = bufferAttributes[buffer];
-		getline(file, buffer, ';');
-		double value = stod(buffer);
-		file.ignore(); //ignorer le \n
-		Measurement measure(timestamp, value, attribute);
-		bufferSensor[sensorID].AddMeasurement(measure);
-	}
-	file.close();
 
 
-	system.EndMeasurement();
-	cout << "Etape mesures en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	system.InitializedMeasurement();
-	//lecture des users --------------------------------------------------------------------------
-	cout << "Loading of users" << endl;
-	file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
-	map<int, IndividualUser> bufferUser;
-	map<int, IndividualUser>::iterator itUser;
-	map<int, Sensor>::iterator itSensor;
+		while (getline(file, buffer, ';')) {
+			int cleanerID = stoi(buffer.substr(7));
+			getline(file, buffer, ';');
+			double latitude = stod(buffer);
+			getline(file, buffer, ';');
+			double longitude = stod(buffer);
 
-	if (!file) {
-		cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE << " n'existe pas" << endl;
-		return 1;
-	}
+			getline(file, buffer, ';');
+			tm* tmp = new tm();
+			tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
+			tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+			tmp->tm_mday = stoi(buffer.substr(8, 2));
+			tmp->tm_hour = stoi(buffer.substr(11, 2));
+			tmp->tm_min = stoi(buffer.substr(14, 2));
+			tmp->tm_sec = stoi(buffer.substr(17, 2));
+			time_t start = mktime(tmp);
+			delete tmp;
+			getline(file, buffer, ';');
+			tmp = new tm();
+			tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
+			tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+			tmp->tm_mday = stoi(buffer.substr(8, 2));
+			tmp->tm_hour = stoi(buffer.substr(11, 2));
+			tmp->tm_min = stoi(buffer.substr(14, 2));
+			tmp->tm_sec = stoi(buffer.substr(17, 2));
+			time_t end = mktime(tmp);
+			delete tmp;
+			file.ignore(); //ignorer le \n
 
-	while (getline(file, buffer, ';')) {
-		int userID = stoi(buffer.substr(4));
-		getline(file, buffer, ';');
-		int sensorID = stoi(buffer.substr(6));
-		file.ignore(); //ignorer le \n
-
-		itSensor = bufferSensor.find(sensorID);
-		if (itSensor == bufferSensor.end()) {
-			return 2;
+			bufferCleaner[cleanerID] = Cleaner(cleanerID, -1, latitude, longitude, start, end);
 		}
-		itSensor->second.SetUser(userID);
-		itUser = bufferUser.find(userID);
-		if (itUser != bufferUser.end()) {
-			itUser->second.AddSensor(itSensor->second);
+
+		file.close();
+
+		system.EndMeasurement();
+		cout << "Etape cleaner en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+		system.InitializedMeasurement();
+		//lecture des providers --------------------------------------------------------------------------
+		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE);
+		cout << "Loading of providers" << endl;
+		map<int, Provider> bufferProvider;
+		map<int, Provider>::iterator it;
+		map<int, Cleaner>::iterator itCleaner;
+		if (!file) {
+			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE << " n'existe pas" << endl;
+			return 1;
 		}
-		else {
-			bufferUser[userID] = IndividualUser(userID,itSensor->second);
+
+		while (getline(file, buffer, ';')) {
+			int providerID = stoi(buffer.substr(8));
+			getline(file, buffer, ';');
+			int cleanerID = stoi(buffer.substr(7));
+			file.ignore(); //ignorer le \n
+
+			itCleaner = bufferCleaner.find(cleanerID);
+			if (itCleaner == bufferCleaner.end()) {
+				return 2; //erreur de lecture
+			}
+			itCleaner->second.SetProviderID(providerID);
+			it = bufferProvider.find(providerID);
+			if (it != bufferProvider.end()) {
+				it->second.AddCleaner(itCleaner->second);
+			}
+			else {
+				bufferProvider[providerID] = Provider(providerID, itCleaner->second);
+			}
+			cleaners.push_back(itCleaner->second);
 		}
-		privateSensors.push_back(itSensor->second);
+		file.close();
+		for (it = bufferProvider.begin(); it != bufferProvider.end(); ++it) {
+			providers.push_back(it->second);
+		}
+
+		system.EndMeasurement();
+		cout << "Etape provider en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+		system.InitializedMeasurement();
+		//lecture des sensors --------------------------------------------------------------------------
+		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE);
+		cout << "Loading of sensors" << endl;
+		map<int, Sensor> bufferSensor;
+		map<int, vector<Measurement>>::iterator itMeasure;
+		if (!file) {
+			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE << " n'existe pas" << endl;
+			return 1;
+		}
+
+		while (getline(file, buffer, ';')) {
+			int sensorID = stoi(buffer.substr(6));
+			getline(file, buffer, ';');
+			double latitude = stod(buffer);
+			getline(file, buffer, ';');
+			double longitude = stod(buffer);
+			file.ignore(); //ignorer le \n
+
+			Sensor sensor(sensorID, latitude, longitude);
+			bufferSensor[sensorID] = sensor;
+		}
+		file.close();
+
+		system.EndMeasurement();
+		cout << "Etape sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+		system.InitializedMeasurement();
+		//lecture des mesures --------------------------------------------------------------------------
+		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
+		cout << "Loading of measurements" << endl;
+		map<int, vector<Measurement>> bufferMeasurement;
+
+		if (!file) {
+			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE << " n'existe pas" << endl;
+			return 1;
+		}
+
+		while (getline(file, buffer, ';')) { //lecture au format csv
+			tm* tmp = new tm();
+			tmp->tm_year = stoi(buffer.substr(0, 4)) - 1900;
+			tmp->tm_mon = stoi(buffer.substr(5, 2)) - 1;
+			tmp->tm_mday = stoi(buffer.substr(8, 2));
+			tmp->tm_hour = stoi(buffer.substr(11, 2));
+			tmp->tm_min = stoi(buffer.substr(14, 2));
+			tmp->tm_sec = stoi(buffer.substr(17, 2));
+			time_t timestamp = mktime(tmp);
+			delete tmp;
+			getline(file, buffer, ';');
+			int sensorID = stoi(buffer.substr(6));
+			getline(file, buffer, ';');
+			Attribute attribute = bufferAttributes[buffer];
+			getline(file, buffer, ';');
+			double value = stod(buffer);
+			file.ignore(); //ignorer le \n
+			Measurement measure(timestamp, value, attribute);
+			bufferSensor[sensorID].AddMeasurement(measure);
+		}
+		file.close();
+
+
+		system.EndMeasurement();
+		cout << "Etape mesures en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+		system.InitializedMeasurement();
+		//lecture des users --------------------------------------------------------------------------
+		cout << "Loading of users" << endl;
+		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
+		map<int, IndividualUser> bufferUser;
+		map<int, IndividualUser>::iterator itUser;
+		map<int, Sensor>::iterator itSensor;
+
+		if (!file) {
+			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE << " n'existe pas" << endl;
+			return 1;
+		}
+
+		while (getline(file, buffer, ';')) {
+			int userID = stoi(buffer.substr(4));
+			getline(file, buffer, ';');
+			int sensorID = stoi(buffer.substr(6));
+			file.ignore(); //ignorer le \n
+
+			itSensor = bufferSensor.find(sensorID);
+			if (itSensor == bufferSensor.end()) {
+				return 2;
+			}
+			itSensor->second.SetUser(userID);
+			itUser = bufferUser.find(userID);
+			if (itUser != bufferUser.end()) {
+				itUser->second.AddSensor(itSensor->second);
+			}
+			else {
+				bufferUser[userID] = IndividualUser(userID, itSensor->second);
+			}
+			privateSensors.push_back(itSensor->second);
+		}
+		file.close();
+		system.EndMeasurement();
+		cout << "Etape user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+		system.InitializedMeasurement();
+
+		for (itUser = bufferUser.begin(); itUser != bufferUser.end(); ++itUser) {
+			individuals.push_back(itUser->second);
+		}
+		system.EndMeasurement();
+		cout << "Etape copie user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+		system.InitializedMeasurement();
+		for (itSensor = bufferSensor.begin(); itSensor != bufferSensor.end(); ++itSensor) {
+			sensors.push_back(itSensor->second);
+		}
+		system.EndMeasurement();
+		cout << "Etape copie sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+
+
+
+		return 0;
 	}
-	file.close();
-	system.EndMeasurement();
-	cout << "Etape user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	system.InitializedMeasurement();
-
-	for (itUser = bufferUser.begin(); itUser != bufferUser.end(); ++itUser) {
-		individuals.push_back(itUser->second);
+	 else {
+	 return 3;  //Données déjà chargé
 	}
-	system.EndMeasurement();
-	cout << "Etape copie user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-	system.InitializedMeasurement();
-	for (itSensor = bufferSensor.begin(); itSensor != bufferSensor.end(); ++itSensor) {
-		sensors.push_back(itSensor->second);
-	}
-	system.EndMeasurement();
-	cout << "Etape copie sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-
-
-	
-
-	return 0;
 }
 
 
@@ -478,16 +484,16 @@ void Model::IncrementPointIndividualUser(int idIndividual) {
 void Model::UpdateSensorState(int idSensor) 
 {
 	vector<Sensor>::iterator iter;
+	bool find = false;
 	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
 
 		if (iter->GetID() == idSensor) {
+			find = true;
 			Sensor* toFind = &(*iter);
 
 			// dysfunction it
 			toFind->SetState(false);
 
-			//erase from list of sensors
-			sensors.erase(iter);
 
 			// First look if it's a private sensor 
 			if (toFind->GetUserID() != -1) {    
@@ -495,6 +501,8 @@ void Model::UpdateSensorState(int idSensor)
 				// add to list of malicious sensors
 				
 				maliciousSensors.push_back(*toFind);
+				//erase from list of sensors
+				sensors.erase(iter);
 				UpdateIndividualState(toFind->GetUserID());
 			}
 
@@ -502,11 +510,39 @@ void Model::UpdateSensorState(int idSensor)
 			else {
 				// add it to list of maintenance srnsors 
 				maintenanceSensors.push_back(*toFind);
+				//erase from list of sensors
+				sensors.erase(iter);
 			}
-			break;
+			return;
 		}
 	}
-
+	if (!find) {
+		for (iter = maintenanceSensors.begin(); iter != maintenanceSensors.end(); iter++) {
+			if (iter->GetID() == idSensor) {
+				cout << *iter << endl;
+				find = true;
+				Sensor* toFind = &(*iter);
+				toFind->SetState(true);
+				sensors.push_back(*toFind);
+				maintenanceSensors.erase(iter);
+				return;
+			}
+		}
+	}
+	if (!find) {
+		for (iter = maliciousSensors.begin(); iter != maliciousSensors.end(); iter++) {
+			if (iter->GetID() == idSensor) {
+				find = true;
+				Sensor* toFind = &(*iter);
+				toFind->SetState(true);
+				privateSensors.push_back(*toFind);
+				sensors.push_back(*toFind);
+				maintenanceSensors.erase(iter);
+				UpdateIndividualState(toFind->GetUserID());
+				return;
+			}
+		}
+	}
 
 }
 

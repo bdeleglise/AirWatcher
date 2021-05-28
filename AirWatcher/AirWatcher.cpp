@@ -21,12 +21,12 @@ int main()
     System system;
     system.InitializedMeasurement();
     cout << "Chargement des données ..." << endl;
-    
+
     int res = Model::LoadData();
     cout << res << endl;
     cout << "Données chargées" << endl;
     system.EndMeasurement();
-    cout << "Données chargées en : " << system.GetAlgorithmEfficiency()<< " secondes" << endl;
+    cout << "Données chargées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
     if (res == 0) {
         system.InitializedMeasurement();
@@ -128,8 +128,65 @@ int main()
         i = sensorsPrive->begin();
         for (i = sensorsPrive->begin(); i != sensorsPrive->end(); ++i) {
             cout << *i << endl;
-            cout << "Qualité de l'air évalué par le sensor : " << Statistics::AirQualitySensor(&*i,&date) << endl;
+            cout << "Qualité de l'air évalué par le sensor : " << Statistics::AirQualitySensor(&*i, &date) << endl;
         }
+        system.InitializedMeasurement();
+        cout << *Model::SearchSensor(1) << endl;
+        system.EndMeasurement();
+        cout << "Données afichées en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+
+
+        Sensor* sensor = Model::SearchSensor(0);
+        int size1 = Model::GetSensors()->size();
+        int size2 = Model::GetMaintenanceSensors()->size();
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << *sensor << endl;
+        Model::UpdateSensorState(0);
+        sensor = Model::SearchSensor(0);
+        size1 = Model::GetSensors()->size();
+        size2 = Model::GetMaintenanceSensors()->size();
+        cout << size1 << endl;
+        cout << size2 << endl;
+        if (sensor == nullptr) {
+            cout << "pb" << endl;
+            cout << *Model::GetMaintenanceSensors()->begin() << endl;
+        }
+        else {
+            cout << *sensor << endl;
+
+        }
+        Model::UpdateSensorState(0);
+        sensor = Model::SearchSensor(0);
+        size1 = Model::GetSensors()->size();
+        size2 = Model::GetMaintenanceSensors()->size();
+        cout << size1 << endl;
+        cout << size2 << endl;
+        if (sensor == nullptr) {
+            cout << "pb" << endl;
+            //cout << *Model::GetMaintenanceSensors()->begin() << endl;
+        }
+        else {
+            cout << *sensor << endl;
+
+        }
+
+        IndividualUser* user = Model::SearchIndividual(1);
+        size1 = Model::GetSensors()->size();
+        size2 = Model::GetMaliciousIndividualSensors()->size();
+        int size3 = Model::GetPrivateSensors()->size();
+        cout << *user << endl;
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << size3 << endl;
+        Model::UpdateIndividualState(user->GetID());
+        size1 = Model::GetSensors()->size();
+        size2 = Model::GetMaliciousIndividualSensors()->size();
+        size3 = Model::GetPrivateSensors()->size();
+        cout << *user << endl;
+        cout << size1 << endl;
+        cout << size2 << endl;
+        cout << size3 << endl;
 
     }
 }
