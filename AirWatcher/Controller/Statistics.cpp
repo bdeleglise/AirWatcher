@@ -242,6 +242,7 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
             for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
                 string idAttribute = itMeasure->GetAttribute().GetID();
                 double value = itMeasure->GetValue();
+                cout << idAttribute << " et " << value << endl;
                 if (idAttribute == "O3") {
                     O3 += value;
                 }
