@@ -27,6 +27,7 @@ void UserInterface::MenuUI()
         "\n"
         "1 - Afficher des statistiques\n"
         "2 - Detecter les fraudes\n"
+        "3 - Rechercher un provider\n"
         << endl;
     choice = GetInput();
     switch (choice)
@@ -37,7 +38,42 @@ void UserInterface::MenuUI()
         case 2:
             FraudUI();
             break;
+        case 3:ProviderUI();
+        default:
+            MenuUI();
     }
+}
+
+void UserInterface::ProviderUI()
+{
+    int id;
+    cout << "------------Rechercher un provider-------------\n"
+        "Merci d'entrer l'identifiant du provider dont vous souhaitez afficher les informations\n"
+        << endl;
+    cin >> id;
+    Provider *p = model->SearchProvider(id);
+    if (p == nullptr)
+    {
+        cout << "Impossible de trouver un provider ayant cet identifiant" << endl;
+        cout << endl;
+        MenuUI();
+    }
+    else
+    {
+        cout << "Informations liees au provider :" << endl;
+        vector<Cleaner>* cleaners = p->GetCleaners();
+        for (auto& cleaner : *cleaners)
+        {
+            cout << cleaner << endl;
+        }
+        char buff;
+        cout << "Entrez un caractere pour revenir au menu principal." << endl;
+        cin >> buff;
+        cout << endl;
+        MenuUI();
+    }
+
+
 }
 
 void UserInterface::FraudUI()
@@ -54,6 +90,11 @@ void UserInterface::FraudUI()
             "Pourcentage d'erreur  : " << currentPair.second << "\n"
             << endl;
     }
+    char buff;
+    cout << "Entrez un caractere pour revenir au menu principal." << endl;
+    cin >> buff;
+    cout << endl;
+    MenuUI();
     
 }
 void UserInterface::StatisticsUI()
@@ -105,6 +146,12 @@ void UserInterface::StatisticsUI()
 
     cout << "Voici la qualite de l'air calculee avec indice ATMO :" << endl;
     cout << result << endl;
+
+    char buff;
+    cout << "Entrez un caractere pour revenir au menu principal." << endl;
+    cin >> buff;
+    cout << endl;
+    MenuUI();
 }
 
 int UserInterface::getRayon()
