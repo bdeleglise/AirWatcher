@@ -10,11 +10,9 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         return -1;
     }
     double airQuality = 0;
-    System system;
-    system.InitializedMeasurement();
+
     map<int, Sensor>* sensors = model->GetSensors();
-    system.EndMeasurement();
-    cout << "Etape 1 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+    
 
     map<int, Sensor>::iterator it = sensors->begin();
     if (sensors->empty()) {
@@ -26,27 +24,41 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
     double PM10 = 0;
     double SO2 = 0;
 
-    if (time == nullptr) {
-        time_t timeBuffer = it->second.GetMeasurements()->crbegin()->first;
-        time = &timeBuffer;
+    time_t start;
+    time_t end;
+    if (time != nullptr) {
+        tm tmp;
+        localtime_s(&tmp, time);
+        tmp.tm_hour = 0;
+        tmp.tm_min = 0;
+        tmp.tm_sec = 0;
+        start = mktime(&tmp);
+        tmp.tm_mday = tmp.tm_mday + 1;
+        end = mktime(&tmp);
     }
 
-    tm tmp;
-    localtime_s(&tmp, time);
-    tmp.tm_hour = 0;
-    tmp.tm_min = 0;
-    tmp.tm_sec = 0;
-    time_t start = mktime(&tmp);
-    tmp.tm_mday = tmp.tm_mday + 1;
-    time_t end = mktime(&tmp);
 
-    system.InitializedMeasurement();
+
+
     for (it; it != sensors->end(); ++it) {
         Sensor* sensor = &it->second;
         double distance = pow(latitude - sensor->GetLatitude(), 2) + pow(longitude - sensor->GetLongitude(), 2);
         if (distance <= (radius*radius)) {
             map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
+            if (time == nullptr) {
+                time_t timebuffer = measurementSensor->crbegin()->first;
+                tm tmp;
+                localtime_s(&tmp, &timebuffer);
+                tmp.tm_hour = 0;
+                tmp.tm_min = 0;
+                tmp.tm_sec = 0;
+                start = mktime(&tmp);
+                tmp.tm_mday = tmp.tm_mday + 1;
+                end = mktime(&tmp);
+               
+            }
             map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
+            
             int nbMesureSensor = 0;
             double buffO3 = 0;
             double buffNO2 = 0;
@@ -89,9 +101,7 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
             
         }
     }
-    system.EndMeasurement();
-    cout << "Etape 2 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-    system.InitializedMeasurement();
+
     if (sensorUsed == 0) {
         vector<Sensor*> copySensors;
         for (auto& pair : *sensors) {
@@ -120,6 +130,17 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
 
         for (auto& currentSensor : nearSensors) {
             map<time_t, vector<Measurement>>* measurementSensor = currentSensor->GetMeasurements();
+            if (time == nullptr) {
+                time_t timebuffer = measurementSensor->crbegin()->first;
+                tm tmp;
+                localtime_s(&tmp, &timebuffer);
+                tmp.tm_hour = 0;
+                tmp.tm_min = 0;
+                tmp.tm_sec = 0;
+                start = mktime(&tmp);
+                tmp.tm_mday = tmp.tm_mday + 1;
+                end = mktime(&tmp);
+            }
             map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
             int nbMesureSensor = 0;
             double buffO3 = 0;
@@ -167,17 +188,12 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         }
     }
     if (sensorUsed == 0) {
-        return -2;
+        return -2; //Erreur la date ne rentre pas dans la plage des données
     }
 
-    system.EndMeasurement();
-    cout << "Etape 3 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-    system.InitializedMeasurement();
+    
     airQuality = atmoIndex(O3 / ((double)sensorUsed), SO2 / ((double)sensorUsed), NO2 / ((double)sensorUsed), PM10 / ((double)sensorUsed));
 
-    system.EndMeasurement();
-    cout << "Etape 4 en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-    system.InitializedMeasurement();
     return airQuality;
 }
 
@@ -195,10 +211,6 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
         end = &timeBuffer;
     }
 
-    if (*end < sensor->GetMeasurements()->begin()->first || *end>sensor->GetMeasurements()->crbegin()->first) 
-    {
-        return -2;  //Erreur la date ne rentre pas dans la plage des données
-    }
 
     tm* time = new tm();
     localtime_s(time, end);
@@ -215,8 +227,6 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
    
     double indexAtmoWeek = 0;
     int numberIndex = 0;
-    System system;
-    system.InitializedMeasurement();
     while (start < *end) {
         map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
         map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
@@ -261,12 +271,10 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
     }
 
     if (numberIndex == 0) {
-        return -2;
+        return -2; //Erreur la date ne rentre pas dans la plage des données
     }
 
-    cout << "Calculé en :  " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-    system.InitializedMeasurement();
-
+  
     delete time;
     return indexAtmoWeek/numberIndex;
 }
@@ -285,80 +293,128 @@ double Statistics::atmoIndex(double O3, double So2, double No2, double Pm10)
 {
     double meanFactor=0;
     double sumQuality = 0;
-    if (O3 <= 50) {
+    if (O3 <= 29) {
         sumQuality = 1;
     }
-    else if (O3 <= 100) {
+    else if (O3 <= 54) {
         sumQuality = 2;
     }
-    else if (O3 <= 130) {
+    else if (O3 <= 79) {
         sumQuality = 3;
     }
-    else if (O3 <= 240) {
+    else if (O3 <= 104) {
         sumQuality = 4;
     }
-    else if (O3 <= 380) {
+    else if (O3 <= 129) {
         sumQuality = 5;
     }
-    else {
+    else if (O3 <= 149) {
         sumQuality = 6;
     }
-
-    if (So2 <= 100) {
-        sumQuality += 1;
+    else if (O3 <= 179) {
+        sumQuality = 7;
     }
-    else if (So2 <= 200) {
-        sumQuality += 2;
+    else if (O3 <= 209) {
+        sumQuality = 8;
     }
-    else if (So2 <= 350) {
-        sumQuality += 3;
-    }
-    else if (So2 <= 500) {
-        sumQuality += 4;
-    }
-    else if (So2 <= 750) {
-        sumQuality += 5;
+    else if (O3 <= 239) {
+        sumQuality = 9;
     }
     else {
-        sumQuality += 6;
+        sumQuality = 10;
     }
 
-    if (No2 <= 40) {
+    if (So2 <= 39) {
         sumQuality += 1;
     }
-    else if (No2 <= 90) {
+    else if (So2 <= 79) {
         sumQuality += 2;
     }
-    else if (No2 <= 120) {
+    else if (So2 <= 119) {
         sumQuality += 3;
     }
-    else if (No2 <= 230) {
+    else if (So2 <= 159) {
         sumQuality += 4;
     }
-    else if (No2 <= 340) {
+    else if (So2 <= 199) {
         sumQuality += 5;
     }
-    else {
+    else if (So2 <= 249) {
         sumQuality += 6;
+    }
+    else if (So2 <= 299) {
+        sumQuality += 7;
+    }
+    else if (So2 <= 399) {
+        sumQuality += 8;
+    }
+    else if (So2 <= 499) {
+        sumQuality += 9;
+    }
+    else {
+        sumQuality += 10;
     }
 
-    if (Pm10 <= 20) {
+    if (No2 <= 29) {
         sumQuality += 1;
     }
-    else if (Pm10 <= 40) {
+    else if (No2 <= 54) {
         sumQuality += 2;
     }
-    else if (Pm10 <= 50) {
+    else if (No2 <= 84) {
         sumQuality += 3;
     }
-    else if (Pm10 <= 100) {
+    else if (No2 <= 109) {
         sumQuality += 4;
     }
-    else if (Pm10 <= 150) {
+    else if (No2 <= 134) {
         sumQuality += 5;
     }
-    else {
+    else if (No2 <= 164) {
         sumQuality += 6;
+    }
+    else if (No2 <= 199) {
+        sumQuality += 7;
+    }
+    else if (No2 <= 274) {
+        sumQuality += 8;
+    }
+    else if (No2 <= 399) {
+        sumQuality += 9;
+    }
+    else {
+        sumQuality += 10;
+    }
+
+    if (Pm10 <= 6) {
+        sumQuality += 1;
+    }
+    else if (Pm10 <= 13) {
+        sumQuality += 2;
+    }
+    else if (Pm10 <= 20) {
+        sumQuality += 3;
+    }
+    else if (Pm10 <= 27) {
+        sumQuality += 4;
+    }
+    else if (Pm10 <= 34) {
+        sumQuality += 5;
+    }
+    else if (Pm10 <= 41) {
+        sumQuality += 6;
+    }
+    else if (Pm10 <= 49) {
+        sumQuality += 7;
+    }
+    else if (Pm10 <= 64) {
+        sumQuality += 8;
+    }
+    else if (Pm10 <= 79) {
+        sumQuality += 9;
+    }
+    else {
+        sumQuality += 10;
     }
 
 

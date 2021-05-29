@@ -57,22 +57,10 @@ vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
 
 bool SensorManagement::ClassifyAsUnreliable(int individualId) {
 
-
-	Model model;
-	IndividualUser* individualPtr = model.SearchIndividual(individualId);
-	vector<Sensor>::iterator iter;
-	//declaring a pointer of listSensors 
-	vector<Sensor>* listSensors;
+	IndividualUser* individualPtr = model->SearchIndividual(individualId);
 	
-	if (individualPtr != nullptr) {
-		listSensors = individualPtr->GetSensors();
-
-		if (individualPtr->GetReliable()) {
-			/*for (iter = listSensors->begin(); iter != listSensors->end(); iter++) {
-				model.UpdateSensorState(iter->GetID());
-			}*/
-			model.UpdateIndividualState(individualId);
-		}
+	if (individualPtr != nullptr && individualPtr->GetReliable()) {
+		model->UpdateIndividualState(individualId);
 		return(true);
 	}
 	else {

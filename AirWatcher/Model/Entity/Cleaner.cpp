@@ -113,7 +113,7 @@ ostream& operator<<(ostream& os, const Cleaner& cleaner)
     localtime_s(tmp,&cleaner.start);
     os << "Effective from " << tmp->tm_year + 1900 << "-" << tmp->tm_mon + 1 << "-" << tmp->tm_mday << " " << tmp->tm_hour << ":" << tmp->tm_min << ":" << tmp->tm_sec << endl;
     localtime_s(tmp, &cleaner.stop);
-    os << "To " << tmp->tm_year + 1900 << "-" << tmp->tm_mon + 1 << "-" << tmp->tm_mday << " " << tmp->tm_hour << ":" << tmp->tm_min << ":" << tmp->tm_sec << endl;
+    os << "To " << tmp->tm_year + 1900 << "-" << tmp->tm_mon + 1 << "-" << tmp->tm_mday << " " << tmp->tm_hour << ":" << tmp->tm_min << ":" << tmp->tm_sec;
     delete tmp;
     return os;
 }

@@ -210,12 +210,9 @@ int Model::LoadData()
 	if (!call) {
 		call = true;
 
-		System system;
-		system.InitializedMeasurement();
 		//lecture des attributs --------------------------------------------------------
 		ifstream file;
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.ATTRIBUTESFILE);
-		cout << "Loading of attributs" << endl;
 
 		map<string, Attribute> bufferAttributes;
 
@@ -240,13 +237,9 @@ int Model::LoadData()
 		}
 		file.close();
 
-		system.EndMeasurement();
-		cout << "Etape attribut en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 
-		system.InitializedMeasurement();
 		//lecture des cleaner --------------------------------------------------------------------------
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE);
-		cout << "Loading of cleaners" << endl;
 
 		if (!file) {
 			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.CLEANERSFILE << " n'existe pas" << endl;
@@ -288,12 +281,8 @@ int Model::LoadData()
 
 		file.close();
 
-		system.EndMeasurement();
-		cout << "Etape cleaner en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-		system.InitializedMeasurement();
 		//lecture des providers --------------------------------------------------------------------------
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.PROVIDERSFILE);
-		cout << "Loading of providers" << endl;
 		map<int, Provider>::iterator it;
 		map<int, Cleaner>::iterator itCleaner;
 		if (!file) {
@@ -322,13 +311,8 @@ int Model::LoadData()
 		}
 		file.close();
 		
-
-		system.EndMeasurement();
-		cout << "Etape provider en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-		system.InitializedMeasurement();
 		//lecture des sensors --------------------------------------------------------------------------
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE);
-		cout << "Loading of sensors" << endl;
 		map<int, vector<Measurement>>::iterator itMeasure;
 		if (!file) {
 			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.SENSORFILE << " n'existe pas" << endl;
@@ -348,12 +332,8 @@ int Model::LoadData()
 		}
 		file.close();
 
-		system.EndMeasurement();
-		cout << "Etape sensor en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-		system.InitializedMeasurement();
 		//lecture des mesures --------------------------------------------------------------------------
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE);
-		cout << "Loading of measurements" << endl;
 
 		if (!file) {
 			cerr << FILE_NAME.DIRECTORYPATH + FILE_NAME.MEASUREMENTSFILE << " n'existe pas" << endl;
@@ -383,11 +363,7 @@ int Model::LoadData()
 		file.close();
 
 
-		system.EndMeasurement();
-		cout << "Etape mesures en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
-		system.InitializedMeasurement();
 		//lecture des users --------------------------------------------------------------------------
-		cout << "Loading of users" << endl;
 		file.open(FILE_NAME.DIRECTORYPATH + FILE_NAME.USERSFILE);
 		map<int, IndividualUser>::iterator itUser;
 		map<int, Sensor>::iterator itSensor;
@@ -418,8 +394,6 @@ int Model::LoadData()
 			privateSensors[sensorID]=itSensor->second;
 		}
 		file.close();
-		system.EndMeasurement();
-		cout << "Etape user en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
 		return 0;
 	}
 	 else {
