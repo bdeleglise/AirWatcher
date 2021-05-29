@@ -16,6 +16,7 @@ class UserInterface
 public:
 	UserInterface(Model* unModel);
 	void MenuUI();
+	void ProviderUI();
 private:
 	int choice;
 	bool evalPerformance;
