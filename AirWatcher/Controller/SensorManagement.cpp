@@ -20,7 +20,7 @@ vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
 	map<int, Sensor>* privateSensors;
 	privateSensors = model->GetPrivateSensors();
 
-	map<int, Sensor>::iterator iter;
+	//map<int, Sensor>::iterator iter;
 	
 	double atmoCourant;
 	double atmoAlentourMoyen;
@@ -29,21 +29,27 @@ vector<pair<Sensor, double>> SensorManagement::FraudulentSensorDetection() {
 
 	vector<pair<Sensor, double>> falseSensors;
 
-	for (iter = privateSensors->begin(); iter != privateSensors->end(); iter++) {
-		// idk if the parameter of AirQualitySensor is correct (ie &(*iter))?
-		atmoCourant = stats.AirQualitySensor(&iter->second);
+	for (auto & pair : *privateSensors)
+	//Boucle sur chaque capteur détenu par un individu privé
+	{
+		//On récupère la valeur de l'indice atmo renvoyé par le capteur
+		atmoCourant = stats.AirQualitySensor(&(pair.second));
 		atmoAlentourMoyen = 0;
-		neighbors = model->GetPrivateSensorsOrderByDistance(iter->second.GetLatitude(), iter->second.GetLongitude());
-
-
-
-		// begin() will be the sensor we study 
-		for (mapIter = neighbors->begin(); mapIter != (neighbors->begin())+3; mapIter++) {
+		//On récupère la liste des voisins de ce capteur, triée par distance croissante
+		neighbors = model->GetSensorsOrderByDistance(pair.second.GetLatitude(), pair.second.GetLongitude());
+		//On prend en compte les 3 plus proches voisins pour le calcul de l'indice atmo alentour moyen
+		//Attention a ne pas prendre comme premier neighbors->begin() qui est le capteur lui même avec utilisation de la methode GetSensorsOrderByDistance
+		mapIter = neighbors->begin();
+		mapIter++;
+		for (mapIter; mapIter != (neighbors->begin()) + 4;mapIter++) {
 			atmoAlentourMoyen += stats.AirQualitySensor(&(mapIter->first));
 		}
 		atmoAlentourMoyen = atmoAlentourMoyen/3;
-		if (abs(atmoCourant - atmoAlentourMoyen) > 0.1 * atmoAlentourMoyen) {
-			falseSensors.push_back(make_pair(iter->second, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100));
+		if (abs(atmoCourant - atmoAlentourMoyen) > 0.1 * atmoAlentourMoyen)
+		//Seuil d'acceptabilité : on considère un capteur frauduleux lorsque le pourcentage d'erreur
+		//mesuré avec ses voisins dépasse 10%
+		{
+			falseSensors.push_back(make_pair(pair.second, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100));
 		}
 	}
 	return falseSensors;

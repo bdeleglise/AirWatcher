@@ -143,27 +143,26 @@ map<int, Sensor>* Model::GetMaliciousIndividualSensors() {
 	vector<pair<Sensor, double>>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
 
 		vector<pair<Sensor, double>>* SensorsOrderedByDistance = new vector<pair<Sensor, double>>;
-		vector<Sensor>* nearSensors = new vector<Sensor>(3);
-		vector<Sensor>* SensorsVector = new vector<Sensor>;
+		vector<Sensor*> nearSensors(4);
+		vector<Sensor*> SensorsVector;
+
 
 		for (auto& pair : sensors) {
-			SensorsVector->push_back(pair.second);
+			SensorsVector.push_back(&(pair.second));
 		}
 
 		vector<Sensor>::iterator it;
 
-		partial_sort_copy(SensorsVector->begin(), SensorsVector->end(), nearSensors->begin(), nearSensors->end(), [latitude, longitude](Sensor& s1, Sensor& s2) {
-			double d1 = pow(latitude - s1.GetLatitude(), 2) + pow(longitude - s1.GetLongitude(), 2);
-			double d2 = pow(latitude - s2.GetLatitude(), 2) + pow(longitude - s2.GetLongitude(), 2);
+		partial_sort_copy(SensorsVector.begin(), SensorsVector.end(), nearSensors.begin(), nearSensors.end(), [latitude, longitude](Sensor* s1, Sensor* s2) {
+			double d1 = pow(latitude - s1->GetLatitude(), 2) + pow(longitude - s1->GetLongitude(), 2);
+			double d2 = pow(latitude - s2->GetLatitude(), 2) + pow(longitude - s2->GetLongitude(), 2);
 			return (d1 < d2);
 			});
 
-		int index = 0;
 
-		for (it = nearSensors->begin(); it != nearSensors->end(); ++it) {
-			double distance = sqrt(pow(latitude - it->GetLatitude(), 2) + pow(longitude - it->GetLongitude(), 2));
-			SensorsOrderedByDistance->push_back(make_pair(*it, distance));
-			index++;
+		for (auto & currentSensor : nearSensors) {
+			double distance = sqrt(pow(latitude - currentSensor->GetLatitude(), 2) + pow(longitude - currentSensor->GetLongitude(), 2));
+			SensorsOrderedByDistance->push_back(make_pair(*currentSensor, distance));
 		}
 
 		return(SensorsOrderedByDistance);

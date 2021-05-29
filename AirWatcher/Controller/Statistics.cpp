@@ -96,7 +96,6 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         vector<Sensor*> copySensors;
         for (auto& pair : *sensors) {
             copySensors.push_back(&pair.second);
-            // des choses
         }
         vector<Sensor*> nearSensors(3); //sans new et sans étoile
         partial_sort_copy(copySensors.begin(), copySensors.end(), nearSensors.begin(), nearSensors.end(), [latitude, longitude](Sensor* s1, Sensor* s2) {
