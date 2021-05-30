@@ -61,6 +61,10 @@ vector<pair<Sensor, Confidence>> SensorManagement::FraudulentSensorDetection() {
 		{
 			falseSensors.push_back(make_pair(pair.second, make_pair(95, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
 		}
+		else if (abs(atmoCourant - atmoAlentourMoyen) > 1.645 * trust)
+		{
+			falseSensors.push_back(make_pair(pair.second, make_pair(90, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
+		}
 	}
 	return falseSensors;
 }
