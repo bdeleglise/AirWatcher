@@ -22,7 +22,7 @@ public:
     //int GetEvaluationPrivateSensor(int SensorId);
     //bool ChangeSensorState(int SensorId);
     //list<Sensor> SimilaritySensorRanking(int SensorId, Date start, Date end);
-    vector<pair<Sensor, Confidence>> FraudulentSensorDetection();
+    vector<pair<Sensor*, Confidence>>* FraudulentSensorDetection();
     //list<pair<Sensor, int>> FraudulentIndividualDetection(int individualId);
     bool ClassifyAsUnreliable(int individualId);   
 

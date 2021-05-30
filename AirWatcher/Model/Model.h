@@ -95,7 +95,7 @@ public:
 	   Contrat:
 		Aucun*/
 
-	vector<pair<Sensor,double>>* GetSensorsOrderByDistance(double latitude, double longitude);
+	vector<Sensor*>* GetSensorsOrderByDistance(double latitude, double longitude);
 	/* Mode d'emploi:
 		La méthode GetSensorsOrderByDistance permet de récupérer la liste des 4 capteurs triés selon leur distance croissante aux coordonnées en paramètre.
 	   Contrat:

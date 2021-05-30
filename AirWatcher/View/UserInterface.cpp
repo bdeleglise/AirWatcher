@@ -384,15 +384,16 @@ void UserInterface::privateSensorsUI()
             cout << "------------Detection des Fraudes-------------\n"
                 "Voici une liste des capteurs prives potentiellement frauduleux : \n"
                 << endl;
-            vector<pair<Sensor, Confidence>> frauds = sm.FraudulentSensorDetection();
-            for (auto& currentPair : frauds)
+            vector<pair<Sensor*, Confidence>>* frauds = sm.FraudulentSensorDetection();
+            for (auto& currentPair : *frauds)
             {
-                cout << "Capteur numero " << currentPair.first.GetID() << "\n"
-                    "Appartient a user" << currentPair.first.GetUserID() << "\n"
+                cout << "Capteur numero " << currentPair.first->GetID() << "\n"
+                    "Appartient a user" << currentPair.first->GetUserID() << "\n"
                     "Le capteur a " << currentPair.second.first << "% de chance d'etre frauduleux" << "\n"
                     "Pourcentage d'erreur  : " << currentPair.second.second << "\n"
                     << endl;
             }
+            delete frauds;
             break;
         }
         case 6:

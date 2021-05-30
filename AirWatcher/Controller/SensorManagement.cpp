@@ -14,7 +14,7 @@ SensorManagement::SensorManagement(Model* unModel) : model(unModel)
 {
 }
 
-vector<pair<Sensor, Confidence>> SensorManagement::FraudulentSensorDetection() {
+vector<pair<Sensor*, Confidence>>* SensorManagement::FraudulentSensorDetection() {
 	Statistics stats(model);
 
 	map<int, Sensor>* privateSensors;
@@ -25,10 +25,10 @@ vector<pair<Sensor, Confidence>> SensorManagement::FraudulentSensorDetection() {
 	double atmoCourant;
 	double atmoAlentourMoyen;
 	double atmoNeigbors[3];
-	vector<pair<Sensor, double>>* neighbors;
-	vector<pair<Sensor, double>>::iterator mapIter;
+	vector<Sensor*>* neighbors;
+	vector<Sensor*>::iterator mapIter;
 
-	vector<pair<Sensor, Confidence>> falseSensors;
+	vector<pair<Sensor*, Confidence>>* falseSensors = new vector<pair<Sensor*, Confidence>>;
 
 	for (auto & pair : *privateSensors)
 	//Boucle sur chaque capteur détenu par un individu privé
@@ -46,7 +46,7 @@ vector<pair<Sensor, Confidence>> SensorManagement::FraudulentSensorDetection() {
 		mapIter++;
 		int index = 0;
 		for (mapIter; mapIter != (neighbors->begin()) + 4;mapIter++) {
-			atmoNeigbors[index]= stats.AirQualitySensor(&(mapIter->first));
+			atmoNeigbors[index]= stats.AirQualitySensor(*mapIter);
 			atmoAlentourMoyen += atmoNeigbors[index];
 			index++;
 		}
@@ -55,15 +55,15 @@ vector<pair<Sensor, Confidence>> SensorManagement::FraudulentSensorDetection() {
 		double trust = atmoEcratType / sqrt(3);
 		if (abs(atmoCourant - atmoAlentourMoyen) > 3*trust)
 		{
-			falseSensors.push_back(make_pair(pair.second, make_pair(99.7,(abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
+			falseSensors->push_back(make_pair(&pair.second, make_pair(99.7,(abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
 		}
 		else if (abs(atmoCourant - atmoAlentourMoyen) > 2 * trust)
 		{
-			falseSensors.push_back(make_pair(pair.second, make_pair(95, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
+			falseSensors->push_back(make_pair(&pair.second, make_pair(95, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
 		}
 		else if (abs(atmoCourant - atmoAlentourMoyen) > 1.645 * trust)
 		{
-			falseSensors.push_back(make_pair(pair.second, make_pair(90, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
+			falseSensors->push_back(make_pair(&(pair.second), make_pair(90, (abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
 		}
 	}
 	return falseSensors;
