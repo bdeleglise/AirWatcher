@@ -12,6 +12,25 @@
 #include "../AirWatcher/Model/Model.h"
 #include "../AirWatcher/Controller/Statistics.h"
 
+class TestEnvironment : public ::testing::Environment {
+public:
+	// Assume there's only going to be a single instance of this class, so we can just
+	// hold the timestamp as a const static local variable and expose it through a
+	// static member function
+	static std::string getStartTime() {
+		static const std::string timestamp = "youpi";
+		return timestamp;
+	}
+
+	static Model* getModel() {
+		static Model model;
+		model.LoadData();
+		return &model;
+	}
+	// Initialise the timestamp in the environment setup.
+	virtual void SetUp() { getModel(); }
+};
+
 TEST(TestCaseName, TestName) {
   EXPECT_TRUE(true);
 }
@@ -314,81 +333,73 @@ TEST(TestIndividual, SetUnReliable) {
 
 
 TEST(ModelTest, ReadData) {
-	Model model;
-	model.LoadData();
-	EXPECT_EQ(model.GetCleaners()->size(), 2);
-	EXPECT_EQ(model.GetProviders()->size(), 2);
-	EXPECT_EQ(model.GetIndividuals()->size(), 2);
-	EXPECT_EQ(model.GetSensors()->size(), 100);
-	EXPECT_EQ(model.GetPrivateSensors()->size(), 2);
+	Model* model = TestEnvironment::getModel();
+	EXPECT_EQ(model->GetCleaners()->size(), 2);
+	EXPECT_EQ(model->GetProviders()->size(), 2);
+	EXPECT_EQ(model->GetIndividuals()->size(), 2);
+	EXPECT_EQ(model->GetSensors()->size(), 100);
+	EXPECT_EQ(model->GetPrivateSensors()->size(), 2);
 }
 
 TEST(ModelTest, SearchGovernmentAgency) {
-	Model model;
-	model.LoadData();
-	EXPECT_EQ(model.SearchGovernmentAgency(2), nullptr);
+	Model* model = TestEnvironment::getModel();
+	EXPECT_EQ(model->SearchGovernmentAgency(2), nullptr);
 }
 
 TEST(ModelTest, SearchIndividual) {
-	Model model;
-	model.LoadData();
-	IndividualUser* user = model.SearchIndividual(0);
+	Model* model = TestEnvironment::getModel();
+	IndividualUser* user = model->SearchIndividual(0);
 	EXPECT_EQ(user->GetID(), 0);
 	EXPECT_EQ(user->GetReliable(), true);
 	EXPECT_EQ(user->GetSensors()->begin()->GetID(), 70);
 
-	user = model.SearchIndividual(25);
+	user = model->SearchIndividual(25);
 	EXPECT_EQ(user, nullptr);
 }
 
 TEST(ModelTest, SearchProvider) {
-	Model model;
-	model.LoadData();
-	Provider* user = model.SearchProvider(0);
+	Model* model = TestEnvironment::getModel();
+	Provider* user = model->SearchProvider(0);
 	EXPECT_EQ(user->GetID(), 0);
 	EXPECT_EQ(user->GetCleaners()->begin()->GetID(), 0);
 
-	user = model.SearchProvider(25);
+	user = model->SearchProvider(25);
 	EXPECT_EQ(user, nullptr);
 }
 
 TEST(ModelTest, SearchCleaner) {
-	Model model;
-	model.LoadData();
-	Cleaner* cleaner = model.SearchCleaner(0);
+	Model* model = TestEnvironment::getModel();
+	Cleaner* cleaner = model->SearchCleaner(0);
 	EXPECT_EQ(cleaner->GetID(), 0);
 	EXPECT_EQ(cleaner->GetLatitude(), 45.333333);
 	EXPECT_EQ(cleaner->GetLongitude(), 1.333333);
 
-	cleaner = model.SearchCleaner(29);
+	cleaner = model->SearchCleaner(29);
 	EXPECT_EQ(cleaner, nullptr);
 }
 
 TEST(ModelTest, SearchSensor) {
-	Model model;
-	model.LoadData();
-	Sensor* sensor = model.SearchSensor(1);
+	Model* model = TestEnvironment::getModel();
+	Sensor* sensor = model->SearchSensor(1);
 	EXPECT_EQ(sensor->GetID(), 1);
 	EXPECT_EQ(sensor->GetLatitude(), 44);
 	EXPECT_EQ(sensor->GetLongitude(), -0.3);
 	EXPECT_EQ(sensor->GetMeasurements()->size(), 365);
 
-	sensor = model.SearchSensor(1500);
+	sensor = model->SearchSensor(1500);
 	EXPECT_EQ(sensor, nullptr);
 }
 
 TEST(StatisticsTest, CircularMeanAirQualityDateNULLRayonNULL) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
 	double test = stat.CircularMeanAirQuality(44, 0, 0, nullptr);
 	EXPECT_EQ(test, 2);
 }
 
 TEST(StatisticsTest, CircularMeanAirQualityRayonNull) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();;
+	Statistics stat = model;
 	tm tmp = tm();
 	tmp.tm_mday = 28;
 	tmp.tm_mon = 3 - 1;
@@ -400,17 +411,15 @@ TEST(StatisticsTest, CircularMeanAirQualityRayonNull) {
 }
 
 TEST(StatisticsTest, CircularMeanAirQualityDateNULL) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
 	double test = stat.CircularMeanAirQuality(44, 0, 0.4, nullptr);
 	EXPECT_EQ(test, 2);
 }
 
 TEST(StatisticsTest, CircularMeanAirQuality) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
 	tm tmp = tm();
 	tmp.tm_mday = 9;
 	tmp.tm_mon = 2 - 1;
@@ -422,48 +431,44 @@ TEST(StatisticsTest, CircularMeanAirQuality) {
 }
 
 TEST(StatisticsTest, AirQualitySensorDateNULLSensorNULL) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
 	double test = stat.AirQualitySensor(nullptr);
 	EXPECT_EQ(test, -1);
 }
 
 TEST(StatisticsTest, AirQualitySensorDateNULL) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
-	Sensor* sensor = model.SearchSensor(36);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
+	Sensor* sensor = model->SearchSensor(36);
 	double test = stat.AirQualitySensor(sensor);
 	EXPECT_EQ(test, 1.75);
 }
 
 TEST(StatisticsTest, AirQualitySensor) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
 	tm tmp = tm();
 	tmp.tm_mday = 3;
 	tmp.tm_mon = 12 - 1;
 	tmp.tm_year = 2019 - 1900;
 	tmp.tm_hour = 12;
 	time_t date = mktime(&tmp);
-	Sensor* sensor = model.SearchSensor(36);
+	Sensor* sensor = model->SearchSensor(36);
 	double test = stat.AirQualitySensor(sensor, &date);
 	EXPECT_EQ(test, 1.75);
 }
 
 TEST(StatisticsTest, AirQualitySensorWrongFormat) {
-	Model model;
-	model.LoadData();
-	Statistics stat = (&model);
+	Model* model = TestEnvironment::getModel();
+	Statistics stat = model;
 	tm tmp = tm();
 	tmp.tm_mday = 3;
 	tmp.tm_mon = 12 - 1;
 	tmp.tm_year = 2017 - 1900;
 	tmp.tm_hour = 12;
 	time_t date = mktime(&tmp);
-	Sensor* sensor = model.SearchSensor(36);
+	Sensor* sensor = model->SearchSensor(36);
 	double test = stat.AirQualitySensor(sensor, &date);
 	EXPECT_EQ(test, -2);
 
@@ -477,38 +482,36 @@ TEST(StatisticsTest, AirQualitySensorWrongFormat) {
 }
 
 TEST(ModelTest, UpdateSensorStateSensorOfGovernement) {
-	Model model;
-	model.LoadData();
-	Sensor* sensor = model.SearchSensor(99);
-	int size1 = model.GetSensors()->size();
-	int size2 = model.GetMaintenanceSensors()->size();
+	Model* model = TestEnvironment::getModel();
+	Sensor* sensor = model->SearchSensor(99);
+	int size1 = model->GetSensors()->size();
+	int size2 = model->GetMaintenanceSensors()->size();
 	EXPECT_EQ(sensor->GetState(), true);
-	model.UpdateSensorState(99);
-	sensor = model.SearchSensor(99);
+	model->UpdateSensorState(99);
+	sensor = model->SearchSensor(99);
 	EXPECT_EQ(sensor->GetState(), false);
-	EXPECT_EQ(model.GetSensors()->size(), size1-1);
-	EXPECT_EQ(model.GetMaintenanceSensors()->size(), size2+1);
+	EXPECT_EQ(model->GetSensors()->size(), size1-1);
+	EXPECT_EQ(model->GetMaintenanceSensors()->size(), size2+1);
 
-	model.UpdateSensorState(99);
-	sensor = model.SearchSensor(99);
+	model->UpdateSensorState(99);
+	sensor = model->SearchSensor(99);
 	EXPECT_EQ(sensor->GetState(), true);
-	EXPECT_EQ(model.GetSensors()->size(), size1 );
-	EXPECT_EQ(model.GetMaintenanceSensors()->size(), size2 );
+	EXPECT_EQ(model->GetSensors()->size(), size1 );
+	EXPECT_EQ(model->GetMaintenanceSensors()->size(), size2 );
 }
 
 TEST(ModelTest, UpdateIndividualState) {
-	Model model;
-	model.LoadData();
-	IndividualUser* user = model.SearchIndividual(1);
-	int size1 = model.GetSensors()->size();
-	int size2 = model.GetMaliciousIndividualSensors()->size();
-	int size3 = model.GetPrivateSensors()->size();
+	Model* model = TestEnvironment::getModel();
+	IndividualUser* user = model->SearchIndividual(1);
+	int size1 = model->GetSensors()->size();
+	int size2 = model->GetMaliciousIndividualSensors()->size();
+	int size3 = model->GetPrivateSensors()->size();
 	EXPECT_EQ(user->GetReliable(), true);
-	model.UpdateIndividualState(user->GetID());
+	model->UpdateIndividualState(user->GetID());
 	EXPECT_EQ(user->GetReliable(), false);
-	EXPECT_EQ(model.GetSensors()->size(), size1 - 1);
-	EXPECT_EQ(model.GetMaintenanceSensors()->size(), size2 + 1);
-	EXPECT_EQ(model.GetMaintenanceSensors()->size(), size3 - 1);
+	EXPECT_EQ(model->GetSensors()->size(), size1 - 1);
+	EXPECT_EQ(model->GetMaintenanceSensors()->size(), size2 + 1);
+	EXPECT_EQ(model->GetMaintenanceSensors()->size(), size3 - 1);
 	vector<Sensor>* sensors = user->GetSensors();
 	vector<Sensor>::iterator iter;
 	for (iter = sensors->begin(); iter != sensors->end(); ++iter) {
