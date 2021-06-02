@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <Windows.h>
 using namespace std;
 #include "Model/Entity/GovernmentAgency.h"
 #include "Model/Entity/Cleaner.h"
@@ -21,6 +22,8 @@ using namespace std;
 
 int main()
 {
+    //Permet l'affichage des accents dans la console.
+    SetConsoleOutputCP(CP_UTF8);
     cout << "Initialisation de l'application ...\n";
     Model model;
     int res = model.LoadData();
@@ -33,7 +36,7 @@ int main()
             cout << "Les données ne sont pas cohérentes" << endl;
             break;
         case 3 : 
-            cout << "Les données ont déjà été chargé" << endl;
+            cout << "Les données ont déjà été chargées" << endl;
         case 0 :
         {
             UserInterface ui(&model);
