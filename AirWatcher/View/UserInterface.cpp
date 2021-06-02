@@ -182,6 +182,7 @@ void UserInterface::sensorUI()
                 }
             }
             else {
+                system.InitializedMeasurement();
                 cout << "Le capteur n'existe pas" << endl;
             }
             break;
@@ -274,7 +275,7 @@ void UserInterface::cleanerAnalysisUI()
                 cout << endl;
             }
             else {
-                cout << "L'entreprise n'existe pas" << endl;
+                cout << "Le cleaner n'existe pas" << endl;
             }
             break;
         }
@@ -390,7 +391,7 @@ void UserInterface::privateSensorsUI()
                 cout << "Capteur numero " << currentPair.first->GetID() << "\n"
                     "Appartient a user" << currentPair.first->GetUserID() << "\n"
                     "Le capteur a " << currentPair.second.first << "% de chance d'etre frauduleux" << "\n"
-                    "Pourcentage d'erreur  : " << currentPair.second.second << "\n"
+                    "Pourcentage d'erreur par rapport au voisin : " << currentPair.second.second << "\n"
                     << endl;
             }
             delete frauds;
@@ -408,7 +409,7 @@ void UserInterface::privateSensorsUI()
                 cout << "Utilisateur banni avec succès" << endl;
             }
             else {
-                cout << "L'utilisateur n'existe pas" << endl;
+                cout << "L'utilisateur est déjà banni ou n'existe pas" << endl;
             }
             break;
         }
@@ -430,11 +431,11 @@ void UserInterface::privateSensorsUI()
         {
             cout << "Entrez l'id du capteur : " << endl;
             int idSensor = getInput();
-            system.InitializedMeasurement();
             Sensor* sensor = model->SearchSensor(idSensor);
             if (sensor != nullptr && sensor->GetUserID() != -1) {
                 cout << "Voulez vous afficher un aperçu du capteur (1) ou toutes les mesures (2)" << endl;
                 int option = getInput();
+                system.InitializedMeasurement();
                 if (option == 1) {
                     cout << *sensor << endl;
                 }
@@ -456,6 +457,7 @@ void UserInterface::privateSensorsUI()
                 }
             }
             else {
+                system.InitializedMeasurement();
                 cout << "Le capteur n'existe pas" << endl;
             }
             break;
@@ -552,13 +554,14 @@ void UserInterface::statisticsUI()
             if (sensor != nullptr) {
                 cout << "Utiliser les dernieres donnees (1) ou renseigner une date precise (2) ?" << endl;
                 int option = getInput();
-                system.InitializedMeasurement();
                 if (option == 1) {
+                    system.InitializedMeasurement();
                     result = stats.AirQualitySensor(sensor);
                     displayATMO(result, true);
                 }
                 else if (option == 2) {
                     time = getTime();
+                    system.InitializedMeasurement();
                     result = stats.AirQualitySensor(sensor,&time);
                     displayATMO(result, true);
                 }
@@ -567,6 +570,7 @@ void UserInterface::statisticsUI()
                 }
             }
             else {
+                system.InitializedMeasurement();
                 cout << "Le capteur n'existe pas" << endl;
             }
             break;
@@ -590,6 +594,7 @@ double UserInterface::getRayon()
 {
     cout << " Merci d'entrer le rayon de la zone à mesurer autour du point fourni precedemment" << endl;
     double rayon=-1;
+    cin >> rayon;
     while (cin.fail()) {
         cleanInputBuffer();
         cout << "Veuillez respecter le format :" << endl;
@@ -621,6 +626,7 @@ double UserInterface::getXcoord()
 {
     cout << "x : " << endl;
     double x = -1;
+    cin >> x;
     while (cin.fail()) {
         cleanInputBuffer();
         cout << "Veuillez respecter le format :" << endl;
@@ -633,6 +639,7 @@ double UserInterface::getYcoord()
 {
     cout << "y : " << endl;
     double y = -1;
+    cin >> y;
     while (cin.fail()) {
         cleanInputBuffer();
         cout << "Veuillez respecter le format :" << endl;
@@ -659,7 +666,7 @@ void UserInterface::displayATMO(double value, bool moyenne)
         }
         cout << endl;
         cout << "L'indice Atmo a les caractéristiques suivantes : \n" <<
-            "il met en évidence une pollution globale de fond, et non localisée; _\n" <<
+            "il met en évidence une pollution globale de fond, et non localisée;\n" <<
             "il tient compte des niveaux de dioxyde de soufre, dioxyde d'azote, ozone et particules fines ;\n" <<
             "il est compris entre 1 et 10;\n" <<
             "il est calculé pour une journée et pour une zone géographique; " << endl;

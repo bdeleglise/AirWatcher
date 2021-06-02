@@ -4,12 +4,12 @@
 #include "System.h"
 using namespace std;
 
-double Statistics::CircularMeanAirQuality(double latitude, double longitude, double radius, time_t* time)
+int Statistics::CircularMeanAirQuality(double latitude, double longitude, double radius, time_t* time)
 {
     if (model == nullptr) {
         return -1;
     }
-    double airQuality = 0;
+    int airQuality = 0;
 
     map<int, Sensor>* sensors = model->GetSensors();
     
@@ -77,10 +77,10 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
                         buffNO2 += itMeasure->GetValue();
                     }
                     else if (idAttribute == "SO2") {
-                        buffPM10 += itMeasure->GetValue();
+                        buffSO2 += itMeasure->GetValue();
                     }
                     else if (idAttribute == "PM10") {
-                        buffSO2 += itMeasure->GetValue();
+                        buffPM10 += itMeasure->GetValue();
                     }
                     else {
                         return -1;
@@ -155,16 +155,16 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
                     string idAttribute = itMeasure->GetAttribute().GetID();
                     double value = itMeasure->GetValue(); 
                     if (idAttribute == "O3") {
-                        O3 += value;
+                        buffO3 += value;
                     }
                     else if (idAttribute == "NO2") {
-                        NO2 += value;
+                        buffNO2 += value;
                     }
                     else if (idAttribute == "SO2") {
-                        SO2 += value;
+                        buffSO2 += value;
                     }
                     else if (idAttribute == "PM10") {
-                        PM10 += value;
+                        buffPM10 += value;
                     }
                     else {
                         return -1;
@@ -191,7 +191,6 @@ double Statistics::CircularMeanAirQuality(double latitude, double longitude, dou
         return -2; //Erreur la date ne rentre pas dans la plage des données
     }
 
-    
     airQuality = atmoIndex(O3 / ((double)sensorUsed), SO2 / ((double)sensorUsed), NO2 / ((double)sensorUsed), PM10 / ((double)sensorUsed));
 
     return airQuality;
@@ -289,136 +288,139 @@ Statistics::Statistics(Model* unModel)
 
 
 
-double Statistics::atmoIndex(double O3, double So2, double No2, double Pm10)
+int Statistics::atmoIndex(double O3, double So2, double No2, double Pm10)
 {
-    double meanFactor=0;
-    double sumQuality = 0;
+    int index = -1;
+    int currentIdex = 0;
     if (O3 <= 29) {
-        sumQuality = 1;
+        index = 1;
     }
     else if (O3 <= 54) {
-        sumQuality = 2;
+        index = 2;
     }
     else if (O3 <= 79) {
-        sumQuality = 3;
+        index = 3;
     }
     else if (O3 <= 104) {
-        sumQuality = 4;
+        index = 4;
     }
     else if (O3 <= 129) {
-        sumQuality = 5;
+        index = 5;
     }
     else if (O3 <= 149) {
-        sumQuality = 6;
+        index = 6;
     }
     else if (O3 <= 179) {
-        sumQuality = 7;
+        index = 7;
     }
     else if (O3 <= 209) {
-        sumQuality = 8;
+        index = 8;
     }
     else if (O3 <= 239) {
-        sumQuality = 9;
+        index = 9;
     }
     else {
-        sumQuality = 10;
+        index = 10;
     }
 
     if (So2 <= 39) {
-        sumQuality += 1;
+        currentIdex = 1;
     }
     else if (So2 <= 79) {
-        sumQuality += 2;
+        currentIdex = 2;
     }
     else if (So2 <= 119) {
-        sumQuality += 3;
+        currentIdex = 3;
     }
     else if (So2 <= 159) {
-        sumQuality += 4;
+        currentIdex = 4;
     }
     else if (So2 <= 199) {
-        sumQuality += 5;
+        currentIdex = 5;
     }
     else if (So2 <= 249) {
-        sumQuality += 6;
+        currentIdex = 6;
     }
     else if (So2 <= 299) {
-        sumQuality += 7;
+        currentIdex = 7;
     }
     else if (So2 <= 399) {
-        sumQuality += 8;
+        currentIdex = 8;
     }
     else if (So2 <= 499) {
-        sumQuality += 9;
+        currentIdex = 9;
     }
     else {
-        sumQuality += 10;
+        currentIdex = 10;
     }
+
+    index = max(index, currentIdex);
 
     if (No2 <= 29) {
-        sumQuality += 1;
+        currentIdex = 1;
     }
     else if (No2 <= 54) {
-        sumQuality += 2;
+        currentIdex = 2;
     }
     else if (No2 <= 84) {
-        sumQuality += 3;
+        currentIdex = 3;
     }
     else if (No2 <= 109) {
-        sumQuality += 4;
+        currentIdex = 4;
     }
     else if (No2 <= 134) {
-        sumQuality += 5;
+        currentIdex = 5;
     }
     else if (No2 <= 164) {
-        sumQuality += 6;
+        currentIdex = 6;
     }
     else if (No2 <= 199) {
-        sumQuality += 7;
+        currentIdex = 7;
     }
     else if (No2 <= 274) {
-        sumQuality += 8;
+        currentIdex = 8;
     }
     else if (No2 <= 399) {
-        sumQuality += 9;
+        currentIdex = 9;
     }
     else {
-        sumQuality += 10;
+        currentIdex = 10;
     }
+
+    index = max(index, currentIdex);
 
     if (Pm10 <= 6) {
-        sumQuality += 1;
+        currentIdex = 1;
     }
     else if (Pm10 <= 13) {
-        sumQuality += 2;
+        currentIdex = 2;
     }
     else if (Pm10 <= 20) {
-        sumQuality += 3;
+        currentIdex = 3;
     }
     else if (Pm10 <= 27) {
-        sumQuality += 4;
+        currentIdex = 4;
     }
     else if (Pm10 <= 34) {
-        sumQuality += 5;
+        currentIdex = 5;
     }
     else if (Pm10 <= 41) {
-        sumQuality += 6;
+        currentIdex = 6;
     }
     else if (Pm10 <= 49) {
-        sumQuality += 7;
+        currentIdex = 7;
     }
     else if (Pm10 <= 64) {
-        sumQuality += 8;
+        currentIdex = 8;
     }
     else if (Pm10 <= 79) {
-        sumQuality += 9;
+        currentIdex = 9;
     }
     else {
-        sumQuality += 10;
+        currentIdex = 10;
     }
 
+    index = max(index, currentIdex);
 
-    meanFactor = sumQuality / 4.0;
-
-    return meanFactor;
+    return index;
 }

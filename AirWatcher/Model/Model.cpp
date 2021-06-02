@@ -475,25 +475,5 @@ Model::Model()
 {}
 
 
-/////////////////
-// TODO : finir 
-// Bien faire attention dans les updates les capteurs stockés dans les listes et ceux des individuals sont pas la même mais 
-// des copies l'un de l'autre donc prévoir de mettre à jour pour les deux endroits 
-//int Model::UpdateSensorState(int idSensor) {
-//
-//	Sensor* privateSensorsArray;
-//	privateSensorsArray = GetPrivateSensors();
-//	int tabLength = sizeof(privateSensorArray) / sizeof(privateSensorArray[0]);
-//
-//	for (int i=0; i<tabLength; i++){
-//		
-//	}
-//
-//	vector<Sensor>::iterator iter;
-//	for (iter = sensors.begin(); iter != sensors.end(); iter++) {
-//		if (iter->GetID() == id) {
-//			
-//		}
-//	}
-//}
+
 

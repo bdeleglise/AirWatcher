@@ -113,12 +113,6 @@ public:
 	   Contrat:
 		Aucun*/
 
-	bool SaveDataOnDatabase();  //Pas à implémenter
-	/* Mode d'emploi:
-		La méthode SaveDataOnDatabase permet de sauvegarder la dernière version des données qui ont été chargées dans la base de données locales et de mettre à jour les profils utilisateurs qui auraient été modifiés pendant l’exécution de l’application.
-	   Contrat:
-		Aucun*/
-
 	void IncrementPointIndividualUser(int idIndividual);
 	/* Mode d'emploi:
 		La méthode IncrementPointindividualUser permet de donner un point supplémentaire à l’utilisateur privé dont l’id est passé en paramètre.
@@ -137,25 +131,7 @@ public:
 	   Contrat:
 		Aucun*/
 
-	void UpdateProfileGovernmentAgency(GovernmentAgency& NewProfile); //Pas besoin de l'implémenter
-	/* Mode d'emploi:
-		La méthode UpdateProfileGovernmentAgency permet de mettre à jour les informations du profil passé en paramètre.
-	   Contrat:
-		Aucun*/
 
-	void UpdateProfileProvider(Provider& NewProfile);     //Pas besoin de l'implémenter
-	/* Mode d'emploi:
-		La méthode UpdateProfileProvider permet de mettre à jour les informations du profil passé en paramètre.
-	   Contrat:
-		Aucun*/
-
-	void UpdateProfileIndividualUser(IndividualUser& NewProfile);    //Pas besoin de l'implémenter
-	/* Mode d'emploi:
-		La méthode UpdateProfileIndividualUser permet de mettre à jour les informations du profil passé en paramètre.
-	   Contrat:
-		Aucun*/
-
-	
 	Model();
 
 protected:
