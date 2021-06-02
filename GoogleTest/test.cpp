@@ -378,24 +378,6 @@ TEST(TestIndividual, SetUnReliable) {
 
 }  // namespace my_namespace*/
 
-class TestEnvironment : public ::testing::Environment {
-public:
-	// Assume there's only going to be a single instance of this class, so we can just
-	// hold the timestamp as a const static local variable and expose it through a
-	// static member function
-	static std::string getStartTime() {
-		static const std::string timestamp = "youpi";
-		return timestamp;
-	}
-
-	static Model* getModel() {
-		static Model model;
-		model.LoadData();
-		return &model;
-	}
-	// Initialise the timestamp in the environment setup.
-	virtual void SetUp() { getModel(); }
-};
 
 TEST(CnFirstTest, Test2) {
 	std::cout << TestEnvironment::getModel()->GetSensors()->size() << std::endl;
@@ -586,4 +568,4 @@ TEST(ModelTest, UpdateIndividualState) {
 	for (iter = sensors->begin(); iter != sensors->end(); ++iter) {
 		EXPECT_EQ(iter->GetState(), false);
 	}
-}*/
+}
