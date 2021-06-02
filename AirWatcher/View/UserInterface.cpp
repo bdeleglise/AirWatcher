@@ -300,7 +300,7 @@ void UserInterface::privateSensorsUI()
             "1 - Afficher la liste de TOUS les capteurs privés \n"
             "2 - Afficher la liste de TOUS les utilisateurs\n"
             "3 - Afficher la liste des capteurs privés honnêtes\n"
-            "4 - Afficher la liste des capteurs privés mal-honnetes\n"
+            "4 - Afficher la liste des capteurs privés malhonnetes\n"
             "5 - Détecter les capteurs potentiellement frauduleux\n"
             "6 - Passer un utilisateur comme frauduleux\n"
             "7 - Rechercher un utilisateur \n"
