@@ -9,8 +9,10 @@
 
 #include <vector>
 #include <string>
+#include <utility>
 #include "../AirWatcher/Model/Model.h"
 #include "../AirWatcher/Controller/Statistics.h"
+#include "../AirWatcher/Controller/SensorManagement.h"
 
 class TestEnvironment : public ::testing::Environment {
 public:
@@ -517,4 +519,18 @@ TEST(ModelTest, UpdateIndividualState) {
 	for (iter = sensors->begin(); iter != sensors->end(); ++iter) {
 		EXPECT_EQ(iter->GetState(), false);
 	}
+}
+
+TEST(Scenar2Test, DetectionCapteurFrauduleuxExistant)
+{
+	Model* model = TestEnvironment::getModel();
+	SensorManagement sm(model);
+	vector<pair<Sensor*, Confidence>>* frauds = sm.FraudulentSensorDetection();
+	for (auto& currentPair : *frauds)
+	{
+		EXPECT_EQ(currentPair.first->GetID(), 36);
+		EXPECT_EQ(currentPair.first->GetUserID(), 1);
+	}
+
+
 }
