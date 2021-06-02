@@ -313,17 +313,103 @@ TEST(TestIndividual, SetUnReliable) {
 }
 
 
-TEST(ModelTest, ReadData) {
-	Model model;
-	model.LoadData();
-	EXPECT_EQ(model.GetCleaners()->size(), 2);
-	EXPECT_EQ(model.GetProviders()->size(), 2);
-	EXPECT_EQ(model.GetIndividuals()->size(), 2);
-	EXPECT_EQ(model.GetSensors()->size(), 100);
-	EXPECT_EQ(model.GetPrivateSensors()->size(), 2);
+
+/*namespace my_namespace {
+	class ModelTest : public ::testing::Test {
+	public :
+		ModelTest() {
+		}
+		~ModelTest() {
+
+		}
+		virtual void SetUp(void) {
+			if (model != nullptr) {
+				cout << "test 3" << endl;
+				delete model;
+			}
+			model = new Model();
+			model->LoadData();
+			cout << "test 1" << endl;
+		}
+		virtual void TearDown(void) {
+			delete model;
+			cout << "test 2" << endl;
+		}
+
+	protected:
+		Model* model;
+	};
+	 
+	TEST_F(ModelTest, ReadData) {
+		EXPECT_EQ(model->GetCleaners()->size(), 2);
+		EXPECT_EQ(model->GetProviders()->size(), 2);
+		EXPECT_EQ(model->GetIndividuals()->size(), 2);
+		EXPECT_EQ(model->GetSensors()->size(), 100);
+		EXPECT_EQ(model->GetPrivateSensors()->size(), 2);
+	}
+
+	TEST_F(ModelTest, SearchIndividual) {
+		IndividualUser* user = model->SearchIndividual(0);
+		EXPECT_EQ(user->GetID(), 0);
+		EXPECT_EQ(user->GetReliable(), true);
+		EXPECT_EQ(user->GetSensors()->begin()->GetID(), 70);
+
+		user = model->SearchIndividual(25);
+	}
+
+}  // namespace my_namespace*/
+
+class TestEnvironment : public ::testing::Environment {
+public:
+	// Assume there's only going to be a single instance of this class, so we can just
+	// hold the timestamp as a const static local variable and expose it through a
+	// static member function
+	static std::string getStartTime() {
+		static const std::string timestamp = "youpi";
+		return timestamp;
+	}
+
+	static Model* getModel() {
+		static Model model;
+		model.LoadData();
+		return &model;
+	}
+	// Initialise the timestamp in the environment setup.
+	virtual void SetUp() { getModel(); }
+};
+
+TEST(CnFirstTest, Test2) {
+	std::cout << TestEnvironment::getModel()->GetSensors()->size() << std::endl;
 }
 
-TEST(ModelTest, SearchGovernmentAgency) {
+TEST(ModelTest, ReadData) {
+	Model* model = TestEnvironment::getModel();
+	EXPECT_EQ(model->GetCleaners()->size(), 2);
+	EXPECT_EQ(model->GetProviders()->size(), 2);
+	EXPECT_EQ(model->GetIndividuals()->size(), 2);
+	EXPECT_EQ(model->GetSensors()->size(), 100);
+	EXPECT_EQ(model->GetPrivateSensors()->size(), 2);
+}
+TEST(ModelTest, ReadData2) {
+	Model* model = TestEnvironment::getModel();
+	EXPECT_EQ(model->GetCleaners()->size(), 2);
+	EXPECT_EQ(model->GetProviders()->size(), 2);
+	EXPECT_EQ(model->GetIndividuals()->size(), 2);
+	EXPECT_EQ(model->GetSensors()->size(), 100);
+	EXPECT_EQ(model->GetPrivateSensors()->size(), 2);
+}
+TEST(ModelTest, SearchIndividual) {
+	Model* model = TestEnvironment::getModel();
+	IndividualUser* user = model->SearchIndividual(0);
+	EXPECT_EQ(user->GetID(), 0);
+	EXPECT_EQ(user->GetReliable(), true);
+	EXPECT_EQ(user->GetSensors()->begin()->GetID(), 70);
+
+	user = model->SearchIndividual(25);
+	delete model;
+}
+
+/*TEST(ModelTest, SearchGovernmentAgency) {
 	Model model;
 	model.LoadData();
 	EXPECT_EQ(model.SearchGovernmentAgency(2), nullptr);
@@ -514,4 +600,4 @@ TEST(ModelTest, UpdateIndividualState) {
 	for (iter = sensors->begin(); iter != sensors->end(); ++iter) {
 		EXPECT_EQ(iter->GetState(), false);
 	}
-}
+}*/
