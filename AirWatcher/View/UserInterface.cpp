@@ -101,7 +101,7 @@ void UserInterface::sensorUI()
             map<int, Sensor>* sensorsMaint = model->GetMaintenanceSensors();
             map<int, Sensor>* sensorsMal = model->GetMaliciousIndividualSensors();
             if (sensors == nullptr || sensorsMaint == nullptr || sensorsMal == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensors) {
@@ -124,7 +124,7 @@ void UserInterface::sensorUI()
             system.InitializedMeasurement();
             map<int, Sensor>* sensors = model->GetSensors();
             if (sensors == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensors) {
@@ -140,7 +140,7 @@ void UserInterface::sensorUI()
             system.InitializedMeasurement();
             map<int, Sensor>* sensorsMaint = model->GetMaintenanceSensors();
             if (sensorsMaint == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensorsMaint) {
@@ -224,7 +224,7 @@ void UserInterface::cleanerAnalysisUI()
             system.InitializedMeasurement();
             map<int, Cleaner>* cleaners = model->GetCleaners();
             if (cleaners == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *cleaners) {
@@ -339,7 +339,7 @@ void UserInterface::privateSensorsUI()
             system.InitializedMeasurement();
             map<int, IndividualUser>* users = model->GetIndividuals();
             if (users == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *users) {
