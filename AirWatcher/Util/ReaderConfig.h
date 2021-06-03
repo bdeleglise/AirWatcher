@@ -16,7 +16,7 @@ using namespace std;
 
 struct Config
 {
-    //Redirection par rapport ou l'objet model est créé*
+    //Redirection par rapport ou l'objet model est créé
     //Récupération du chemin de la solution avec une macro préprocesseur
     string SOLUTIONDIR = SOLUTION_DIR;
     string DATASETPATH = R"(Dataset\)";
