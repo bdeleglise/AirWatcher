@@ -45,14 +45,19 @@ vector<pair<Sensor*, Confidence>>* SensorManagement::FraudulentSensorDetection()
 		mapIter = neighbors->begin();
 		mapIter++;
 		int index = 0;
+		// on calcule l'indice ATMO moyen pour les voisins du capteur parcouru
 		for (mapIter; mapIter != (neighbors->begin()) + 4;mapIter++) {
 			atmoNeigbors[index]= stats.AirQualitySensor(*mapIter);
 			atmoAlentourMoyen += atmoNeigbors[index];
 			index++;
 		}
 		atmoAlentourMoyen = atmoAlentourMoyen/3;
+		// on calcule l'écart type de ATMO
 		double atmoEcratType = sqrt((pow(atmoNeigbors[0] - atmoAlentourMoyen, 2) + pow(atmoNeigbors[1] - atmoAlentourMoyen, 2) + pow(atmoNeigbors[2] - atmoAlentourMoyen, 2)) / 3);
+		// on calcule le coeffitient de confiance 
 		double trust = atmoEcratType / sqrt(3);
+		// on met à jour falseSensors en donnant le % de chance que le capteur soit frauduleux 
+		// et ce en se bansant sur la loi de l'intervalle de confiance 
 		if (abs(atmoCourant - atmoAlentourMoyen) > 3*trust)
 		{
 			falseSensors->push_back(make_pair(&pair.second, make_pair(99.7,(abs(atmoAlentourMoyen - atmoCourant) / atmoAlentourMoyen) * 100)));
