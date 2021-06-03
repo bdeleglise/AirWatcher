@@ -1,110 +1,92 @@
-﻿/*************************************************************************
-                           Cleaner  -  description
+﻿#pragma once
+/*************************************************************************
+                           IndividuaUser  -  description
                              -------------------
     début                : ${date}
     copyright            : (C) ${year} par ${user}
 *************************************************************************/
 
-//---------- Interface de la classe <Cleaner> (fichier Cleaner.h) ------
-#if ! defined ( CLEANER_H )
-#define CLEANER_H
+//---------- Interface de la classe <IndividualUser> (fichier IndividualUser.h) ------
+#if ! defined ( INDIVIDUALUSER_H )
+#define INDIVIDUALUSER_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include <ctime>
 #include <string>
-
+#include <vector>
+#include "User.h"
+#include "Sensor.h"
 using namespace std;
+
+class Sensor;
 //------------------------------------------------------------- Constantes 
 
 //------------------------------------------------------------------ Types 
 
 //------------------------------------------------------------------------ 
-// R�le de la classe <Cleaner>
+// R�le de la classe <IndividualUser>
 //
 //
 //------------------------------------------------------------------------ 
-
-#pragma once
-class Cleaner
+class IndividualUser :
+    public User
 {
-
     //----------------------------------------------------------------- PUBLIC
 
 public:
     //----------------------------------------------------- Méthodes publiques
     int GetID() const;
     // Mode d'emploi :
-    // Getter de l'attribut Id
+    //
     // Contrat :
-    // aucun
+    //
     
-    int GetProviderID() ;
+    int GetPoints();
 
-    // Mode d'emploi :
-    // Getter de l'attribut ProviderId
-    // Contrat :
-    // aucun
+    void SetPoints(int points);
 
-    void SetProviderID(int proID);
+    bool GetReliable();
 
-    // Mode d'emploi :
-    // Setter de l'attribut ProviderId afin de le modifier
-    // Contrat :
-    // aucun
+    void SetReliable(bool state);
 
-    double GetLatitude() const;
+    vector<Sensor>* GetSensors();
 
-    // Mode d'emploi :
-    // Getter de l'attribut Latitude
-    // Contrat :
-    // aucun
+    void AddSensor(Sensor &unSensor);
 
-    double GetLongitude() const;
+    void AddSensor(int id, float latitude, float longitude);
 
-    // Mode d'emploi :
-    // Getter de l'attribut Longitude
-    // Contrat :
-    // aucun
+    void SetSensors(vector<Sensor>& listeSensors);
 
-    time_t GetStart() const;
-
-    // Mode d'emploi :
-    // Getter de l'attribut Start
-    // Contrat :
-    // aucun
-
-    time_t GetStop() const;
-
-    // Mode d'emploi :
-    // Getter de l'attribut Stop
-    // Contrat :
-    // aucun
-
-    friend ostream& operator<<(ostream& os, const Cleaner& cleaner);
-    // Surcharge de l'opérateur << afin de gérer les informations allant sur la sortie standard.
+    friend ostream& operator<<(ostream& os, const IndividualUser& user);
 //------------------------------------------------- Surcharge d'opérateurs
-
+// 
 //-------------------------------------------- Constructeurs - destructeur
 
 
-    Cleaner(int id, int provider, double latitude, double longitude, time_t start, time_t stop);
+    IndividualUser(int id);
     // Mode d'emploi :
-    // Constructeur de la classe Cleaner
+    //
     // Contrat :
-    // Aucun
-
-    Cleaner();
+    //
+    
+    IndividualUser();
     // Mode d'emploi :
-    // Surcharge du constructeur de la classe Cleaner
+    //
     // Contrat :
-    // Aucun
-
-
-    virtual ~Cleaner();
+    //
+    
+    IndividualUser(int id, Sensor& unSensor);
     // Mode d'emploi :
-    // Destructeur de la classe Cleaner
+    //
     // Contrat :
-    // Aucun
+    //
+
+
+
+    virtual ~IndividualUser();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
 
 //------------------------------------------------------------------ PRIVE 
 
@@ -119,21 +101,16 @@ protected:
 
 private:
     //------------------------------------------------------- Attributs privés
-    int cleanerID;
-    int providerID;
-    double latitude;
-    double longitude;
-    time_t start;
-    time_t stop;
+    int individualUserID;
+    int totalPoints;
+    bool reliable;
+    vector<Sensor> sensors;
 
     //---------------------------------------------------------- Classes amies
 
     //-------------------------------------------------------- Classes privées
 
     //----------------------------------------------------------- Types privés
-
 };
 
-//----------------------------------------- Types dépendants de <Cleaner>
-
-#endif // CLEANER
+#endif // INDIVIDUALUSER_H

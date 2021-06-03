@@ -1,110 +1,69 @@
 ﻿/*************************************************************************
-                           Cleaner  -  description
+                           Attribute  -  description
                              -------------------
     début                : ${date}
     copyright            : (C) ${year} par ${user}
 *************************************************************************/
 
-//---------- Interface de la classe <Cleaner> (fichier Cleaner.h) ------
-#if ! defined ( CLEANER_H )
-#define CLEANER_H
+//---------- Interface de la classe <Attribute> (fichier Attribute.h) -----
+#if ! defined ( ATTRIBUTE_H )
+#define ATTRIBUTE_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include <ctime>
 #include <string>
-
 using namespace std;
+
 //------------------------------------------------------------- Constantes 
 
 //------------------------------------------------------------------ Types 
 
 //------------------------------------------------------------------------ 
-// R�le de la classe <Cleaner>
+// R�le de la classe <Attribute>
 //
 //
 //------------------------------------------------------------------------ 
-
-#pragma once
-class Cleaner
+class Attribute
 {
 
     //----------------------------------------------------------------- PUBLIC
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    int GetID() const;
+    string GetID() const;
     // Mode d'emploi :
-    // Getter de l'attribut Id
+    // Permet de récupérer l'attribut Id
     // Contrat :
-    // aucun
+    // Aucun
     
-    int GetProviderID() ;
-
+    string GetUnit() const;
     // Mode d'emploi :
-    // Getter de l'attribut ProviderId
+    // Permet de récupérer l'attribut unit
     // Contrat :
-    // aucun
+    // Aucun
 
-    void SetProviderID(int proID);
-
+    string GetDescription() const;
     // Mode d'emploi :
-    // Setter de l'attribut ProviderId afin de le modifier
+    // Permet de récupérer l'attribut Id
     // Contrat :
-    // aucun
+    // Aucun
 
-    double GetLatitude() const;
+    friend ostream& operator<<(ostream& os, const Attribute& unAtt);
 
-    // Mode d'emploi :
-    // Getter de l'attribut Latitude
-    // Contrat :
-    // aucun
-
-    double GetLongitude() const;
-
-    // Mode d'emploi :
-    // Getter de l'attribut Longitude
-    // Contrat :
-    // aucun
-
-    time_t GetStart() const;
-
-    // Mode d'emploi :
-    // Getter de l'attribut Start
-    // Contrat :
-    // aucun
-
-    time_t GetStop() const;
-
-    // Mode d'emploi :
-    // Getter de l'attribut Stop
-    // Contrat :
-    // aucun
-
-    friend ostream& operator<<(ostream& os, const Cleaner& cleaner);
-    // Surcharge de l'opérateur << afin de gérer les informations allant sur la sortie standard.
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
+    
 
 
-    Cleaner(int id, int provider, double latitude, double longitude, time_t start, time_t stop);
+    Attribute();
+
+    Attribute(string id, string unit, string desc);
+
+    virtual ~Attribute();
     // Mode d'emploi :
-    // Constructeur de la classe Cleaner
+    //
     // Contrat :
-    // Aucun
-
-    Cleaner();
-    // Mode d'emploi :
-    // Surcharge du constructeur de la classe Cleaner
-    // Contrat :
-    // Aucun
-
-
-    virtual ~Cleaner();
-    // Mode d'emploi :
-    // Destructeur de la classe Cleaner
-    // Contrat :
-    // Aucun
+    //
 
 //------------------------------------------------------------------ PRIVE 
 
@@ -119,13 +78,9 @@ protected:
 
 private:
     //------------------------------------------------------- Attributs privés
-    int cleanerID;
-    int providerID;
-    double latitude;
-    double longitude;
-    time_t start;
-    time_t stop;
-
+    string attributeID;
+    string unit;
+    string description;
     //---------------------------------------------------------- Classes amies
 
     //-------------------------------------------------------- Classes privées
@@ -134,6 +89,6 @@ private:
 
 };
 
-//----------------------------------------- Types dépendants de <Cleaner>
+//----------------------------------------- Types d�pendants de <Attribute>
 
-#endif // CLEANER
+#endif // ATTRIBUTE_H

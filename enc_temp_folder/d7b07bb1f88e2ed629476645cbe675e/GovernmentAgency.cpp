@@ -1,12 +1,11 @@
-﻿#pragma once
-/*************************************************************************
-                           Attribute  -  description
+﻿/*************************************************************************
+                           GovernmentAgency  -  description
                              -------------------
     d�but                : ${date}
     copyright            : (C) ${year} par ${user}
 *************************************************************************/
-
-//---------- R�alisation de la classe <Attribute> (fichier Attribute.cpp) --
+#pragma once
+//---------- Réalisation de la classe <GovernmentAgency> (fichier GovernmentAgency.cpp) --
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -15,7 +14,7 @@ using namespace std;
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
-#include "Attribute.h"
+#include "GovernmentAgency.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -28,59 +27,39 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-string Attribute::GetID() const
+int GovernmentAgency::GetID() const
 {
-    //getter de l'attribut Id
-    return attributeID;
+    return governementAgencyID;
 }
 
-
-string Attribute::GetDescription() const
-{
-    //getter de l'attribut description
-    return description;
-}
-
-
-
-
-string Attribute::GetUnit() const
-{
-    //getter de l'attribut unit
-    return unit;
-}
 //------------------------------------------------- Surcharge d'opérateurs
 
 
-
-
 //-------------------------------------------- Constructeurs - destructeur
+GovernmentAgency::GovernmentAgency(int id) 
+    : governementAgencyID(id)
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au constructeur de <GovernmentAgency>" << endl;
+#endif
+} //----- Fin de GovernmentAgency
 
-
-Attribute::Attribute()
-    : attributeID(), unit(), description()
+GovernmentAgency::GovernmentAgency()
+    : governementAgencyID(-1)
 {
 }
 
-Attribute::Attribute(string id, string unit, string desc)
-    : attributeID(id), unit(unit), description(desc)
+
+GovernmentAgency::~GovernmentAgency()
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <Attribute>" << endl;
+    cout << "Appel au destructeur de <GovernmentAgency>" << endl;
 #endif
-} //----- Fin de Attribute
-
-
-Attribute::~Attribute()
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au destructeur de <Attribute>" << endl;
-#endif
-} //----- Fin de ~Attribute
+} //----- Fin de ~GovernmentAgency
 
 
 //------------------------------------------------------------------ PRIVE
@@ -88,9 +67,3 @@ Attribute::~Attribute()
 //----------------------------------------------------- M�thodes protégées
 
 //------------------------------------------------------- M�thodes privées
-
-ostream& operator<<(ostream& os, const Attribute& unAtt)
-{
-    os << unAtt.attributeID << " " << unAtt.unit;
-    return os;
-}

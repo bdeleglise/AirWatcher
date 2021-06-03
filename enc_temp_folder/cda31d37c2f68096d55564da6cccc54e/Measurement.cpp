@@ -60,7 +60,7 @@ Measurement::Measurement(time_t time, double val, Attribute& unAttribute)
 
 Measurement::~Measurement()
 // Algorithme :
-// Destruction de l'objet Measurement (pas d'allocation dynamique donc pas de libération)
+//
 {
 #ifdef MAP
     cout << "Appel au destructeur de <Measurement>" << endl;

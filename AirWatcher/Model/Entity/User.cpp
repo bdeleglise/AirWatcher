@@ -38,7 +38,7 @@ using namespace std;
 
 User::~User()
 // Algorithme :
-//
+// Destruction d'un objet User (pas d'allocation dynamique donc pas de libération)
 {
 #ifdef MAP
     cout << "Appel au destructeur de <User>" << endl;

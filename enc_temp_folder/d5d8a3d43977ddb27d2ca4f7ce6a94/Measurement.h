@@ -1,68 +1,61 @@
-﻿#pragma once
-/*************************************************************************
-                           GovernmentAgency  -  description
+﻿/*************************************************************************
+                           Measurement  -  description
                              -------------------
     début                : ${date}
     copyright            : (C) ${year} par ${user}
 *************************************************************************/
 
-//---------- Interface de la classe <GovernmentAgency> (fichier GovernmentAgency.h) ------
-#if ! defined ( GOVERNMENTAGENCY_H )
-#define GOVERNMENTAGENCY_H
+//---------- Interface de la classe <Measurement> (fichier Measurement.h) ------
+#if ! defined ( MEASUREMENT_H )
+#define MEASUREMENT_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
-#include "User.h"
+#include <ctime>
+#include "Attribute.h"
 //------------------------------------------------------------- Constantes 
 
 //------------------------------------------------------------------ Types 
 
 //------------------------------------------------------------------------ 
-// R�le de la classe <GovernmentAgency>
+// R�le de la classe <Measurement>
 //
 //
 //------------------------------------------------------------------------ 
-class GovernmentAgency :
-    public User
-{
+
+#pragma once
+class Measurement {
+
     //----------------------------------------------------------------- PUBLIC
 
 public:
     //----------------------------------------------------- Méthodes publiques
-    int GetID() const;
+    double GetValue() const;
     // Mode d'emploi :
-    // Getter de l'attribut Id
-    // Contrat :
-    // aucun
-
-
-//------------------------------------------------- Surcharge d'opérateurs
-
-
-//-------------------------------------------- Constructeurs - destructeur
-    GovernmentAgency(const GovernmentAgency &unGovernmentAgency);
-    // Mode d'emploi (constructeur de copie) :
-    // Constructeur de copie de la classe GovernmentAgency
-    // Contrat :
-    // aucun
- 
-    GovernmentAgency(int id);
-    // Mode d'emploi :
-    // Constructeur de la classe GovernmentAgency
-    // Contrat :
-    // aucun
-
-    GovernmentAgency();
-    // Mode d'emploi :
-    // 
+    //
     // Contrat :
     //
+    
+    time_t GetTime() const;
 
-    virtual ~GovernmentAgency();
+    Attribute GetAttribute() const;
+    friend ostream& operator<<(ostream& os, const Measurement& unMeasurement);
+
+//------------------------------------------------- Surcharge d'opérateurs
+    Measurement& operator = (const Measurement& unMeasurement);
+
+//-------------------------------------------- Constructeurs - destructeur
+    Measurement();
+
+
+
+    Measurement(time_t time, double val, Attribute& unAttribute);
+
+    virtual ~Measurement();
     // Mode d'emploi :
-    // Destructeur de la classe GovernmentAgency
+    //
     // Contrat :
-    // aucun
+    //
 
 //------------------------------------------------------------------ PRIVE 
 
@@ -77,13 +70,17 @@ protected:
 
 private:
     //------------------------------------------------------- Attributs privés
-    int governementAgencyID;
-
+    time_t timestamp;
+    double value;
+    Attribute attribute;
     //---------------------------------------------------------- Classes amies
 
     //-------------------------------------------------------- Classes privées
 
     //----------------------------------------------------------- Types privés
+
 };
 
-#endif // GOVERNMENTAGENCY_H
+//----------------------------------------- Types d�pendants de <${file_base}>
+
+#endif // MEASUREMENT_H

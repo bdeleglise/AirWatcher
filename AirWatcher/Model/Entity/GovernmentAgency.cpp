@@ -39,7 +39,7 @@ int GovernmentAgency::GetID() const
 GovernmentAgency::GovernmentAgency(int id) 
     : governementAgencyID(id)
 // Algorithme :
-//
+// Setting des attributs de la classe GovernmentAgency
 {
 #ifdef MAP
     cout << "Appel au constructeur de <GovernmentAgency>" << endl;
@@ -54,7 +54,7 @@ GovernmentAgency::GovernmentAgency()
 
 GovernmentAgency::~GovernmentAgency()
 // Algorithme :
-//
+// Destruction de l'objet GovernmentAgency (pas d'allocation dynamique donc pas de libération)
 {
 #ifdef MAP
     cout << "Appel au destructeur de <GovernmentAgency>" << endl;

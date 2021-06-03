@@ -32,18 +32,29 @@ public:
     //----------------------------------------------------- Méthodes publiques
     double GetValue() const;
     // Mode d'emploi :
-    //
+    // Getter de l'attribut Value
     // Contrat :
-    //
+    // aucun
     
     time_t GetTime() const;
 
-    Attribute GetAttribute() const;
-    friend ostream& operator<<(ostream& os, const Measurement& unMeasurement);
+    // Mode d'emploi :
+    // Getter de l'attribut Timestamp
+    // Contrat :
+    // aucun
 
+    Attribute GetAttribute() const;
+
+    // Mode d'emploi :
+    // Getter de l'attribut attribute
+    // Contrat :
+    // aucun
+
+    friend ostream& operator<<(ostream& os, const Measurement& unMeasurement);
+    // Surcharge de l'opérateur << permettant de gérer les information qu'on passe dans la sortie standard
 //------------------------------------------------- Surcharge d'opérateurs
     Measurement& operator = (const Measurement& unMeasurement);
-
+    // Surcharge de l'opérateur = qui permet d'attribuer des valeurs à un objet de la classe Measurement
 //-------------------------------------------- Constructeurs - destructeur
     Measurement();
 
@@ -51,11 +62,16 @@ public:
 
     Measurement(time_t time, double val, Attribute& unAttribute);
 
+    // Mode d'emploi :
+    // Constructeur de la classe Measurement
+    // Contrat :
+    // aucun
+
     virtual ~Measurement();
     // Mode d'emploi :
-    //
+    // Destructeur de la classe Measurement
     // Contrat :
-    //
+    // aucun
 
 //------------------------------------------------------------------ PRIVE 
 

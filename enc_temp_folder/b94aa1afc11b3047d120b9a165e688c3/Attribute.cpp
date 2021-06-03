@@ -1,12 +1,12 @@
 ﻿#pragma once
 /*************************************************************************
-                           User  -  description
+                           Attribute  -  description
                              -------------------
     d�but                : ${date}
     copyright            : (C) ${year} par ${user}
 *************************************************************************/
 
-//---------- R�alisation de la classe <Measurement> (fichier Measurement.cpp) --
+//---------- R�alisation de la classe <Attribute> (fichier Attribute.cpp) --
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -15,7 +15,7 @@ using namespace std;
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
-#include "Measurement.h"
+#include "Attribute.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -28,44 +28,56 @@ using namespace std;
 //-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
-double Measurement::GetValue() const
+string Attribute::GetID() const
 {
-    return value;
+    return attributeID;
 }
 
-time_t Measurement::GetTime() const
+
+string Attribute::GetDescription() const
 {
-    return timestamp;
+    return description;
 }
 
-Attribute Measurement::GetAttribute() const
+
+
+
+string Attribute::GetUnit() const
 {
-    return attribute;
+    return unit;
 }
 //------------------------------------------------- Surcharge d'opérateurs
+
 
 
 
 //-------------------------------------------- Constructeurs - destructeur
 
 
-Measurement::Measurement(time_t time, double val, Attribute& unAttribute)
-    : timestamp(time), value(val), attribute(unAttribute)
+Attribute::Attribute()
+    : attributeID(), unit(), description()
 {
-#ifdef MAP
-    cout << "Appel au destructeur de <Measurement>" << endl;
-#endif
 }
 
-
-Measurement::~Measurement()
+Attribute::Attribute(string id, string unit, string desc)
+    : attributeID(id), unit(unit), description(desc)
 // Algorithme :
-// Destruction de l'objet Measurement (pas d'allocation dynamique donc pas de libération)
+//
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <Measurement>" << endl;
+    cout << "Appel au constructeur de <Attribute>" << endl;
 #endif
-} //----- Fin de ~Measurement
+} //----- Fin de Attribute
+
+
+Attribute::~Attribute()
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au destructeur de <Attribute>" << endl;
+#endif
+} //----- Fin de ~Attribute
 
 
 //------------------------------------------------------------------ PRIVE
@@ -74,12 +86,8 @@ Measurement::~Measurement()
 
 //------------------------------------------------------- M�thodes privées
 
-ostream& operator<<(ostream& os, const Measurement& unMeasurement)
+ostream& operator<<(ostream& os, const Attribute& unAtt)
 {
-    struct tm* tmp = new tm();
-    localtime_s(tmp, &unMeasurement.timestamp);
-    os << "Measurement of the " << tmp->tm_year + 1900 << "-" << tmp->tm_mon + 1 << "-" << tmp->tm_mday << " " << tmp->tm_hour << ":" << tmp->tm_min << ":" << tmp->tm_sec << endl;
-    os << "Value :" << unMeasurement.value << " in " << unMeasurement.attribute;
-    delete tmp;
+    os << unAtt.attributeID << " " << unAtt.unit;
     return os;
 }

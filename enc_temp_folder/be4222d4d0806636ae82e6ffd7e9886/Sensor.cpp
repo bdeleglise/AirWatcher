@@ -106,7 +106,7 @@ Sensor::Sensor()
 
 Sensor::~Sensor()
 // Algorithme :
-// Destruction d'un objet Sensor (pas d'allocation dynamique donc pas de libération)
+//
 {
 #ifdef MAP
     cout << "Appel au destructeur de <Sensor>" << endl;
