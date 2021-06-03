@@ -10,7 +10,7 @@ UserInterface::UserInterface(Model* unModel)
 }
 
 int UserInterface::getInput()
-//Récuperer le choix de l'utilisateur
+//Recuperer le choix de l'utilisateur
 {
     int input;
     cin >> input;
@@ -29,49 +29,49 @@ void UserInterface::MenuUI()
     cout << "Bienvenue dans le logiciel AirWatcher \n"
         "Pour naviguer dans les menus du programme, entrez le chiffre correspondant a l'action que vous souhaitez realiser. \n"
         << endl;
-        while(1) {
-        cout<<    "------------Menu principal-------------"
-                "\n"
-                "1 - Afficher des statistiques\n"
-                "2 - Afficher la page des capteurs\n"
-                "3 - Afficher la page des capteurs privés\n"
-                "4 - Afficher la page des air cleaners\n"
-                "5 - Passer ou retirer le mode pour evaluer la perforance\n"
-                "6 - Quitter\n"
-                "---------------------------------------"
-                << endl;
-            choice = getInput();
-            switch (choice)
-            {
-            case 1:
-                statisticsUI();
-                break;
-            case 2:
-                sensorUI();
-                break;
-            case 3:
-                privateSensorsUI();
-                break;
-            case 4:
-                cleanerAnalysisUI();
-                break;
-            case 5:
-                evalPerformance = !evalPerformance;
-                if (evalPerformance) {
-                    cout << "Passage en mode evaluation de la perforamnce" << endl;
-                }
-                else {
-                    cout << "Passage en mode sans evaluation de performance" << endl;
-                }
-                break;
-            case 6:
-                cout << "A bientôt" << endl;
-                return;
-            default:
-                
-                cout << "Veuillez saisir un nombre valide svp" << endl;
+    while (1) {
+        cout << "------------Menu principal-------------"
+            "\n"
+            "1 - Afficher des statistiques\n"
+            "2 - Afficher la page des capteurs\n"
+            "3 - Afficher la page des capteurs prives\n"
+            "4 - Afficher la page des air cleaners\n"
+            "5 - Passer ou retirer le mode pour evaluer la perforance\n"
+            "6 - Quitter\n"
+            "---------------------------------------"
+            << endl;
+        choice = getInput();
+        switch (choice)
+        {
+        case 1:
+            statisticsUI();
+            break;
+        case 2:
+            sensorUI();
+            break;
+        case 3:
+            privateSensorsUI();
+            break;
+        case 4:
+            cleanerAnalysisUI();
+            break;
+        case 5:
+            evalPerformance = !evalPerformance;
+            if (evalPerformance) {
+                cout << "Passage en mode evaluation de la perforamnce" << endl;
             }
+            else {
+                cout << "Passage en mode sans evaluation de performance" << endl;
+            }
+            break;
+        case 6:
+            cout << "A bientot" << endl;
+            return;
+        default:
+
+            cout << "Veuillez saisir un nombre valide svp" << endl;
         }
+    }
 }
 
 
@@ -90,7 +90,7 @@ void UserInterface::sensorUI()
             << endl;
         choice = getInput();
 
- 
+
 
         switch (choice)
         {
@@ -101,7 +101,7 @@ void UserInterface::sensorUI()
             map<int, Sensor>* sensorsMaint = model->GetMaintenanceSensors();
             map<int, Sensor>* sensorsMal = model->GetMaliciousIndividualSensors();
             if (sensors == nullptr || sensorsMaint == nullptr || sensorsMal == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensors) {
@@ -122,16 +122,16 @@ void UserInterface::sensorUI()
         case 2:
         {
             system.InitializedMeasurement();
-            map<int, Sensor>*sensors = model->GetSensors();
+            map<int, Sensor>* sensors = model->GetSensors();
             if (sensors == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensors) {
                     cout << pair.second << endl;
                     cout << endl;
                 }
-                
+
             }
             break;
         }
@@ -140,7 +140,7 @@ void UserInterface::sensorUI()
             system.InitializedMeasurement();
             map<int, Sensor>* sensorsMaint = model->GetMaintenanceSensors();
             if (sensorsMaint == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensorsMaint) {
@@ -156,7 +156,7 @@ void UserInterface::sensorUI()
             int idSensor = getInput();
             Sensor* sensor = model->SearchSensor(idSensor);
             if (sensor != nullptr) {
-                cout << "Voulez vous afficher un aperçu du capteur (1) ou toutes les mesures (2)" << endl;
+                cout << "Voulez vous afficher un apercu du capteur (1) ou toutes les mesures (2)" << endl;
                 int option = getInput();
                 system.InitializedMeasurement();
                 if (option == 1) {
@@ -196,7 +196,7 @@ void UserInterface::sensorUI()
 
         if (evalPerformance) {
             system.EndMeasurement();
-            cout << "Requete traite en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+            cout << "Requete traitee en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
         }
     }
 }
@@ -215,7 +215,7 @@ void UserInterface::cleanerAnalysisUI()
             << endl;
         choice = getInput();
 
-  
+
 
         switch (choice)
         {
@@ -224,7 +224,7 @@ void UserInterface::cleanerAnalysisUI()
             system.InitializedMeasurement();
             map<int, Cleaner>* cleaners = model->GetCleaners();
             if (cleaners == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *cleaners) {
@@ -238,9 +238,9 @@ void UserInterface::cleanerAnalysisUI()
         case 2:
         {
             system.InitializedMeasurement();
-            map<int, Provider>*providers = model->GetProviders();
+            map<int, Provider>* providers = model->GetProviders();
             if (providers == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *providers) {
@@ -254,7 +254,7 @@ void UserInterface::cleanerAnalysisUI()
         {
             cout << "Entrez l'id de l'entreprise : " << endl;
             int idProvider = getInput();
-             system.InitializedMeasurement();
+            system.InitializedMeasurement();
             Provider* provider = model->SearchProvider(idProvider);
             if (provider != nullptr) {
                 cout << *provider << endl;
@@ -288,7 +288,7 @@ void UserInterface::cleanerAnalysisUI()
 
         if (evalPerformance) {
             system.EndMeasurement();
-            cout << "Requete traite en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+            cout << "Requete traitee en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
         }
     }
 }
@@ -296,30 +296,30 @@ void UserInterface::cleanerAnalysisUI()
 void UserInterface::privateSensorsUI()
 {
     while (1) {
-        cout << "------------Affichage des capteurs privés-------------\n"
+        cout << "------------Affichage des capteurs prives-------------\n"
             "\n"
-            "1 - Afficher la liste de TOUS les capteurs privés \n"
+            "1 - Afficher la liste de TOUS les capteurs prives \n"
             "2 - Afficher la liste de TOUS les utilisateurs\n"
-            "3 - Afficher la liste des capteurs privés honnêtes\n"
-            "4 - Afficher la liste des capteurs privés malhonnetes\n"
-            "5 - Détecter les capteurs potentiellement frauduleux\n"
+            "3 - Afficher la liste des capteurs prives honnêtes\n"
+            "4 - Afficher la liste des capteurs prives malhonnetes\n"
+            "5 - Detecter les capteurs potentiellement frauduleux\n"
             "6 - Passer un utilisateur comme frauduleux\n"
             "7 - Rechercher un utilisateur \n"
-            "8 - Rechercher un capteur privé\n"
+            "8 - Rechercher un capteur prive\n"
             "9 - Retour au menu principal\n"
             "-----------------------------------------------------\n"
             << endl;
         choice = getInput();
-       
+
         switch (choice)
         {
         case 1:
         {
             system.InitializedMeasurement();
-            map<int, Sensor>*sensors = model->GetPrivateSensors();
+            map<int, Sensor>* sensors = model->GetPrivateSensors();
             map<int, Sensor>* sensorsMal = model->GetMaliciousIndividualSensors();
-            if (sensors == nullptr || sensorsMal ==nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+            if (sensors == nullptr || sensorsMal == nullptr) {
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensors) {
@@ -337,9 +337,9 @@ void UserInterface::privateSensorsUI()
         case 2:
         {
             system.InitializedMeasurement();
-            map<int, IndividualUser>*users = model->GetIndividuals();
+            map<int, IndividualUser>* users = model->GetIndividuals();
             if (users == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *users) {
@@ -351,9 +351,9 @@ void UserInterface::privateSensorsUI()
         case 3:
         {
             system.InitializedMeasurement();
-            map<int, Sensor>*sensors = model->GetPrivateSensors();
+            map<int, Sensor>* sensors = model->GetPrivateSensors();
             if (sensors == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensors) {
@@ -366,9 +366,9 @@ void UserInterface::privateSensorsUI()
         case 4:
         {
             system.InitializedMeasurement();
-            map<int, Sensor>*sensorsMal = model->GetMaliciousIndividualSensors();
+            map<int, Sensor>* sensorsMal = model->GetMaliciousIndividualSensors();
             if (sensorsMal == nullptr) {
-                cout << "Une erreur c'est produite" << endl;
+                cout << "Une erreur s'est produite" << endl;
             }
             else {
                 for (const auto& pair : *sensorsMal) {
@@ -406,10 +406,10 @@ void UserInterface::privateSensorsUI()
             bool res = sm.ClassifyAsUnreliable(idUser);
             if (res)
             {
-                cout << "Utilisateur banni avec succès" << endl;
+                cout << "Utilisateur banni avec succes" << endl;
             }
             else {
-                cout << "L'utilisateur est déjà banni ou n'existe pas" << endl;
+                cout << "L'utilisateur est deja banni ou n'existe pas" << endl;
             }
             break;
         }
@@ -433,7 +433,7 @@ void UserInterface::privateSensorsUI()
             int idSensor = getInput();
             Sensor* sensor = model->SearchSensor(idSensor);
             if (sensor != nullptr && sensor->GetUserID() != -1) {
-                cout << "Voulez vous afficher un aperçu du capteur (1) ou toutes les mesures (2)" << endl;
+                cout << "Voulez vous afficher un apercu du capteur (1) ou toutes les mesures (2)" << endl;
                 int option = getInput();
                 system.InitializedMeasurement();
                 if (option == 1) {
@@ -471,7 +471,7 @@ void UserInterface::privateSensorsUI()
 
         if (evalPerformance) {
             system.EndMeasurement();
-            cout << "Requete traite en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+            cout << "Requete traitee en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
         }
     }
 }
@@ -485,9 +485,9 @@ void UserInterface::statisticsUI()
         cout << "------------Affichage des statistiques-------------\n"
             "\n"
             "1 - Afficher la qualite d'air moyenne d'un endroit precis via le dernier indice Atmo calcule dans la zone \n"
-            "2 - Afficher la qualite d'air moyenne d'un endroit precis à une date precise via l'indice Atmo\n"
+            "2 - Afficher la qualite d'air moyenne d'un endroit precis a une date precise via l'indice Atmo\n"
             "3 - Afficher la qualite d'air moyenne d'une zone via le dernier indice Atmo calcule dans la zone \n"
-            "4 - Afficher la qualite d'air moyenne d'une zone à une date precise via l'indice Atmo\n"
+            "4 - Afficher la qualite d'air moyenne d'une zone a une date precise via l'indice Atmo\n"
             "5 - Afficher la qualite d'air moyenne d'un capteur vie un indice Atmo moyen\n"
             "6 - Retour au menu principal\n"
             "-----------------------------------------------------\n"
@@ -497,7 +497,7 @@ void UserInterface::statisticsUI()
         double r = 0;
         time_t time;
         double result = 0;
-   
+
         switch (choice)
         {
         case 1:
@@ -546,7 +546,7 @@ void UserInterface::statisticsUI()
             displayATMO(result, false);
             break;
         }
-        case 5: 
+        case 5:
         {
             cout << "Entrez l'id du capteur : " << endl;
             int idSensor = getInput();
@@ -562,7 +562,7 @@ void UserInterface::statisticsUI()
                 else if (option == 2) {
                     time = getTime();
                     system.InitializedMeasurement();
-                    result = stats.AirQualitySensor(sensor,&time);
+                    result = stats.AirQualitySensor(sensor, &time);
                     displayATMO(result, true);
                 }
                 else {
@@ -585,15 +585,15 @@ void UserInterface::statisticsUI()
 
         if (evalPerformance) {
             system.EndMeasurement();
-            cout << "Requete traite en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
+            cout << "Requete traitee en : " << system.GetAlgorithmEfficiency() << " secondes" << endl;
         }
     }
 }
 
 double UserInterface::getRayon()
 {
-    cout << " Merci d'entrer le rayon de la zone à mesurer autour du point fourni precedemment" << endl;
-    double rayon=-1;
+    cout << " Merci d'entrer le rayon de la zone a mesurer autour du point fourni precedemment" << endl;
+    double rayon = -1;
     cin >> rayon;
     while (cin.fail()) {
         cleanInputBuffer();
@@ -612,7 +612,7 @@ time_t UserInterface::getTime()
     day = getInput();
     cout << "Entrez le mois" << endl;
     month = getInput();
-    cout << " Entrez l'année" << endl;
+    cout << " Entrez l'annee" << endl;
     year = getInput();
     tm tmp = tm();
     tmp.tm_mday = day;
@@ -659,42 +659,42 @@ void UserInterface::displayATMO(double value, bool moyenne)
     }
     else {
         if (moyenne) {
-            cout << "Indice ATMO moyen de la qualité de l'air : "<<value  << endl;
+            cout << "Indice ATMO moyen de la qualite de l'air : " << value << endl;
         }
         else {
-            cout << " Indice ATMO  de la qualité de l'air : " << value << endl;
+            cout << " Indice ATMO de la qualite de l'air : " << value << endl;
         }
         cout << endl;
-        cout << "L'indice Atmo a les caractéristiques suivantes : \n" <<
-            "il met en évidence une pollution globale de fond, et non localisée;\n" <<
+        cout << "L'indice Atmo a les caracteristiques suivantes : \n" <<
+            "il met en evidence une pollution globale de fond, et non localisee;\n" <<
             "il tient compte des niveaux de dioxyde de soufre, dioxyde d'azote, ozone et particules fines ;\n" <<
             "il est compris entre 1 et 10;\n" <<
-            "il est calculé pour une journée et pour une zone géographique; " << endl;
-        cout << "Interpretation du résultat : " << endl;
-        cout << "1<= indice <3 : niveau très bon\n" <<
+            "il est calcule pour une journee et pour une zone geographique; " << endl;
+        cout << "Interpretation du resultat : " << endl;
+        cout << "1<= indice <3 : niveau tres bon\n" <<
             "3<= indice <5 : niveau bon\n" <<
             "5<= indice <6 : niveau moyen\n" <<
-            "6<= indice <8 : niveau médiocre\n" <<
+            "6<= indice <8 : niveau mediocre\n" <<
             "8<= indice <10 : niveau mauvais\n" <<
-            "10<= indice : niveau très mauvais\n" << endl;
+            "10<= indice : niveau tres mauvais\n" << endl;
     }
 }
 
 
 void UserInterface::cleanInputBuffer()
 // Algorithme :
-// En utilisant les méthodes de cin, on vide l'entrée standard vu qu'il y a eu un
-// dépasssement de capacité.
+// En utilisant les methodes de cin, on vide l'entree standard vu qu'il y a eu un
+// depasssement de capacite.
 {
     char verif;
-    cin.clear();		//clear() permet d'utiliser peek() après getline() sans erreur
-    verif = cin.peek(); //peek() permet de récupérer le premier caractère de l'entrée
+    cin.clear();		//clear() permet d'utiliser peek() apres getline() sans erreur
+    verif = cin.peek(); //peek() permet de recuperer le premier caractere de l'entree
 
-    //Si vérif est un retour à la ligne alors on a fini de vider l'entrée
+    //Si verif est un retour a la ligne alors on a fini de vider l'entree
     while (verif != '\n')
     {
-        cin.ignore(); //ignore le caractère et le retire de l'entrée
+        cin.ignore(); //ignore le caractere et le retire de l'entree
         verif = cin.peek();
     }
-    cin.ignore(); //ignore le '\n' pour tout remettre à 0
+    cin.ignore(); //ignore le '\n' pour tout remettre a 0
 } //----- Fin de ViderEntreeStandard

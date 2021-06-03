@@ -1,4 +1,4 @@
-// AirWatcher.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
+// AirWatcher.cpp : Ce fichier contient la fonction 'main'. L'execution du programme commence et se termine à cet endroit.
 //
 
 #include <iostream>
@@ -29,33 +29,33 @@ int main()
     int res = model.LoadData();
     switch (res)
     {
-        case 1 : 
-            cout << "Un fichier n'existe pas" << endl;
-            break;
-        case 2 :
-            cout << "Les données ne sont pas cohérentes" << endl;
-            break;
-        case 3 : 
-            cout << "Les données ont déjà été chargées" << endl;
-        case 0 :
-        {
-            UserInterface ui(&model);
-            ui.MenuUI();
-            break;
-        }
-        default : 
-            exit(1);
+    case 1:
+        cout << "Un fichier n'existe pas" << endl;
+        break;
+    case 2:
+        cout << "Les donnees ne sont pas coherentes" << endl;
+        break;
+    case 3:
+        cout << "Les donnees ont dejà ete chargees" << endl;
+    case 0:
+    {
+        UserInterface ui(&model);
+        ui.MenuUI();
+        break;
+    }
+    default:
+        exit(1);
     }
     return 0;
 }
 
-// Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
-// Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
+// Executer le programme : Ctrl+F5 ou menu Deboguer > Executer sans debogage
+// Deboguer le programme : F5 ou menu Deboguer > Demarrer le debogage
 
-// Astuces pour bien démarrer : 
-//   1. Utilisez la fenêtre Explorateur de solutions pour ajouter des fichiers et les gérer.
+// Astuces pour bien demarrer : 
+//   1. Utilisez la fenêtre Explorateur de solutions pour ajouter des fichiers et les gerer.
 //   2. Utilisez la fenêtre Team Explorer pour vous connecter au contrôle de code source.
-//   3. Utilisez la fenêtre Sortie pour voir la sortie de la génération et d'autres messages.
+//   3. Utilisez la fenêtre Sortie pour voir la sortie de la generation et d'autres messages.
 //   4. Utilisez la fenêtre Liste d'erreurs pour voir les erreurs.
-//   5. Accédez à Projet > Ajouter un nouvel élément pour créer des fichiers de code, ou à Projet > Ajouter un élément existant pour ajouter des fichiers de code existants au projet.
-//   6. Pour rouvrir ce projet plus tard, accédez à Fichier > Ouvrir > Projet et sélectionnez le fichier .sln.
+//   5. Accedez à Projet > Ajouter un nouvel element pour creer des fichiers de code, ou à Projet > Ajouter un element existant pour ajouter des fichiers de code existants au projet.
+//   6. Pour rouvrir ce projet plus tard, accedez à Fichier > Ouvrir > Projet et selectionnez le fichier .sln.

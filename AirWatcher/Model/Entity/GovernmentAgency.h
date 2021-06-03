@@ -31,9 +31,9 @@ public:
     //----------------------------------------------------- Méthodes publiques
     int GetID() const;
     // Mode d'emploi :
-    //
+    // Getter de l'attribut Id
     // Contrat :
-    //
+    // aucun
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -42,27 +42,27 @@ public:
 //-------------------------------------------- Constructeurs - destructeur
     GovernmentAgency(const GovernmentAgency &unGovernmentAgency);
     // Mode d'emploi (constructeur de copie) :
-    //
+    // Constructeur de copie de la classe GovernmentAgency
     // Contrat :
-    //
+    // aucun
  
     GovernmentAgency(int id);
     // Mode d'emploi :
-    //
+    // Constructeur de la classe GovernmentAgency
     // Contrat :
-    //
+    // aucun
 
     GovernmentAgency();
     // Mode d'emploi :
-    //
+    // 
     // Contrat :
     //
 
     virtual ~GovernmentAgency();
     // Mode d'emploi :
-    //
+    // Destructeur de la classe GovernmentAgency
     // Contrat :
-    //
+    // aucun
 
 //------------------------------------------------------------------ PRIVE 
 

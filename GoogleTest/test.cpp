@@ -496,8 +496,8 @@ TEST(StatisticsTest, AirQualitySensorWrongFormat) {
 TEST(ModelTest, UpdateSensorStateSensorOfGovernement) {
 	Model* model = TestEnvironment::getModel();
 	Sensor* sensor = model->SearchSensor(99);
-	int size1 = model->GetSensors()->size();
-	int size2 = model->GetMaintenanceSensors()->size();
+	size_t size1 = model->GetSensors()->size();
+	size_t size2 = model->GetMaintenanceSensors()->size();
 	EXPECT_EQ(sensor->GetState(), true);
 	model->UpdateSensorState(99);
 	sensor = model->SearchSensor(99);
@@ -515,9 +515,9 @@ TEST(ModelTest, UpdateSensorStateSensorOfGovernement) {
 TEST(ModelTest, UpdateIndividualState) {
 	Model* model = TestEnvironment::getModel();
 	IndividualUser* user = model->SearchIndividual(1);
-	int size1 = model->GetSensors()->size();
-	int size2 = model->GetMaliciousIndividualSensors()->size();
-	int size3 = model->GetPrivateSensors()->size();
+	size_t size1 = model->GetSensors()->size();
+	size_t size2 = model->GetMaliciousIndividualSensors()->size();
+	size_t size3 = model->GetPrivateSensors()->size();
 	EXPECT_EQ(user->GetReliable(), true);
 	model->UpdateIndividualState(user->GetID());
 	EXPECT_EQ(user->GetReliable(), false);

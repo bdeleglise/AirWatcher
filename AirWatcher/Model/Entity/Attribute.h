@@ -31,17 +31,24 @@ public:
     //----------------------------------------------------- Méthodes publiques
     string GetID() const;
     // Mode d'emploi :
-    //
+    // Permet de récupérer l'attribut Id
     // Contrat :
-    //
+    // Aucun
     
     string GetUnit() const;
-
+    // Mode d'emploi :
+    // Permet de récupérer l'attribut unit
+    // Contrat :
+    // Aucun
 
     string GetDescription() const;
+    // Mode d'emploi :
+    // Permet de récupérer l'attribut description
+    // Contrat :
+    // Aucun
 
     friend ostream& operator<<(ostream& os, const Attribute& unAtt);
-
+    // Surcharge de l'opérateur << afin de gérer les informations sur la sortie standard.
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -54,9 +61,9 @@ public:
 
     virtual ~Attribute();
     // Mode d'emploi :
-    //
+    // Destructeur de la classe Attribute
     // Contrat :
-    //
+    // aucun
 
 //------------------------------------------------------------------ PRIVE 
 

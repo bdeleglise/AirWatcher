@@ -32,9 +32,9 @@ class User
     //----------------------------------------------------- Méthodes publiques
         virtual int GetID() const = 0;
         // Mode d'emploi :
-        //
+        // Getter de l'attribut Id
         // Contrat :
-        //
+        // aucun
 
 
     //------------------------------------------------- Surcharge d'opérateurs
@@ -44,7 +44,7 @@ class User
 
         virtual ~User();
         // Mode d'emploi :
-        //
+        // Destructeur de la classe User
         // Contrat :
         //
 

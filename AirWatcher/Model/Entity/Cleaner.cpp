@@ -75,7 +75,7 @@ time_t Cleaner::GetStop() const
 Cleaner::Cleaner(int id, int provider, double latitude, double longitude, time_t start, time_t stop)
     : cleanerID(id), providerID(provider), latitude(latitude), longitude(longitude), start(start), stop(stop)
 // Algorithme :
-//
+// Setting des attributs du cleaner que l'on va créer
 {
 #ifdef MAP
     cout << "Appel au constructeur de <Cleaner>" << endl;
@@ -89,7 +89,7 @@ Cleaner::Cleaner()
 
 Cleaner::~Cleaner()
 // Algorithme :
-//
+// Destruction de l'objet Cleaner (pas d'allocation dynamique à libérer)
 {
 #ifdef MAP
     cout << "Appel au destructeur de <Cleaner>" << endl;

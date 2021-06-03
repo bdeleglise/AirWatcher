@@ -49,6 +49,7 @@ bool IndividualUser::GetReliable()
 
 void IndividualUser::SetReliable(bool state)
 {
+    // parcourt la liste des sensors et set leur attribut Reliable par rapport au paramètre d'entrée de la méthode.
     reliable = state;
     for (vector<Sensor>::iterator i = sensors.begin(); i != sensors.end(); ++i) {
         i->SetState(state);
@@ -64,6 +65,7 @@ void IndividualUser::AddSensor(Sensor &unSensor)
 {
     unSensor.SetUser(individualUserID);
     Sensor sensor(unSensor);
+    // ajout dans la liste des sensors une fois que le propriétaire du sensor a été set
     sensors.push_back(unSensor);
 }
 
@@ -75,6 +77,7 @@ void IndividualUser::AddSensor(int id, float latitude, float longitude)
 
 void IndividualUser::SetSensors(vector<Sensor>& listeSensors)
 {
+    // Setting pour chaque sensor de leur User avec l'Id de l'IndividualUser en question
     sensors.clear();
     for (vector<Sensor>::iterator i = listeSensors.begin(); i != listeSensors.end(); ++i) {
         i->SetUser(individualUserID);
@@ -95,7 +98,7 @@ void IndividualUser::SetSensors(vector<Sensor>& listeSensors)
 IndividualUser::IndividualUser(int id)
     : individualUserID(id), totalPoints(0), reliable(true), sensors()
     // Algorithme :
-    //
+    // Setting des attributs de l'objet IndividualUser
 {
 #ifdef MAP
     cout << "Appel au constructeur de <GovernmentAgency>" << endl;
@@ -109,7 +112,8 @@ IndividualUser::IndividualUser()
 
 IndividualUser::IndividualUser(int id, Sensor& unSensor)
     : individualUserID(id), totalPoints(0), reliable(true), sensors()
-{
+{   // Algorithme :
+    // Construction d'une copie de l'IndividualUSer dont l'adresse est passée en paramètre de la méthode
     Sensor sensor(unSensor);
     sensors.push_back(sensor);
 }
@@ -119,7 +123,7 @@ IndividualUser::IndividualUser(int id, Sensor& unSensor)
 
 IndividualUser::~IndividualUser()
 // Algorithme :
-//
+// Destruction de l'objet IndividualUser (pas d'allocation dynamique donc pas de libération)
 {
 #ifdef MAP
     cout << "Appel au destructeur de <IndividuaUser>" << endl;

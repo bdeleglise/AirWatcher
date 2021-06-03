@@ -36,25 +36,65 @@ public:
     //----------------------------------------------------- Méthodes publiques
     int GetID() const;
     // Mode d'emploi :
-    //
+    // Getter de l'attribut Id
     // Contrat :
-    //
+    // aucun
     
     int GetPoints();
 
+    // Mode d'emploi :
+    // Getter de l'attribut Points
+    // Contrat :
+    // aucun
+
     void SetPoints(int points);
+
+    // Mode d'emploi :
+    // Setter de l'attribut Points
+    // Contrat :
+    // aucun
 
     bool GetReliable();
 
+    // Mode d'emploi :
+    // Getter de l'attribut Reliable
+    // Contrat :
+    // aucun
+
     void SetReliable(bool state);
+
+    // Mode d'emploi :
+    // Setter de l'attribut Reliable
+    // Contrat :
+    // aucun
 
     vector<Sensor>* GetSensors();
 
+    // Mode d'emploi :
+    // Getter afin de récupérer la liste de Sensors
+    // Contrat :
+    // aucun
+
     void AddSensor(Sensor &unSensor);
+
+    // Mode d'emploi :
+    // Méthode permettant d'ajouter un nouveau Sensor à la liste des Sensors à partir d'un pointeur sur un sensor déjà créé.
+    // Contrat :
+    // aucun
 
     void AddSensor(int id, float latitude, float longitude);
 
+    // Mode d'emploi :
+    // Méthode permettant d'ajouter un nouveau Sensor à la liste des Sensors à partir de l'id du sensor et de ses coordonnées géographiques.
+    // Contrat :
+    // aucun
+
     void SetSensors(vector<Sensor>& listeSensors);
+
+    // Mode d'emploi :
+    // Setter enregistrant la liste des Sensors.
+    // Contrat :
+    // aucun
 
     friend ostream& operator<<(ostream& os, const IndividualUser& user);
 //------------------------------------------------- Surcharge d'opérateurs
@@ -64,9 +104,9 @@ public:
 
     IndividualUser(int id);
     // Mode d'emploi :
-    //
+    // Constructeur de la classe IndividualUser
     // Contrat :
-    //
+    // aucun
     
     IndividualUser();
     // Mode d'emploi :
@@ -76,17 +116,17 @@ public:
     
     IndividualUser(int id, Sensor& unSensor);
     // Mode d'emploi :
-    //
+    // Constructeur de copies de la classe IndividualUser
     // Contrat :
-    //
+    // aucun
 
 
 
     virtual ~IndividualUser();
     // Mode d'emploi :
-    //
+    // Destructeur de la classe IndividualUser
     // Contrat :
-    //
+    // aucun
 
 //------------------------------------------------------------------ PRIVE 
 

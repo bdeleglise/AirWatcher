@@ -67,6 +67,7 @@ Provider& Provider::operator=(const Provider& unProvider)
 }
 Provider::Provider(const Provider& unProvider)
 {
+    // construction d'une copie de Provider à partir de l'adresse d'un Provider existant
     providerID = unProvider.providerID;
     cleaners = unProvider.cleaners;
 }
@@ -89,7 +90,7 @@ Provider::Provider()
 
 Provider::~Provider()
 // Algorithme :
-//
+// Destruction d'un objet Provider (pas d'allocation dynamique donc pas de libération)
 {
 #ifdef MAP
     cout << "Appel au destructeur de <Provider>" << endl;

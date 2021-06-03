@@ -30,11 +30,14 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 string Attribute::GetID() const
 {
+    //getter de l'attribut Id
     return attributeID;
 }
 
+
 string Attribute::GetDescription() const
 {
+    //getter de l'attribut description
     return description;
 }
 
@@ -43,6 +46,7 @@ string Attribute::GetDescription() const
 
 string Attribute::GetUnit() const
 {
+    //getter de l'attribut unit
     return unit;
 }
 //------------------------------------------------- Surcharge d'opérateurs

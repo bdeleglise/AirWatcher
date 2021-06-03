@@ -34,23 +34,54 @@ public:
     //----------------------------------------------------- Méthodes publiques
     int GetID() const;
     // Mode d'emploi :
-    //
+    // Getter de l'attribut Id
     // Contrat :
-    //
+    // aucun
     
     int GetProviderID() ;
 
+    // Mode d'emploi :
+    // Getter de l'attribut ProviderId
+    // Contrat :
+    // aucun
+
     void SetProviderID(int proID);
+
+    // Mode d'emploi :
+    // Setter de l'attribut ProviderId afin de le modifier
+    // Contrat :
+    // aucun
 
     double GetLatitude() const;
 
+    // Mode d'emploi :
+    // Getter de l'attribut Latitude
+    // Contrat :
+    // aucun
+
     double GetLongitude() const;
+
+    // Mode d'emploi :
+    // Getter de l'attribut Longitude
+    // Contrat :
+    // aucun
 
     time_t GetStart() const;
 
+    // Mode d'emploi :
+    // Getter de l'attribut Start
+    // Contrat :
+    // aucun
+
     time_t GetStop() const;
 
+    // Mode d'emploi :
+    // Getter de l'attribut Stop
+    // Contrat :
+    // aucun
+
     friend ostream& operator<<(ostream& os, const Cleaner& cleaner);
+    // Surcharge de l'opérateur << afin de gérer les informations allant sur la sortie standard.
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -58,22 +89,22 @@ public:
 
     Cleaner(int id, int provider, double latitude, double longitude, time_t start, time_t stop);
     // Mode d'emploi :
-    //
+    // Constructeur de la classe Cleaner
     // Contrat :
-    //
+    // Aucun
 
     Cleaner();
     // Mode d'emploi :
-    //
+    // Surcharge du constructeur de la classe Cleaner
     // Contrat :
-    //
+    // Aucun
 
 
     virtual ~Cleaner();
     // Mode d'emploi :
-    //
+    // Destructeur de la classe Cleaner
     // Contrat :
-    //
+    // Aucun
 
 //------------------------------------------------------------------ PRIVE 
 
