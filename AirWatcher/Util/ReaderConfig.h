@@ -18,9 +18,9 @@ struct Config
 {
     //Redirection par rapport ou l'objet model est créé*
     //Récupération du chemin de la solution avec une macro préprocesseur
-    string DATADIR = "../";
+    string SOLUTIONDIR = SOLUTION_DIR;
     string DATASETPATH = R"(Dataset\)";
-    string DIRECTORYPATH = DATADIR + DATASETPATH;
+    string DIRECTORYPATH = SOLUTIONDIR + DATASETPATH;
     string SENSORFILE = "sensors.csv";
     string MEASUREMENTSFILE = "measurements.csv";
     string ATTRIBUTESFILE = "attributes.csv";
