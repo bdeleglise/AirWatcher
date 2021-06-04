@@ -35,6 +35,8 @@ public:
 private:
 	int choice;
 	bool evalPerformance;
+
+
 	Model* model;
 	System system;
 	void statisticsUI();

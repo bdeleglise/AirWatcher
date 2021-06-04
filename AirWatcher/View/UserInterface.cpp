@@ -566,6 +566,7 @@ void UserInterface::statisticsUI()
                     displayATMO(result, true);
                 }
                 else {
+                    system.InitializedMeasurement();
                     cout << "Veuillez saisir un nombre valide" << endl;
                 }
             }
