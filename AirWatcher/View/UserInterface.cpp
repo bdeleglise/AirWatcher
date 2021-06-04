@@ -312,7 +312,7 @@ void UserInterface::privateSensorsUI()
             "\n"
             "1 - Afficher la liste de TOUS les capteurs prives \n"
             "2 - Afficher la liste de TOUS les utilisateurs\n"
-            "3 - Afficher la liste des capteurs prives honnêtes\n"
+            "3 - Afficher la liste des capteurs prives honnetes\n"
             "4 - Afficher la liste des capteurs prives malhonnetes\n"
             "5 - Detecter les capteurs potentiellement frauduleux\n"
             "6 - Passer un utilisateur comme frauduleux\n"
@@ -607,7 +607,7 @@ double UserInterface::getRayon()
 //Algorithme : retourne le rayon rentré par l'utilisateur
 {
     cout << " Merci d'entrer le rayon (en km) de la zone a mesurer autour du point fourni precedemment" << endl;
-    cout << " Indication: on utilise le fait qu'en France on a environ 80km = 1degré" << endl;
+    cout << " Indication: on utilise le fait qu'en France on a environ 80km = 1degre" << endl;
     double rayon = -1;
     cin >> rayon;
     while (cin.fail()) {
@@ -641,7 +641,7 @@ time_t UserInterface::getTime()
 double UserInterface::getXcoord()
 //Algorithme : retourne la coordonnée saisie par l'utilisateur
 {
-    cout << "Lattitude (en degré) : " << endl;
+    cout << "Latitude (en degre) : " << endl;
     double x = -1;
     cin >> x;
     while (cin.fail()) {
@@ -655,7 +655,7 @@ double UserInterface::getXcoord()
 double UserInterface::getYcoord()
 //Algorithme : retourne la coordonnée saisie par l'utilisateur
 {
-    cout << "Longitude (en degré) : " << endl;
+    cout << "Longitude (en degre) : " << endl;
     double y = -1;
     cin >> y;
     while (cin.fail()) {
