@@ -432,6 +432,19 @@ TEST(StatisticsTest, CircularMeanAirQuality) {
 	EXPECT_EQ(test, 8);
 }
 
+TEST(StatisticsTest, CircularMeanAirQualityNoData) {
+	Model* model = TestEnvironment::getModel();
+	Statistics stat(model);
+	tm tmp = tm();
+	tmp.tm_mday = 1;
+	tmp.tm_mon = 1 - 1;
+	tmp.tm_year = 2000 - 1900;
+	tmp.tm_hour = 12;
+	time_t date = mktime(&tmp);
+	int test = stat.CircularMeanAirQuality(44, 0, 0.4, &date);
+	EXPECT_EQ(test, -2);
+}
+
 TEST(StatisticsTest, IncrementPrivateUserPoint) {
 	Model* model = TestEnvironment::getModel();
 	Statistics stat(model);
@@ -482,14 +495,6 @@ TEST(StatisticsTest, AirQualitySensorWrongFormat) {
 	time_t date = mktime(&tmp);
 	Sensor* sensor = model->SearchSensor(36);
 	double test = stat.AirQualitySensor(sensor, &date);
-	EXPECT_EQ(test, -2);
-
-	tmp.tm_mday = 3;
-	tmp.tm_mon = 12 - 1;
-	tmp.tm_year = 2020 - 1900;
-	tmp.tm_hour = 12;
-	date = mktime(&tmp);
-	test = stat.AirQualitySensor(sensor, &date);
 	EXPECT_EQ(test, -2);
 }
 
