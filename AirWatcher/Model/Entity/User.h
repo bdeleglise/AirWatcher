@@ -1,8 +1,10 @@
 ﻿/*************************************************************************
                            User  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
 
 //---------- Interface de la classe <User> (fichier User.h) ------
@@ -18,7 +20,8 @@
 
 //------------------------------------------------------------------------ 
 // R�le de la classe <User>
-//
+// Cette classe entity abstraite de la couche Model de MVC, il s'agit de classe mere
+// elle a la méthodes abstraite getID() qu'il faudra redéfinir dans les classes filles
 //
 //------------------------------------------------------------------------ 
 

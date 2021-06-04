@@ -1,8 +1,10 @@
 ﻿/*************************************************************************
                            Provider  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
 
 //---------- Interface de la classe <Provider> (fichier Provider.h) ------
@@ -21,7 +23,10 @@
 
 //------------------------------------------------------------------------ 
 // R�le de la classe <Provider>
-//
+// Cette classe entity de la couche Model de MVC, est heritiere de la classe mere User
+// elle s'occupe de la gestion des providers 
+// elle permet d'obtenir l'id, les cleaners du provider
+// elle permet aussi d'ajouter un cleaner a sa liste
 //
 //------------------------------------------------------------------------ 
 #pragma once

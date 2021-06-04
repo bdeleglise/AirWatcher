@@ -1,8 +1,10 @@
 ﻿/*************************************************************************
                            Sensor  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
 
 //---------- Interface de la classe <Sensor> (fichier Sensor.h) ------
@@ -24,7 +26,9 @@
 
 //------------------------------------------------------------------------ 
 // R�le de la classe <Sensor>
-//
+// Cette classe entity de la couche Model de MVC, elle s'occupe de la gestion des capteurs 
+// elle permet d'obtenir l'id, l'état, le propriétaire, les mesures et les coordonnées du capteurs
+// elle permet aussi de modifier l'état des capteurs, et ajouter des mesures
 //
 //------------------------------------------------------------------------ 
 class IndividualUser;

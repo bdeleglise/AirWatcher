@@ -1,11 +1,13 @@
-﻿#pragma once
-/*************************************************************************
-                           IndividuaUser  -  description
+﻿/*************************************************************************
+                           IndividualUser  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
 
+#pragma once
 //---------- Interface de la classe <IndividualUser> (fichier IndividualUser.h) ------
 #if ! defined ( INDIVIDUALUSER_H )
 #define INDIVIDUALUSER_H
@@ -23,8 +25,11 @@ class Sensor;
 //------------------------------------------------------------------ Types 
 
 //------------------------------------------------------------------------ 
-// R�le de la classe <IndividualUser>
-//
+// Role de la classe <IndividualUser>
+// Cette classe entity de la couche Model de MVC, elle herite de la classe mere User
+// elle s'occupe de la gestion des utilisateurs privés
+// elle permet d'obtenir l'id, le nombre de points, les capteurs et la confiance de l'utilisateur
+// elle permet aussi de modifier le nombre de points, la confiance et d'ajouter un capteur à sa liste
 //
 //------------------------------------------------------------------------ 
 class IndividualUser :

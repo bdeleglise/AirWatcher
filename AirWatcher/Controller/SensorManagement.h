@@ -1,3 +1,13 @@
+/*************************************************************************
+                           SensorManegement  -  description
+                             -------------------
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr, 
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
+
+
 #if ! defined (SENSORMANAGEMENT_H)
 #define SENSORMANAGEMENT_H
 
@@ -13,6 +23,12 @@
 
 using namespace std;
 typedef pair<double, double> Confidence;
+
+// Rôle de la classe <SensorManagement>
+// Cette classe appartient à la couche Controlleur, elle contient les méthodes relatives à la gestion gouvernementale
+// elle se charge d'identifier les capteurs frauduleux et leur taux frauduleux et les renvoyer sous forme de vecteurs
+// elle permet aussi classer les utilisateurs privés comme malicieux et de les bannir ainsi que leurs capteurs 
+
 
 class SensorManagement {
 

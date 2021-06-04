@@ -1,4 +1,14 @@
-﻿#if ! defined (MODEL_H)
+﻿/*************************************************************************
+						   Model  -  description
+							 -------------------
+	début                : 06/05/2021
+	copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+	e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+						   benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
+
+
+#if ! defined (MODEL_H)
 #define MODEL_H
 
 #include <iostream>
@@ -16,6 +26,22 @@
 using namespace std;
 
 const Config FILE_NAME;
+
+
+//------------------------------------------------------------------------ 
+// R�le de la classe <Model>
+// Cette classe Model implémente toute la gestion des objets metiers et des interrations avec les 
+// autres couches , elle a les méthodes SearchClass(id) pour chercher l'objet metier à partir de l'id
+// elle a aussi les méthodes GetList() pour renvoyer la liste des objets sous forme de map
+// elle lit aussi les données des differents fichiers csv et les stocke dans les objets metier 
+// elle permet aussi de donner un point supplémentaire à l'utilisateur privé
+// elle ermet de récupérer la liste des 4 capteurs (privés) triés selon leur distance croissante 
+// aux coordonnées en paramètre du capteur 
+// Cette classe contient comme attributs l'ensemble des listes des objets metiers résultant du lien avec 
+// les classes entity, et ce sous forme de map
+//
+//------------------------------------------------------------------------ 
+
 
 class Model {
 

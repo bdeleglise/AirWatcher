@@ -1,9 +1,12 @@
 ﻿/*************************************************************************
                            Cleaner  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
+
 
 //---------- Interface de la classe <Cleaner> (fichier Cleaner.h) ------
 #if ! defined ( CLEANER_H )
@@ -20,8 +23,9 @@ using namespace std;
 
 //------------------------------------------------------------------------ 
 // R�le de la classe <Cleaner>
-//
-//
+// Cette classe entity de la couche Model de MVC, elle s'occupe de la gestion des cleaners 
+// elle permet d'obtenir l'id, le provider et les coordonnées du cleaner 
+// elle permet aussi de modifier le provider de cleaner
 //------------------------------------------------------------------------ 
 
 #pragma once

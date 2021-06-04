@@ -1,3 +1,14 @@
+/*************************************************************************
+						   UserInterface  -  description
+							 -------------------
+	début                : 06/05/2021
+	copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+	e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+						   benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
+
+
+
 #if ! defined (USERINTERFACE_H)
 #define USERINTERFACE_H
 #pragma once
@@ -10,6 +21,11 @@
 using namespace std;
 
 
+//------------------------------------------------------------------------ 
+// Role de la classe UserInterface
+// Cette classe de la couche Vue permet d implementer les différentes interfaces utilisateur 
+// elle appelle donc les méthodes des couches Model et Controlleur
+//-----------------------------------------------------------------------
 
 class UserInterface
 {

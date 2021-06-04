@@ -1,9 +1,12 @@
 ﻿/*************************************************************************
-                           Measurement  -  description
+                           Measurements  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
+
 
 //---------- Interface de la classe <Measurement> (fichier Measurement.h) ------
 #if ! defined ( MEASUREMENT_H )
@@ -18,8 +21,9 @@
 //------------------------------------------------------------------ Types 
 
 //------------------------------------------------------------------------ 
-// R�le de la classe <Measurement>
-//
+// Role de la classe <Measurement>
+// Cette classe entity de la couche Model de MVC, elle s'occupe de la gestion des mesures 
+// elle permet d'obtenir la valeur, l'attribut et le temps des mesures
 //
 //------------------------------------------------------------------------ 
 

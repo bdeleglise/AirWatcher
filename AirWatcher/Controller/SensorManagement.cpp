@@ -20,7 +20,7 @@ vector<pair<Sensor*, Confidence>>* SensorManagement::FraudulentSensorDetection()
 	map<int, Sensor>* privateSensors;
 	privateSensors = model->GetPrivateSensors();
 
-	//map<int, Sensor>::iterator iter;
+	
 	
 	double atmoCourant;
 	double atmoAlentourMoyen;

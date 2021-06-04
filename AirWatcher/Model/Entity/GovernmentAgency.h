@@ -1,11 +1,13 @@
-﻿#pragma once
-/*************************************************************************
+﻿/*************************************************************************
                            GovernmentAgency  -  description
                              -------------------
-    début                : ${date}
-    copyright            : (C) ${year} par ${user}
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
 *************************************************************************/
 
+#pragma once
 //---------- Interface de la classe <GovernmentAgency> (fichier GovernmentAgency.h) ------
 #if ! defined ( GOVERNMENTAGENCY_H )
 #define GOVERNMENTAGENCY_H
@@ -18,8 +20,10 @@
 //------------------------------------------------------------------ Types 
 
 //------------------------------------------------------------------------ 
-// R�le de la classe <GovernmentAgency>
-//
+// Role de la classe <GovernmentAgency>
+// Cette classe entity de la couche Model de MVC, est heritiere de la classe mere User
+// elle s'occupe de la gestion des agences 
+// gouvernementales, à travers elle on obtient l'id de l'agence 
 //
 //------------------------------------------------------------------------ 
 class GovernmentAgency :
