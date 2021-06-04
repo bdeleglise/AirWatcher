@@ -1,3 +1,12 @@
+/*************************************************************************
+                           UserInterface  -  description
+                             -------------------
+    début                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -77,6 +86,7 @@ void UserInterface::MenuUI()
 
 
 void UserInterface::sensorUI()
+//Menu des capteurs
 {
     while (1) {
         cout << "------------Affichage des capteurs-------------\n"
@@ -202,6 +212,7 @@ void UserInterface::sensorUI()
 }
 
 void UserInterface::cleanerAnalysisUI()
+//Menu des cleaners
 {
     while (1) {
         cout << "------------Affichage des cleaners-------------\n"
@@ -294,6 +305,7 @@ void UserInterface::cleanerAnalysisUI()
 }
 
 void UserInterface::privateSensorsUI()
+//Menu des capteurs privés
 {
     while (1) {
         cout << "------------Affichage des capteurs prives-------------\n"
@@ -477,7 +489,7 @@ void UserInterface::privateSensorsUI()
 }
 
 void UserInterface::statisticsUI()
-//Menu statistiques
+//Menu des statistiques
 {
 
     Statistics stats(model);
@@ -592,6 +604,7 @@ void UserInterface::statisticsUI()
 }
 
 double UserInterface::getRayon()
+//Algorithme : retourne le rayon rentré par l'utilisateur
 {
     cout << " Merci d'entrer le rayon de la zone a mesurer autour du point fourni precedemment" << endl;
     double rayon = -1;
@@ -606,6 +619,7 @@ double UserInterface::getRayon()
 }
 
 time_t UserInterface::getTime()
+//Algorithme : retourne et formatte la date renvoyée par l'utilisateur
 {
     int day, month, year;
     cout << "Merci d'entrer la date au format numerique, en saisissant un numero par ligne" << endl;
@@ -624,6 +638,7 @@ time_t UserInterface::getTime()
 }
 
 double UserInterface::getXcoord()
+//Algorithme : retourne la coordonnée saisie par l'utilisateur
 {
     cout << "x : " << endl;
     double x = -1;
@@ -637,6 +652,7 @@ double UserInterface::getXcoord()
     return x;
 }
 double UserInterface::getYcoord()
+//Algorithme : retourne la coordonnée saisie par l'utilisateur
 {
     cout << "y : " << endl;
     double y = -1;
@@ -651,6 +667,7 @@ double UserInterface::getYcoord()
 }
 
 void UserInterface::displayATMO(double value, bool moyenne)
+// Algorithme : Affiche la valeur de l'indice atmo en fonction des paramètres entrés
 {
     if (value == -1) {
         cout << "ERREUR DANS LA LECTURE DES DONNEES" << endl;
@@ -685,7 +702,7 @@ void UserInterface::displayATMO(double value, bool moyenne)
 void UserInterface::cleanInputBuffer()
 // Algorithme :
 // En utilisant les methodes de cin, on vide l'entree standard vu qu'il y a eu un
-// depasssement de capacite.
+// depassement de capacite.
 {
     char verif;
     cin.clear();		//clear() permet d'utiliser peek() apres getline() sans erreur

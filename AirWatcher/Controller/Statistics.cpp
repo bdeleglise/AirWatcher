@@ -1,3 +1,11 @@
+Ôªø/*************************************************************************
+                           Statistics  -  description
+                             -------------------
+    d√©but                : 06/05/2021
+    copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+    e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+                           benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
 #include "Statistics.h"
 #include <vector>
 #include "../Model/Model.h"
@@ -5,6 +13,7 @@
 using namespace std;
 
 int Statistics::CircularMeanAirQuality(double latitude, double longitude, double radius, time_t* time)
+//Algorithme : 
 {
     if (model == nullptr) {
         return -1;
@@ -18,14 +27,15 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
     if (sensors->empty()) {
         return -1; //Erreur
     }
+
     int sensorUsed = 0;
-    // on initialise les indices de la qualitÈ de l'air ‡ 0
+    // on initialise les indices de la qualit√© de l'air √† 0
     double O3 = 0;
     double NO2 = 0;
     double PM10 = 0;
     double SO2 = 0;
 
-    // on initialise les temps et les dates des donnÈes 
+    // on initialise les temps et les dates des donn√©es 
     time_t start;
     time_t end;
     if (time != nullptr) {
@@ -48,7 +58,7 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
         double distance = pow(latitude - sensor->GetLatitude(), 2) + pow(longitude - sensor->GetLongitude(), 2);
         if (distance <= (radius*radius)) {
             map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
-            // on initialise les dates des donnÈes aux derniËres dates de mesure du capteur parcouru
+            // on initialise les dates des donn√©es aux derni√®res dates de mesure du capteur parcouru
             if (time == nullptr) {
                 time_t timebuffer = measurementSensor->crbegin()->first;
                 tm tmp;
@@ -61,7 +71,7 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
                 end = mktime(&tmp);
                
             }
-            // on rÈcupËre les mesures rÈalisÈes par le capteur ‡ la date prise derniËrement 
+            // on r√©cup√®re les mesures r√©alis√©es par le capteur √† la date prise derni√®rement 
             map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
             
             int nbMesureSensor = 0;
@@ -71,12 +81,12 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
             double buffSO2 = 0;
             // on parcourt les mesures 
             while (itMes != measurementSensor->end() && itMes->first<end) {
-                // on incrÈmente nbMesureSensor qui est le nombre de mesures rÈalisÈes par le capteur
-                // ‡ la date prise derniËrement 
+                // on incr√©mente nbMesureSensor qui est le nombre de mesures r√©alis√©es par le capteur
+                // √† la date prise derni√®rement 
                 nbMesureSensor++;
                 vector<Measurement>::iterator itMeasure;
 
-                // on init les buff_Indice avec les mesures rÈalisÈes ‡ la date prise derniËrement
+                // on init les buff_Indice avec les mesures r√©alis√©es √† la date prise derni√®rement
                 for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
                     string idAttribute = itMeasure->GetAttribute().GetID();
                     if (idAttribute == "O3") {
@@ -97,7 +107,7 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
                 }
                 itMes++;
             }
-            // on somme les indices actuels avec ceux rÈalisÈs derniËrement 
+            // on somme les indices actuels avec ceux r√©alis√©s derni√®rement et on incr√©mente sensorUsed.
             if (nbMesureSensor != 0) {
                 sensorUsed++;
                 O3 += buffO3 / nbMesureSensor;
@@ -113,12 +123,13 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
     }
 
     if (sensorUsed == 0) {
-        // on recherche les 3 capteurs les plus proches des coordonnÈes de la liste des capteurs 
+        // Si on a utilis√© aucun capteur √† l'√©tape pr√©c√©dente, c√†d aucun capteur disponible dans la zone sp√©cifi√©e par l'utilsateur :
+        // on recherche les 3 capteurs les plus proches des coordonn√©es de la liste des capteurs 
         vector<Sensor*> copySensors;
         for (auto& pair : *sensors) {
             copySensors.push_back(&pair.second);
         }
-        vector<Sensor*> nearSensors(3); //sans new et sans Ètoile
+        vector<Sensor*> nearSensors(3); 
         partial_sort_copy(copySensors.begin(), copySensors.end(), nearSensors.begin(), nearSensors.end(), [latitude, longitude](Sensor* s1, Sensor* s2) {
             double d1 = pow(latitude - s1->GetLatitude(), 2) + pow(longitude - s1->GetLongitude(), 2);
             double d2 = pow(latitude - s2->GetLatitude(), 2) + pow(longitude - s2->GetLongitude(), 2);
@@ -135,18 +146,18 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
             // on calcule la distance au centre de la zone du capteur voisin parcouru
             double distance = sqrt(pow(latitude - currentSensor->GetLatitude(), 2) + pow(longitude - currentSensor->GetLongitude(), 2)) - radius;
             tabDist[index] = distance;
-            // on incrÈmente la somme des distances 
+            // on incr√©mente la somme des distances 
             sumDist += distance;
             index++;
         }
-        // on calcule la distance pondÈrÈe
+        // on calcule la distance pond√©r√©e
         double ponderDist = sumDist - sumDist / 3;
         index = 0;
 
         // on re-parcourt les capteurs voisins 
         for (auto& currentSensor : nearSensors) {
             map<time_t, vector<Measurement>>* measurementSensor = currentSensor->GetMeasurements();
-            // on init les dates des donnÈes aux derniËres dates de mesure du capteur
+            // on init les dates des donn√©es aux derni√®res dates de mesure du capteur
             if (time == nullptr) {
                 time_t timebuffer = measurementSensor->crbegin()->first;
                 tm tmp;
@@ -158,7 +169,7 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
                 tmp.tm_mday = tmp.tm_mday + 1;
                 end = mktime(&tmp);
             }
-            // on rÈcupËre les mesures rÈalisÈes par le capteur ‡ la date prise derniËrement 
+            // on r√©cup√®re les mesures r√©alis√©es par le capteur √† la date prise derni√®rement 
             map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
             int nbMesureSensor = 0;
             double buffO3 = 0;
@@ -168,7 +179,7 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
             while (itMes != measurementSensor->end() && itMes->first < end) {
                 nbMesureSensor++;
                 vector<Measurement>::iterator itMeasure;
-                // on init les buff_Indice avec les mesures rÈalisÈes ‡ la date prise derniËrement
+                // on init les buff_Indice avec les mesures r√©alis√©es √† la date prise derni√®rement
                 for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
                     string idAttribute = itMeasure->GetAttribute().GetID();
                     double value = itMeasure->GetValue(); 
@@ -192,11 +203,11 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
                 itMes++;
             }
             // on calcule les nouvelles valeurs des indices 
-            // valeur_indice += valeur_indice_derniËrement * (somme_distance-distance_capteur[index]) /
-            // distance_pondÈrÈe*nombre_mesures 
+            // valeur_indice += valeur_indice_derni√®rement * (somme_distance-distance_capteur[index]) /
+            // distance_pond√©r√©e*nombre_mesures 
             if (nbMesureSensor != 0) {
                 sensorUsed++;
-                O3 += (buffO3 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor; //pondÈration
+                O3 += (buffO3 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor; //pond√©ration
                 NO2 += (buffNO2 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor;
                 PM10 += (buffPM10 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor;
                 SO2 += (buffSO2 * (sumDist - tabDist[index]) / ponderDist) / nbMesureSensor;
@@ -209,16 +220,17 @@ int Statistics::CircularMeanAirQuality(double latitude, double longitude, double
         }
     }
     if (sensorUsed == 0) {
-        return -2; //Erreur la date ne rentre pas dans la plage des donnÈes
+        return -2; //Erreur la date ne rentre pas dans la plage des donn√©es
     }
 
-    // on calcule finalement la qualitÈ de l'air
+    // on calcule finalement la qualit√© de l'air
     airQuality = atmoIndex(O3 / ((double)sensorUsed), SO2 / ((double)sensorUsed), NO2 / ((double)sensorUsed), PM10 / ((double)sensorUsed));
 
     return airQuality;
 }
 
 double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
+//Algorithme : permet de r√©cup√©rer la qualit√© de l‚Äôair moyenne sur la semaine avant la date ¬´‚ÄØend‚ÄØ¬ª ou sur la derni√®re semaine si l‚Äôattribut est nul du capteur en param√®tre.  
 {
 
     if (sensor == nullptr || model ==nullptr)
@@ -226,14 +238,14 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
         return -1;  //Erreur le sensor est null
     }
 
-    // si end est null, on init timeBuffer ‡ la date de la derniËre mesure
+    // si end est null, on init timeBuffer √† la date de la derni√®re mesure
     if (end == nullptr) 
     {
         time_t timeBuffer = sensor->GetMeasurements()->crbegin()->first;
         end = &timeBuffer;
     }
 
-    // on initialise les temps sur une semaine avant la derniËre mesure 
+    // on initialise les temps sur une semaine avant la derni√®re mesure 
     tm* time = new tm();
     localtime_s(time, end);
     time->tm_hour = 0;
@@ -249,22 +261,22 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
    
     double indexAtmoWeek = 0;
     int numberIndex = 0;
-    // pour chaque jour, allant de la semaine avant la derniËre mesure jusqu'‡ la derniËre mesure 
+    // pour chaque jour, allant de la semaine avant la derni√®re mesure jusqu'√† la derni√®re mesure 
     while (start < *end) {
         map<time_t, vector<Measurement>>* measurementSensor = sensor->GetMeasurements();
-        // on obtient les mesures faites ‡ la denrniËre semaine 
+        // on obtient les mesures faites √† la denrni√®re semaine 
         map<time_t, vector<Measurement>>::iterator itMes = measurementSensor->lower_bound(start);
         int numberMesure = 0;
         double O3 = 0;
         double NO2 = 0;
         double PM10 = 0;
         double SO2 = 0;
-        // on parcourt les mesures rÈalisÈes
+        // on parcourt les mesures r√©alis√©es
         while (itMes != measurementSensor->end() && itMes->first < next) {
             numberMesure++;
             vector<Measurement>::iterator itMeasure;
 
-            // on met ‡ jour les valeurs des indices de qualitÈ de l'air 
+            // on met √† jour les valeurs des indices de qualit√© de l'air 
             for (itMeasure = itMes->second.begin(); itMeasure != itMes->second.end(); ++itMeasure) {
                 string idAttribute = itMeasure->GetAttribute().GetID();
                 double value = itMeasure->GetValue();
@@ -298,7 +310,7 @@ double Statistics::AirQualitySensor(Sensor* sensor, time_t* end)
     }
 
     if (numberIndex == 0) {
-        return -2; //Erreur la date ne rentre pas dans la plage des donnÈes
+        return -2; //Erreur la date ne rentre pas dans la plage des donn√©es
     }
 
   
@@ -317,6 +329,7 @@ Statistics::Statistics(Model* unModel)
 
 
 int Statistics::atmoIndex(double O3, double So2, double No2, double Pm10)
+// Algorithme : retourne l'index ATMO selon les normes sp√©cifi√©es avant l'introduction de PM2.5 √† l'indice
 {
     int index = -1;
     int currentIdex = 0;

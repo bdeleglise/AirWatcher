@@ -1,3 +1,12 @@
+
+#pragma once
+/*************************************************************************
+                           AirWatcher  -  description
+                             -------------------
+    debut                : 04-2021
+    copyright            : (C) 2021 par 3IF-3206 & 3213
+*************************************************************************/
+
 // AirWatcher.cpp : Ce fichier contient la fonction 'main'. L'execution du programme commence et se termine à cet endroit.
 //
 

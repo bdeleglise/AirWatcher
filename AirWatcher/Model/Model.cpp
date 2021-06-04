@@ -1,4 +1,15 @@
-﻿#include "Model.h"
+﻿
+/*************************************************************************
+						   Model  -  description
+							 -------------------
+	début                : 06/05/2021
+	copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+	e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+						   benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
+
+//---------- Realisation de la classe <Model> (fichier Model.cpp) --
+#include "Model.h"
 #include <fstream>
 #include <string>
 #include "../Controller/System.h"
@@ -6,7 +17,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GovernmentAgency* Model::SearchGovernmentAgency(int id) {
+GovernmentAgency* Model::SearchGovernmentAgency(int id) 
+//Algorithme : Renvoie nullptr si l'ID n'a pas été trouvé, un pointeur vers un utilisateur de type GovernmentAgency correspondant sinon.
+{
 	GovernmentAgency* user = nullptr;
 	if (governmentAgencies.find(id) != governmentAgencies.end())
 	{
@@ -18,7 +31,9 @@ GovernmentAgency* Model::SearchGovernmentAgency(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-IndividualUser* Model::SearchIndividual(int id) {
+IndividualUser* Model::SearchIndividual(int id)
+//Algorithme : Renvoie nullptr si l'ID n'a pas été trouvé, un pointeur vers un utilisateur de type IndividualUser correspondant sinon.
+{
 	IndividualUser* user = nullptr;
 	if (individuals.find(id) != individuals.end())
 	{
@@ -29,7 +44,9 @@ IndividualUser* Model::SearchIndividual(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Provider* Model::SearchProvider(int id) {
+Provider* Model::SearchProvider(int id)
+//Algorithme : Renvoie nullptr si l'ID n'a pas été trouvé, un pointeur vers un utilisateur de type Provider correspondant sinon.
+{
 	Provider* user = nullptr;
 	if (providers.find(id) != providers.end())
 	{
@@ -42,7 +59,9 @@ Provider* Model::SearchProvider(int id) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Cleaner* Model::SearchCleaner(int id) {
+Cleaner* Model::SearchCleaner(int id)
+//Algorithme : Renvoie nullptr si l'ID n'a pas été trouvé, un pointeur vers le cleaner correspondant sinon.
+{
 	Cleaner* cleaner = nullptr;
 	if (cleaners.find(id) != cleaners.end())
 	{
@@ -54,7 +73,9 @@ Cleaner* Model::SearchCleaner(int id) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Sensor* Model::SearchSensor(int id) {
+Sensor* Model::SearchSensor(int id)
+//Algorithme : Renvoie nullptr si l'ID n'a pas été trouvé, un pointeur vers le capteur correspondant sinon.
+{
 	map<int, Sensor>::iterator iter = sensors.find(id);
 	bool find = false;
 	Sensor* res = nullptr;
@@ -138,7 +159,9 @@ map<int, Sensor>* Model::GetMaliciousIndividualSensors() {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	vector<Sensor*>* Model::GetSensorsOrderByDistance(double latitude, double longitude) {
+	vector<Sensor*>* Model::GetSensorsOrderByDistance(double latitude, double longitude)
+	//Algorithme : Renvoie un pointeur vers un vector de Sensor* qui contient les 4 capteurs les plus proches du point passé en parametre
+	{
 
 		vector<Sensor*>* nearSensors = new vector<Sensor*>(4);
 		vector<Sensor*> SensorsVector;
@@ -161,7 +184,9 @@ map<int, Sensor>* Model::GetMaliciousIndividualSensors() {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude) {
+	vector<pair<Sensor, double>>* Model::GetPrivateSensorsOrderByDistance(double latitude, double longitude)
+	//Algorithme : Renvoie un pointeur vers un vector de Sensor* qui contient les 3 capteurs privés les plus proches du point passé en parametre
+	{
 		vector<pair<Sensor, double>>* privateSensorsOrderedByDistance = new vector<pair<Sensor, double>>;
 		vector<Sensor>* nearSensors = new vector<Sensor>(3);
 		vector<Sensor>* PrivateSensorsVector = new vector<Sensor>;
@@ -195,6 +220,7 @@ map<int, Sensor>* Model::GetMaliciousIndividualSensors() {
 
 
 int Model::LoadData()
+//Algorithme : Permet de charger les données dans l'application en allant lire dans les fichiers .csv du dataset
 {
 	static bool call = false;
 	if (!call) {
@@ -394,11 +420,14 @@ int Model::LoadData()
 
 //////////////
 
-void Model::IncrementPointIndividualUser(int idIndividual) {
+void Model::IncrementPointIndividualUser(int idIndividual)
+//Algorithme : incremente les points d'un Individu identifié par son ID
+{
 	individuals[idIndividual].SetPoints(individuals[idIndividual].GetPoints() + 1);
 }
 
 void Model::UpdateSensorState(int idSensor) 
+//Algorithme : On recherche le capteur passé en paramètre pour mettre à jour son statut selon qu'il soit actuellement classé en état normal, maintenance ou frauduleux.
 {
 	
 	bool find = false;
@@ -439,13 +468,17 @@ void Model::UpdateSensorState(int idSensor)
 
 
 
-void Model::UpdateIndividualState(int idIndividual) {
-	if (individuals.find(idIndividual) != individuals.end()) {
+void Model::UpdateIndividualState(int idIndividual)
+//Algorithme : Mettre à jour le statut de l'individu en parametre pour l'ajouter/retirer de la liste des frauduleux
+{
+	if (individuals.find(idIndividual) != individuals.end())
+	// On recupere un pointeur vers l'individu
+	{
 		IndividualUser* individualPtr = &individuals[idIndividual];
+		//On modifie l'etat de son attribut reliable
 		individualPtr->SetReliable(!individualPtr->GetReliable());
 		bool reliable = individualPtr->GetReliable();
-		// if the individual user is not reliable, then : 
-		// move its sensors from privateSensors list to malicious
+		// S'il n'est pas de confiance, on bouge ses capteurs de la liste de privateSensors vers maliciousSensors
 		vector<Sensor>* individualSensors = individualPtr->GetSensors();
 		if (!reliable) {
 			for (auto& currentSensor : *individualSensors) {
@@ -454,7 +487,7 @@ void Model::UpdateIndividualState(int idIndividual) {
 				maliciousSensors[currentSensor.GetID()] = currentSensor;
 			}
 		}
-		// if not
+		// Sinon, on bouge ses capteurs de maliciousSensors vers privateSensors
 		// move its sensors from malicious to private
 		else {
 			for (auto& currentSensor : *individualSensors) {

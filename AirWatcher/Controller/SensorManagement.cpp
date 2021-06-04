@@ -1,3 +1,12 @@
+/*************************************************************************
+						   SensorManegement  -  description
+							 -------------------
+	début                : 06/05/2021
+	copyright            : (C) 2021 par Belateche, Chaillan, Deleglise, Saugier
+	e-mail               : rahim.belateche@insa-lyon, ewen.chaillan@insa-lyon.fr,
+						   benoit.deleglise@insa-lyon.fr, mathieu.saugier@insa-lyon.fr
+*************************************************************************/
+
 #include "SensorManagement.h"
 #include <fstream>
 #include <string>
@@ -14,7 +23,9 @@ SensorManagement::SensorManagement(Model* unModel) : model(unModel)
 {
 }
 
-vector<pair<Sensor*, Confidence>>* SensorManagement::FraudulentSensorDetection() {
+vector<pair<Sensor*, Confidence>>* SensorManagement::FraudulentSensorDetection()
+//Algorithme : 
+{
 	Statistics stats(model);
 
 	map<int, Sensor>* privateSensors;
@@ -74,7 +85,9 @@ vector<pair<Sensor*, Confidence>>* SensorManagement::FraudulentSensorDetection()
 	return falseSensors;
 }
 
-bool SensorManagement::ClassifyAsUnreliable(int individualId) {
+bool SensorManagement::ClassifyAsUnreliable(int individualId)
+//Algorithme : on récupère l'individu associé à l'id en paramètre et s'il est dans la liste des fiables, on met à jour son statut comme non fiable.
+{
 
 	IndividualUser* individualPtr = model->SearchIndividual(individualId);
 	
