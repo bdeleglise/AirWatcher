@@ -15,6 +15,10 @@ Nous avons utilisé une macro préprocesseur afin d'avoir l'emplacement du la so
 C/C++ --> préprocesseur --> Définitions de préprocesseur et ajouter l'entrée suivante  
 `SOLUTION_DIR=R"($(SolutionDir))"`
 
+### Modification des chemins d'accès au Dataset
+Le dataset contient les données qui nous ont été fournies pour le projet et se situe dans un dossier éponyme à la racine de l'application.  
+Si vous rencontrez des difficultés, vous pouvez modifier le code source du fichier `ReaderConfig.h` de telle sorte que l'attribut `string DIRECTORYPATH`ait pour valeur le chemin vers le dossier Dataset.
+
 ## Exécution de l'application et réalisation de tests
 Nous conseillons de lancer l'application directement avec le compliateur intégré à Visual Studio.  
 Pour effectuer les tests, il suffit d'ouvrir l'explorateur de tests (`Ctrl+E,T`), puis d'exécuter tous les tests (`Ctrl+R,V`)
