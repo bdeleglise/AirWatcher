@@ -606,7 +606,8 @@ void UserInterface::statisticsUI()
 double UserInterface::getRayon()
 //Algorithme : retourne le rayon rentré par l'utilisateur
 {
-    cout << " Merci d'entrer le rayon de la zone a mesurer autour du point fourni precedemment" << endl;
+    cout << " Merci d'entrer le rayon (en km) de la zone a mesurer autour du point fourni precedemment" << endl;
+    cout << " Indication: on utilise le fait qu'en France on a environ 80km = 1degré" << endl;
     double rayon = -1;
     cin >> rayon;
     while (cin.fail()) {
@@ -615,7 +616,7 @@ double UserInterface::getRayon()
         cin >> rayon;
     }
     cleanInputBuffer();
-    return rayon;
+    return rayon/80.0;
 }
 
 time_t UserInterface::getTime()
@@ -640,7 +641,7 @@ time_t UserInterface::getTime()
 double UserInterface::getXcoord()
 //Algorithme : retourne la coordonnée saisie par l'utilisateur
 {
-    cout << "x : " << endl;
+    cout << "Lattitude (en degré) : " << endl;
     double x = -1;
     cin >> x;
     while (cin.fail()) {
@@ -654,7 +655,7 @@ double UserInterface::getXcoord()
 double UserInterface::getYcoord()
 //Algorithme : retourne la coordonnée saisie par l'utilisateur
 {
-    cout << "y : " << endl;
+    cout << "Longitude (en degré) : " << endl;
     double y = -1;
     cin >> y;
     while (cin.fail()) {
