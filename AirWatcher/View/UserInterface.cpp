@@ -593,7 +593,8 @@ void UserInterface::statisticsUI()
 
 double UserInterface::getRayon()
 {
-    cout << " Merci d'entrer le rayon de la zone a mesurer autour du point fourni precedemment" << endl;
+    cout << " Merci d'entrer le rayon (en km) de la zone a mesurer autour du point fourni precedemment" << endl;
+    cout << " Indication: on utilise le fait qu'en France on a environ 80km = 1degré" << endl;
     double rayon = -1;
     cin >> rayon;
     while (cin.fail()) {
@@ -602,7 +603,7 @@ double UserInterface::getRayon()
         cin >> rayon;
     }
     cleanInputBuffer();
-    return rayon;
+    return rayon/80.0;
 }
 
 time_t UserInterface::getTime()
