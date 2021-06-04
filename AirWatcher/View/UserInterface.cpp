@@ -626,7 +626,7 @@ time_t UserInterface::getTime()
 
 double UserInterface::getXcoord()
 {
-    cout << "x : " << endl;
+    cout << "Lattitude (en degré) : " << endl;
     double x = -1;
     cin >> x;
     while (cin.fail()) {
@@ -639,7 +639,7 @@ double UserInterface::getXcoord()
 }
 double UserInterface::getYcoord()
 {
-    cout << "y : " << endl;
+    cout << "Longitude (en degré) : " << endl;
     double y = -1;
     cin >> y;
     while (cin.fail()) {

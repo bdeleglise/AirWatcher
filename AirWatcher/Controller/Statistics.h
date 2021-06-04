@@ -25,9 +25,11 @@ public :
 	int CircularMeanAirQuality(double latitude, double longitude, double radius, time_t* time=nullptr);
 
 	// Mode d'emploi :
-	// permet de calculer la qualité de l’air selon l’index ATMO dans une zone géographique particulière (paramètres Latitude, Longitude, radius) à un instant précis (paramètre time=nullptr). Toutes les interfaces ont accès à cette méthode.  
+	// permet de calculer la qualité de l’air selon l’index ATMO dans une zone géographique particulière (paramètres Latitude, Longitude, radius) à un instant précis (paramètre time=nullptr). Toutes les interfaces ont accès à cette méthode.
+	// le rayon, la latitude et la longitude sont en degré  
 	// Contrat :
-	// Aucun
+	// On fait l’approximation qu’on peut ramener les valeurs angulaires de la latitude et de la longitude à des valeurs cartésiennes car on reste sur le territoire de l’agence gouvernementale Française.
+	// On fait donc l’hypothèse que le référentiel est plat
 
 	double AirQualitySensor(Sensor* sensor, time_t* end = nullptr);
 
